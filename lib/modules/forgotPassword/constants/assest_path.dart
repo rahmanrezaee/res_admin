@@ -8,7 +8,4 @@ class AssestPath {
   static String editIcon = "assets/images/editIcon.png";
   static String favoriteDishesIcon = "assets/images/favoriteDishesIcon.png";
   static String myOrderIcon = "assets/images/my_order.png";
-  static String dashboardIcon = "assets/images/dashboard_icon.png";
-  static String categoriesIcon = "assets/images/categoriesIcon.png";
-  static String dishesIcon = "assets/images/dishesIcon.png";
 }

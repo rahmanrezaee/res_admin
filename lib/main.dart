@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant/modules/drawer/drawer.dart';
+import 'package:restaurant/modules/login/login_page.dart';
 import './themes/style.dart';
 import './routes.dart';
 
@@ -10,10 +12,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: restaurantTheme,
-      home: MyHomePage(title: 'Restaurant app'),
-      routes: routes(),
+      home: LayoutExample(),
+      routes: routes,
     );
   }
 }

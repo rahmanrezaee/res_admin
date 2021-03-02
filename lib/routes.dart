@@ -1,8 +1,11 @@
-import 'package:restaurant/main.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:restaurant/modules/Privacy&Policy.dart';
+import 'package:restaurant/modules/forgotPassword/forgotPassword.dart';
+import 'package:restaurant/modules/term&condition_page.dart';
 
-routes() {
-  return {
-    '/': (context) => MyHomePage(),
-    //Add your routes here
-  };
-}
+var routes = <String, WidgetBuilder>{
+  //add routes here
+  ForgotPassword.routeName: (context) => ForgotPassword(),
+  TermCondition.routeName: (context) => TermCondition(),
+  PrivacyPolicy.routeName: (context) => PrivacyPolicy(),
+};
