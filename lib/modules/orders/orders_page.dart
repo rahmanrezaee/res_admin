@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:restaurant/themes/colors.dart';
 import '../../widgets/orderItem_widget.dart';
 
+//
+import 'package:responsive_grid/responsive_grid.dart';
+
 class OrderPage extends StatefulWidget {
   @override
   _OrderPageState createState() => _OrderPageState();
@@ -82,29 +85,51 @@ class _OrderPageState extends State<OrderPage>
       body: TabBarView(
         controller: _tabController,
         children: [
-          GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: screenSize > 1024 ? 2 : 1,
-              mainAxisSpacing: 20,
-              crossAxisSpacing: 20,
-              childAspectRatio: ((MediaQuery.of(context).size.width) / 600),
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                ResponsiveGridRow(
+                  children: [
+                    ...List.generate(6, (i) {
+                      return ResponsiveGridCol(
+                        xs: 12,
+                        sm: 12,
+                        md: 12,
+                        lg: 12,
+                        xl: 6,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: OrderItem(),
+                        ),
+                      );
+                    }),
+                  ],
+                ),
+              ],
             ),
-            itemCount: 10,
-            itemBuilder: (context, res) {
-              return OrderItem();
-            },
           ),
-          GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: screenSize > 1024 ? 2 : 1,
-              mainAxisSpacing: 20,
-              crossAxisSpacing: 20,
-              childAspectRatio: ((MediaQuery.of(context).size.width) / 600),
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                ResponsiveGridRow(
+                  children: [
+                    ...List.generate(6, (i) {
+                      return ResponsiveGridCol(
+                        xs: 12,
+                        sm: 12,
+                        md: 6,
+                        lg: 6,
+                        xl: 6,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: OrderItem(),
+                        ),
+                      );
+                    }),
+                  ],
+                ),
+              ],
             ),
-            itemCount: 10,
-            itemBuilder: (context, res) {
-              return OrderItem();
-            },
           ),
           // SingleChildScrollView(
           //   child: Column(

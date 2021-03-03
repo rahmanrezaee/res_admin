@@ -43,7 +43,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                       style: TextStyle(color: Colors.black45)),
                 ],
               ),
-              SizedBox(width: 10),
+              SizedBox(width: 20),
             ]),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -80,13 +80,86 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 ),
               ],
             ),
-            // Align(
-            //   alignment: Alignment.center,
-            //   child:
-            // ),
+            SizedBox(height: 15),
+            Align(
+              alignment: Alignment.center,
+              child: SizedBox(
+                width: 300,
+                height: 40,
+                child: RaisedButton(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  color: Theme.of(context).primaryColor,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    "Change Password",
+                    style: Theme.of(context).textTheme.button,
+                  ),
+                  onPressed: () {},
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(15),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Timings",
+                            style: Theme.of(context).textTheme.headline6),
+                        Text("Open",
+                            style: Theme.of(context).textTheme.headline6),
+                        Text("Close",
+                            style: Theme.of(context).textTheme.headline6),
+                      ],
+                    ),
+                    Divider(),
+                    SizedBox(height: 10),
+                    timelineItemBuilder(),
+                    timelineItemBuilder(),
+                    timelineItemBuilder(),
+                    timelineItemBuilder(),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
+    );
+  }
+
+  Row timelineItemBuilder() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text("MONDAY"),
+        Row(
+          children: [
+            Text("09:00"),
+            SizedBox(width: 10),
+            IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: () {},
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            Text("09:00"),
+            SizedBox(width: 10),
+            IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: () {},
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
