@@ -6,10 +6,25 @@ import 'package:responsive_grid/responsive_grid.dart';
 import 'package:restaurant/modules/addNewDish/addNewDish_page.dart';
 import 'package:restaurant/providers/navigator_provider.dart';
 
+import '../../themes/style.dart';
+
 class DishPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    NavigatorProvider nav = new NavigatorProvider();
+    return MaterialApp(routes: {
+      AddNewDish.routeName: (context) => AddNewDish(),
+    }, theme: restaurantTheme, home: DishHome());
+  }
+}
+
+class DishHome extends StatefulWidget {
+  @override
+  _DishHomeState createState() => _DishHomeState();
+}
+
+class _DishHomeState extends State<DishHome> {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: .2,
@@ -33,10 +48,10 @@ class DishPage extends StatelessWidget {
             children: [
               ...List.generate(10, (i) {
                 return ResponsiveGridCol(
-                  xs: 4,
-                  sm: 3,
-                  md: 3,
-                  lg: 2,
+                  xs: 6,
+                  sm: 6,
+                  md: 4,
+                  lg: 3,
                   child: DishItem(),
                 );
               }),

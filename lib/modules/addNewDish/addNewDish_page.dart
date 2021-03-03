@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 //packages
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:restaurant/themes/colors.dart';
+import 'package:responsive_grid/responsive_grid.dart';
+import 'package:restaurant/widgets/commentItem_widget.dart';
 
 class AddNewDish extends StatefulWidget {
   static String routeName = "AddNewDish";
@@ -208,23 +210,26 @@ class _AddNewDishState extends State<AddNewDish> {
                 ),
               ),
               SizedBox(height: 10),
-              ListTile(
-                leading: Container(
-                  width: 100,
-                  child: Row(
-                    children: [
-                      Icon(Icons.add_circle_outline_outlined,
-                          color: AppColors.green),
-                      Text("Extra Cheese",
-                          style: Theme.of(context).textTheme.headline4),
-                    ],
-                  ),
-                ),
-                trailing: Text("Price: 200"),
+              _extraCheeseBuilder(context),
+              Divider(),
+              _extraCheeseBuilder(context),
+              ResponsiveGridRow(
+                children: [
+                  ...List.generate(2, (i) {
+                    return ResponsiveGridCol(
+                      xs: 12,
+                      sm: 12,
+                      md: 12,
+                      lg: 6,
+                      xl: 6,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CommentItem(),
+                      ),
+                    );
+                  }),
+                ],
               ),
-              // _extraCheeseBuilder(context),
-              // SizedBox(height: 10),
-              // _extraCheeseBuilder(context),
             ],
           ),
         ),
@@ -253,14 +258,17 @@ _textFieldBuilder(String hintText) {
 
 _extraCheeseBuilder(context) {
   return ListTile(
-    leading: Row(
+    title: Row(
       children: [
         Icon(Icons.add_circle_outline_outlined, color: AppColors.green),
-        Text("Extra Cheese", style: Theme.of(context).textTheme.headline4),
+        SizedBox(
+          width: 10,
+        ),
+        Expanded(
+            child: Text("Extra Cheese",
+                style: Theme.of(context).textTheme.headline4)),
+        Text("Price: 200"),
       ],
     ),
-    trailing: Row(children: [
-      Text("Price: 200"),
-    ]),
   );
 }

@@ -10,7 +10,6 @@ class _OrderItemState extends State<OrderItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 10),
       padding: EdgeInsets.all(15),
       width: double.infinity,
       decoration: BoxDecoration(
@@ -215,13 +214,11 @@ class DishItem extends StatelessWidget {
           bottom: BorderSide(width: 1.5, color: Color.fromRGBO(0, 0, 0, 0.1)),
         ),
       ),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text("Dish Name"),
-            FlatButton.icon(
+      child: Row(
+        children: [
+          Text("Dish Name"),
+          Expanded(
+            child: FlatButton.icon(
               textColor: AppColors.green,
               label: Text(
                 "View Add On",
@@ -269,7 +266,9 @@ class DishItem extends StatelessWidget {
                     });
               },
             ),
-            FlatButton.icon(
+          ),
+          Expanded(
+            child: FlatButton.icon(
               textColor: AppColors.green,
               label: Text(
                 "View Order Note",
@@ -317,10 +316,13 @@ class DishItem extends StatelessWidget {
                     });
               },
             ),
-            Text("Qty"),
-            Text("Price"),
-          ],
-        ),
+          ),
+          Text("Qty"),
+          SizedBox(
+            width: 20,
+          ),
+          Text("Price"),
+        ],
       ),
     );
   }
