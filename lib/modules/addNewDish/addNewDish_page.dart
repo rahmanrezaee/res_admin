@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 //packages
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:restaurant/themes/colors.dart';
+import 'package:responsive_grid/responsive_grid.dart';
+//widgets
+import 'package:restaurant/widgets/commentItem_widget.dart';
 
 class AddNewDish extends StatefulWidget {
   static String routeName = "AddNewDish";
@@ -198,9 +201,83 @@ class _AddNewDishState extends State<AddNewDish> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           elevation: 0,
-                          onPressed: () {},
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Dialog(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 20, horizontal: 40),
+                                    width: 400,
+                                    height: 250,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    // alignment: Alignment.center,
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.all(20),
+                                          child: Text(
+                                            "New Add On",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline4,
+                                          ),
+                                        ),
+                                        Divider(),
+                                        SizedBox(height: 15),
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: _textFieldBuilder(
+                                                  "Add On Name"),
+                                            ),
+                                            SizedBox(width: 10),
+                                            Container(
+                                              width: 100,
+                                              child: _textFieldBuilder(
+                                                  "Add On Price"),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 15),
+                                        SizedBox(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          child: RaisedButton(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 10),
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            elevation: 0,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                            child: Text(
+                                              "Save",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .button,
+                                            ),
+                                            onPressed: () {},
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
                           color: Theme.of(context).primaryColor,
-                          child: Icon(Icons.close, color: Colors.white),
+                          child: Icon(Icons.add, color: Colors.white),
                         ),
                       ),
                     ],
@@ -208,23 +285,36 @@ class _AddNewDishState extends State<AddNewDish> {
                 ),
               ),
               SizedBox(height: 10),
-              ListTile(
-                leading: Container(
-                  width: 100,
-                  child: Row(
-                    children: [
-                      Icon(Icons.add_circle_outline_outlined,
-                          color: AppColors.green),
-                      Text("Extra Cheese",
-                          style: Theme.of(context).textTheme.headline4),
-                    ],
-                  ),
+              _extraCheeseBuilder(context),
+              _extraCheeseBuilder(context),
+              _extraCheeseBuilder(context),
+              _extraCheeseBuilder(context),
+              SizedBox(height: 10),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Rewiews Shared",
+                  style: Theme.of(context).textTheme.headline3,
                 ),
-                trailing: Text("Price: 200"),
               ),
-              // _extraCheeseBuilder(context),
               // SizedBox(height: 10),
-              // _extraCheeseBuilder(context),
+              ResponsiveGridRow(
+                children: [
+                  ...List.generate(5, (i) {
+                    return ResponsiveGridCol(
+                      xs: 12,
+                      sm: 12,
+                      md: 12,
+                      lg: 6,
+                      xl: 6,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CommentItem(),
+                      ),
+                    );
+                  }),
+                ],
+              ),
             ],
           ),
         ),
@@ -252,15 +342,24 @@ _textFieldBuilder(String hintText) {
 }
 
 _extraCheeseBuilder(context) {
-  return ListTile(
-    leading: Row(
-      children: [
-        Icon(Icons.add_circle_outline_outlined, color: AppColors.green),
-        Text("Extra Cheese", style: Theme.of(context).textTheme.headline4),
-      ],
-    ),
-    trailing: Row(children: [
-      Text("Price: 200"),
-    ]),
+  return Column(
+    children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          FlatButton.icon(
+            textColor: AppColors.green,
+            icon: Icon(Icons.add_circle_outline, color: AppColors.green),
+            label: Text(
+              "Extra Cheese",
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+            ),
+            onPressed: () {},
+          ),
+          Text("Price: \$10", style: TextStyle(color: AppColors.green)),
+        ],
+      ),
+      Divider(),
+    ],
   );
 }

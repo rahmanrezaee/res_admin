@@ -1,10 +1,19 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 //packages
 import 'package:responsive_grid/responsive_grid.dart';
-import 'package:restaurant/widgets/commentItem_widget.dart';
 import 'package:restaurant/widgets/orderItem_widget.dart';
+//widgets
+import 'package:restaurant/widgets/commentItem_widget.dart';
 
-class MyProfilePage extends StatelessWidget {
+class MyProfilePage extends StatefulWidget {
+  @override
+  _MyProfilePageState createState() => _MyProfilePageState();
+}
+
+class _MyProfilePageState extends State<MyProfilePage> {
+  bool openForOrder = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,65 +42,23 @@ class MyProfilePage extends StatelessWidget {
                       style: TextStyle(color: Colors.black45)),
                 ],
               ),
+              SizedBox(width: 10),
             ]),
-            SizedBox(height: 20),
-            SizedBox(
-              width: 300,
-              height: 50,
-              child: RaisedButton(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                color: Theme.of(context).primaryColor,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  "Orders",
-                  style: Theme.of(context).textTheme.button,
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ),
-            SizedBox(height: 15),
-            ResponsiveGridRow(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ...List.generate(2, (i) {
-                  return ResponsiveGridCol(
-                    xs: 12,
-                    sm: 12,
-                    md: 12,
-                    lg: 12,
-                    xl: 6,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: OrderItem(),
-                    ),
-                  );
-                }),
-              ],
-            ),
-            Text(
-              "Reviews Shared",
-              style:
-                  Theme.of(context).textTheme.headline4.copyWith(fontSize: 20),
-            ),
-            ResponsiveGridRow(
-              children: [
-                ...List.generate(2, (i) {
-                  return ResponsiveGridCol(
-                    xs: 12,
-                    sm: 12,
-                    md: 12,
-                    lg: 6,
-                    xl: 6,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CommentItem(),
-                    ),
-                  );
-                }),
+                Text("Open for Orders",
+                    style:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+                CupertinoSwitch(
+                  value: openForOrder,
+                  onChanged: (value) {
+                    setState(() {
+                      openForOrder = value;
+                    });
+                  },
+                  // trackColor: AppColors.green,
+                ),
               ],
             ),
           ],
