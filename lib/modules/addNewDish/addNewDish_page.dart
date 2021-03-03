@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:restaurant/themes/colors.dart';
 import 'package:responsive_grid/responsive_grid.dart';
+//widgets
 import 'package:restaurant/widgets/commentItem_widget.dart';
 
 class AddNewDish extends StatefulWidget {
@@ -200,9 +201,83 @@ class _AddNewDishState extends State<AddNewDish> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           elevation: 0,
-                          onPressed: () {},
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Dialog(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 20, horizontal: 40),
+                                    width: 400,
+                                    height: 250,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    // alignment: Alignment.center,
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.all(20),
+                                          child: Text(
+                                            "New Add On",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline4,
+                                          ),
+                                        ),
+                                        Divider(),
+                                        SizedBox(height: 15),
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: _textFieldBuilder(
+                                                  "Add On Name"),
+                                            ),
+                                            SizedBox(width: 10),
+                                            Container(
+                                              width: 100,
+                                              child: _textFieldBuilder(
+                                                  "Add On Price"),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 15),
+                                        SizedBox(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          child: RaisedButton(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 10),
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            elevation: 0,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                            child: Text(
+                                              "Save",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .button,
+                                            ),
+                                            onPressed: () {},
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
                           color: Theme.of(context).primaryColor,
-                          child: Icon(Icons.close, color: Colors.white),
+                          child: Icon(Icons.add, color: Colors.white),
                         ),
                       ),
                     ],
