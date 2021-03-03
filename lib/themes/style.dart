@@ -92,9 +92,9 @@ final ThemeData restaurantTheme = ThemeData(
       fontStyle: FontStyle.normal,
     ),
     headline6: TextStyle(
-      color: Color(0xdd000000),
-      fontSize: null,
-      fontWeight: FontWeight.w400,
+      color: Colors.black54,
+      fontSize: 18,
+      fontWeight: FontWeight.w700,
       fontStyle: FontStyle.normal,
     ),
     subtitle1: TextStyle(
