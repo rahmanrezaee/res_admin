@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_scaffold/responsive_scaffold.dart';
 import 'package:restaurant/constants/assest_path.dart';
+import 'package:restaurant/modules/addNewDish/addNewDish_page.dart';
 import 'package:restaurant/themes/colors.dart';
+import 'package:restaurant/themes/style.dart';
 //pages
 import '../dashboard/dashboard_page.dart';
 import '../orders/orders_page.dart';
@@ -74,9 +76,15 @@ class _LayoutExampleState extends State<LayoutExample> {
   Widget build(BuildContext context) {
     return ResponsiveScaffold(
       kDesktopBreakpoint: 768,
-      body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: pages[pageIndex].page,
+      body: MaterialApp(
+        home: Padding(
+          padding: const EdgeInsets.all(15),
+          child: pages[pageIndex].page,
+        ),
+        routes: {
+          AddNewDish.routeName: (context) => AddNewDish(),
+        },
+        theme: restaurantTheme,
       ),
       drawer: SizedBox(
         width: 281,
