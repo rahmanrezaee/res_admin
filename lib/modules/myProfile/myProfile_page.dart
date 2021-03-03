@@ -13,6 +13,7 @@ class MyProfilePage extends StatefulWidget {
 
 class _MyProfilePageState extends State<MyProfilePage> {
   bool openForOrder = false;
+  bool autoAcceptOrder = true;
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +62,28 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 ),
               ],
             ),
+            Divider(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Auto Accept Order",
+                    style:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+                CupertinoSwitch(
+                  value: autoAcceptOrder,
+                  onChanged: (value) {
+                    setState(() {
+                      autoAcceptOrder = value;
+                    });
+                  },
+                  // trackColor: AppColors.green,
+                ),
+              ],
+            ),
+            // Align(
+            //   alignment: Alignment.center,
+            //   child:
+            // ),
           ],
         ),
       ),

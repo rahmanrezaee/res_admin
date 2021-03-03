@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:responsive_scaffold/responsive_scaffold.dart';
 import 'package:restaurant/constants/assest_path.dart';
 import 'package:restaurant/modules/addNewDish/addNewDish_page.dart';
+import 'package:restaurant/modules/report/report.dart';
 import 'package:restaurant/themes/colors.dart';
 import 'package:restaurant/themes/style.dart';
 //pages
@@ -68,6 +69,11 @@ class _LayoutExampleState extends State<LayoutExample> {
       icon: Icon(Icons.notifications_outlined, color: Colors.yellow),
       page: NotificationsPage(),
     ),
+    PageModel(
+      title: "Report",
+      icon: Icon(Icons.report, color: Colors.yellow),
+      page: ReportPage(),
+    ),
   ];
 
   int pageIndex = 0;
@@ -76,15 +82,9 @@ class _LayoutExampleState extends State<LayoutExample> {
   Widget build(BuildContext context) {
     return ResponsiveScaffold(
       kDesktopBreakpoint: 768,
-      body: MaterialApp(
-        home: Padding(
-          padding: const EdgeInsets.all(15),
-          child: pages[pageIndex].page,
-        ),
-        routes: {
-          AddNewDish.routeName: (context) => AddNewDish(),
-        },
-        theme: restaurantTheme,
+      body: Padding(
+        padding: const EdgeInsets.all(15),
+        child: pages[pageIndex].page,
       ),
       drawer: SizedBox(
         width: 281,
@@ -94,9 +94,11 @@ class _LayoutExampleState extends State<LayoutExample> {
             children: <Widget>[
               ...pages.map((page) {
                 int index = pages.indexOf(page);
+
                 return drawerListItemBuilder(
                   icon: page.icon,
                   title: page.title,
+                  isActive: pageIndex == index,
                   onClick: () {
                     setState(() {
                       pageIndex = index;
@@ -115,6 +117,7 @@ class _LayoutExampleState extends State<LayoutExample> {
 drawerListItemBuilder({
   @required Widget icon,
   @required String title,
+  bool isActive,
   @required Function onClick,
 }) {
   return InkWell(
@@ -122,6 +125,8 @@ drawerListItemBuilder({
       onClick();
     },
     child: Card(
+      color:
+          isActive != null && isActive ? Colors.yellow.shade100 : Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),

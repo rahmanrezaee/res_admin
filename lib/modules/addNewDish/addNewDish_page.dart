@@ -286,21 +286,11 @@ class _AddNewDishState extends State<AddNewDish> {
               ),
               SizedBox(height: 10),
               _extraCheeseBuilder(context),
+              Divider(),
               _extraCheeseBuilder(context),
-              _extraCheeseBuilder(context),
-              _extraCheeseBuilder(context),
-              SizedBox(height: 10),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Rewiews Shared",
-                  style: Theme.of(context).textTheme.headline3,
-                ),
-              ),
-              // SizedBox(height: 10),
               ResponsiveGridRow(
                 children: [
-                  ...List.generate(5, (i) {
+                  ...List.generate(2, (i) {
                     return ResponsiveGridCol(
                       xs: 12,
                       sm: 12,
@@ -342,24 +332,18 @@ _textFieldBuilder(String hintText) {
 }
 
 _extraCheeseBuilder(context) {
-  return Column(
-    children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          FlatButton.icon(
-            textColor: AppColors.green,
-            icon: Icon(Icons.add_circle_outline, color: AppColors.green),
-            label: Text(
-              "Extra Cheese",
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
-            ),
-            onPressed: () {},
-          ),
-          Text("Price: \$10", style: TextStyle(color: AppColors.green)),
-        ],
-      ),
-      Divider(),
-    ],
+  return ListTile(
+    title: Row(
+      children: [
+        Icon(Icons.add_circle_outline_outlined, color: AppColors.green),
+        SizedBox(
+          width: 10,
+        ),
+        Expanded(
+            child: Text("Extra Cheese",
+                style: Theme.of(context).textTheme.headline4)),
+        Text("Price: 200"),
+      ],
+    ),
   );
 }
