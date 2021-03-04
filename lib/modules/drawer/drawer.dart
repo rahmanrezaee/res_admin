@@ -81,13 +81,14 @@ class _LayoutExampleState extends State<LayoutExample> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveScaffold(
+      
       kDesktopBreakpoint: 768,
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: pages[pageIndex].page,
       ),
       drawer: SizedBox(
-        width: 281,
+        width: 100,
         child: Padding(
           padding: const EdgeInsets.all(15),
           child: ListView(
