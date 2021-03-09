@@ -7,7 +7,6 @@ class CatetoriesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: .2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -26,7 +25,7 @@ class CatetoriesPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text("Categories",
-                        style: Theme.of(context).textTheme.headline4),
+                        style: Theme.of(context).textTheme.headline5),
                     SizedBox(
                       width: 35,
                       height: 35,
@@ -38,7 +37,7 @@ class CatetoriesPage extends StatelessWidget {
                         elevation: 0,
                         onPressed: () {},
                         color: Theme.of(context).primaryColor,
-                        child: Icon(Icons.close, color: Colors.white),
+                        child: Icon(Icons.add, color: Colors.white),
                       ),
                     ),
                   ],
@@ -63,7 +62,7 @@ _categoryItemBuilder(context) {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("Category 1", style: Theme.of(context).textTheme.headline4),
+          Text("Category 1", style: Theme.of(context).textTheme.headline6),
           Text("15 Dishes", style: TextStyle(color: Colors.grey)),
           Row(
             children: [

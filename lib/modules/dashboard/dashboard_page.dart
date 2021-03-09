@@ -18,6 +18,16 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+       theme: ThemeData(
+    pageTransitionsTheme: PageTransitionsTheme(
+      builders: {
+        TargetPlatform.iOS: FadeUpwardsPageTransitionsBuilder(),
+        TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+      }
+    ),
+  ),
+     
       home: Scaffold(
         appBar: adaptiveAppBarBuilder(
           context,
@@ -99,7 +109,6 @@ class _DashboardPageState extends State<DashboardPage> {
       routes: {
         // AddNewDish.routeName: (context) => AddNewDish(),
       },
-      theme: restaurantTheme,
     );
   }
 }

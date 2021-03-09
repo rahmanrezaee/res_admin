@@ -167,7 +167,7 @@ class _AddNewDishState extends State<AddNewDish> {
               Row(
                 children: [
                   Text("Preparation Time",
-                      style: Theme.of(context).textTheme.headline3),
+                      style: Theme.of(context).textTheme.headline6),
                   SizedBox(width: 50),
                   OutlineButton(
                     padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
@@ -191,7 +191,7 @@ class _AddNewDishState extends State<AddNewDish> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Addon:",
-                          style: Theme.of(context).textTheme.headline3),
+                          style: Theme.of(context).textTheme.headline6),
                       SizedBox(
                         width: 35,
                         height: 35,
@@ -341,7 +341,7 @@ _extraCheeseBuilder(context) {
         ),
         Expanded(
             child: Text("Extra Cheese",
-                style: Theme.of(context).textTheme.headline4)),
+                style: Theme.of(context).textTheme.bodyText1)),
         Text("Price: 200"),
       ],
     ),

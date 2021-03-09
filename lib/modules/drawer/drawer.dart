@@ -21,6 +21,8 @@ class PageModel {
 }
 
 class LayoutExample extends StatefulWidget {
+  static var routeName = "/home";
+
   @override
   _LayoutExampleState createState() => _LayoutExampleState();
 }
@@ -81,7 +83,6 @@ class _LayoutExampleState extends State<LayoutExample> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveScaffold(
-      
       kDesktopBreakpoint: 768,
       body: Padding(
         padding: const EdgeInsets.all(15),

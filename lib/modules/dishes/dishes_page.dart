@@ -13,7 +13,9 @@ class DishPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(routes: {
       AddNewDish.routeName: (context) => AddNewDish(),
-    }, theme: restaurantTheme, home: DishHome());
+    }, 
+    
+    theme: restaurantTheme, home: DishHome());
   }
 }
 
@@ -26,15 +28,15 @@ class _DishHomeState extends State<DishHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       appBar: AppBar(
-        elevation: .2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
         title: Text("Manage Doshes"),
         actions: [
           IconButton(
-            icon: Icon(Icons.add, color: Colors.white),
+            icon: Icon(Icons.add, color: Colors.black),
             onPressed: () {
               Navigator.of(context).pushNamed(AddNewDish.routeName);
             },

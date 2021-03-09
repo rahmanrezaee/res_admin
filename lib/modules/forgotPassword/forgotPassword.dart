@@ -8,7 +8,7 @@ class ForgotPassword extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title:
-            Text("Forgot Password", style: Theme.of(context).textTheme.button),
+            Text("Forgot Password"),
         centerTitle: true,
         leading: SizedBox(
           width: 200,
@@ -21,9 +21,9 @@ class ForgotPassword extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(width: 10),
-                Icon(Icons.arrow_back_ios, color: Colors.white),
+                Icon(Icons.arrow_back_ios, color: Colors.black),
                 Text("back",
-                    style: TextStyle(color: Colors.white, fontSize: 20))
+                    style: TextStyle(color: Colors.black, fontSize: 20))
               ],
             ),
           ),

@@ -115,10 +115,10 @@ class _OrderPageState extends State<OrderPage>
                   children: [
                     ...List.generate(6, (i) {
                       return ResponsiveGridCol(
-                        xs: 12,
+                         xs: 12,
                         sm: 12,
-                        md: 6,
-                        lg: 6,
+                        md: 12,
+                        lg: 12,
                         xl: 6,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
