@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_scaffold/responsive_scaffold.dart';
 import 'package:restaurant/constants/assest_path.dart';
+import 'package:restaurant/modules/policy/Privacy&Policy.dart';
 import 'package:restaurant/modules/addNewDish/addNewDish_page.dart';
 import 'package:restaurant/modules/report/report.dart';
+import 'package:restaurant/modules/term/term&condition_page.dart';
 import 'package:restaurant/themes/colors.dart';
 import 'package:restaurant/themes/style.dart';
 //pages
@@ -21,6 +23,7 @@ class PageModel {
 }
 
 class LayoutExample extends StatefulWidget {
+  static String routeName = "LoyoutExample";
   @override
   _LayoutExampleState createState() => _LayoutExampleState();
 }
@@ -73,6 +76,16 @@ class _LayoutExampleState extends State<LayoutExample> {
       title: "Report",
       icon: Icon(Icons.report, color: Colors.yellow),
       page: ReportPage(),
+    ),
+    PageModel(
+      title: "Term&Conditions",
+      icon: Icon(Icons.subject),
+      page: TermCondition(),
+    ),
+    PageModel(
+      title: "Privary Policy",
+      icon: Icon(Icons.format_align_center),
+      page: PrivacyPolicy(),
     ),
   ];
 
