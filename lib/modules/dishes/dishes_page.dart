@@ -11,9 +11,13 @@ import '../../themes/style.dart';
 class DishPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(routes: {
-      AddNewDish.routeName: (context) => AddNewDish(),
-    }, theme: restaurantTheme, home: DishHome());
+    return MaterialApp(
+      routes: {
+        AddNewDish.routeName: (context) => AddNewDish(),
+      },
+      theme: restaurantTheme,
+      home: DishHome(),
+    );
   }
 }
 

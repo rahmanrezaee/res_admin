@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:restaurant/modules/Authentication/providers/auth_provider.dart';
+import 'package:restaurant/modules/dashboard/provider/dash_provider.dart';
 import 'package:restaurant/modules/drawer/drawer.dart';
-import 'package:restaurant/modules/login/login_page.dart';
+// import 'package:restaurant/modules/login/login_page.dart';
 import './themes/style.dart';
 import './routes.dart';
+import './modules/Authentication/screen/login_page.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,12 +15,18 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: restaurantTheme,
-      home: LayoutExample(),
-      routes: routes,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
+        ChangeNotifierProvider<DashProvider>(create: (_) => DashProvider()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: restaurantTheme,
+        home: LoginPage(),
+        routes: routes,
+      ),
     );
   }
 }
