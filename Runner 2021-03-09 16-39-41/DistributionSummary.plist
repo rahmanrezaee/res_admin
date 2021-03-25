@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>restaurant.ipa</key>
+	<array>
+		<dict>
+			<key>architectures</key>
+			<array>
+				<string>arm64</string>
+			</array>
+			<key>certificate</key>
+			<dict>
+				<key>SHA1</key>
+				<string>CFBFE00DFE92078548D794B8B4745A7D8D8FCF11</string>
+				<key>dateExpires</key>
+				<string>3/8/22</string>
+				<key>type</key>
+				<string>Apple Development</string>
+			</dict>
+			<key>embeddedBinaries</key>
+			<array>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>CFBFE00DFE92078548D794B8B4745A7D8D8FCF11</string>
+						<key>dateExpires</key>
+						<string>3/8/22</string>
+						<key>type</key>
+						<string>Apple Development</string>
+					</dict>
+					<key>name</key>
+					<string>App.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>J99SV88US6</string>
+						<key>name</key>
+						<string>Webfume Technologies, LLC</string>
+					</dict>
+				</dict>
+				<dict>
+					<key>architectures</key>
+					<array>
+						<string>arm64</string>
+					</array>
+					<key>certificate</key>
+					<dict>
+						<key>SHA1</key>
+						<string>CFBFE00DFE92078548D794B8B4745A7D8D8FCF11</string>
+						<key>dateExpires</key>
+						<string>3/8/22</string>
+						<key>type</key>
+						<string>Apple Development</string>
+					</dict>
+					<key>name</key>
+					<string>Flutter.framework</string>
+					<key>team</key>
+					<dict>
+						<key>id</key>
+						<string>J99SV88US6</string>
+						<key>name</key>
+						<string>Webfume Technologies, LLC</string>
+					</dict>
+				</dict>
+			</array>
+			<key>entitlements</key>
+			<dict>
+				<key>application-identifier</key>
+				<string>J99SV88US6.webfume.restaurant.manager</string>
+				<key>com.apple.developer.team-identifier</key>
+				<string>J99SV88US6</string>
+				<key>get-task-allow</key>
+				<true/>
+				<key>keychain-access-groups</key>
+				<array>
+					<string>J99SV88US6.webfume.restaurant.manager</string>
+				</array>
+			</dict>
+			<key>name</key>
+			<string>Runner.app</string>
+			<key>profile</key>
+			<dict>
+				<key>UUID</key>
+				<string>83daa69e-8d20-45c6-92ef-865cb171af42</string>
+				<key>name</key>
+				<string>iOS Team Provisioning Profile: webfume.restaurant.manager</string>
+			</dict>
+			<key>team</key>
+			<dict>
+				<key>id</key>
+				<string>J99SV88US6</string>
+				<key>name</key>
+				<string>Webfume Technologies, LLC</string>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>
