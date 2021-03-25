@@ -1,9 +1,9 @@
-import '../../../GlobleService/APIRequest.dart';
-import '../../../constants/api_path.dart';
+import 'package:restaurant/GlobleService/APIRequest.dart';
+import 'package:restaurant/constants/api_path.dart';
 
 class TermConditionService {
   Future getTerm() async {
-    String url = "$baseUrl/public/pages/manager/tandc";
+    String url = "$baseUrl/public/pages/customer/tandc";
     var res = await APIRequest().get(myUrl: url);
     print(res.data);
     return res.data['data']['body'];

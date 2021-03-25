@@ -1,6 +1,6 @@
-import '../providers/auth_provider.dart';
-import '../screen/login_page.dart';
-import '../../../themes/colors.dart';
+import 'package:restaurant/modules/Authentication/providers/auth_provider.dart';
+import 'package:restaurant/modules/Authentication/screen/login_page.dart';
+import 'package:restaurant/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../validators/formFieldsValidators.dart';
@@ -27,28 +27,10 @@ class _ForgotPasswordWithKeyState extends State<ForgotPasswordWithKey> {
     authProvider = Provider.of<AuthProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Row(
-          children: <Widget>[
-            InkWell(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child: Row(
-                children: [
-                  SizedBox(width: 10),
-                  Icon(Icons.arrow_back_ios, color: Colors.white),
-                  Text("back",
-                      style: TextStyle(color: Colors.white, fontSize: 20))
-                ],
-              ),
-            ),
-            Expanded(
-                child: Text("Forgot Password",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.button)),
-          ],
+        title: Text(
+          "Rest Password",
         ),
+        centerTitle: true,
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
@@ -90,8 +72,11 @@ class _ForgotPasswordWithKeyState extends State<ForgotPasswordWithKey> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("Enter New Password",
-                              style: Theme.of(context).textTheme.headline4),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            child: Text("Enter New Password",
+                                style: Theme.of(context).textTheme.headline4),
+                          ),
                           SizedBox(height: 15),
                           Form(
                             key: _formKey,
@@ -115,6 +100,28 @@ class _ForgotPasswordWithKeyState extends State<ForgotPasswordWithKey> {
                               ],
                             ),
                           ),
+                          SizedBox(height: 15),
+                          SizedBox(
+                            width: contentSize - 100,
+                            child: RaisedButton(
+                              padding: EdgeInsets.symmetric(vertical: 15),
+                              color: Theme.of(context).primaryColor,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: loading == true
+                                  ? CircularProgressIndicator()
+                                  : Text(
+                                      "Submit",
+                                      style: Theme.of(context).textTheme.button,
+                                    ),
+                              onPressed: () {
+                                forgotPasswordWithKey();
+                              },
+                            ),
+                          ),
+                          SizedBox(height: 100),
                         ],
                       ),
                     ),
@@ -125,27 +132,6 @@ class _ForgotPasswordWithKeyState extends State<ForgotPasswordWithKey> {
                           )
                         : Container(),
                     SizedBox(height: 15),
-                    SizedBox(
-                      width: contentSize - 100,
-                      child: RaisedButton(
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        color: Theme.of(context).primaryColor,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: loading == true
-                            ? CircularProgressIndicator()
-                            : Text(
-                                "Submit",
-                                style: Theme.of(context).textTheme.button,
-                              ),
-                        onPressed: () {
-                          forgotPasswordWithKey(context);
-                        },
-                      ),
-                    ),
-                    SizedBox(height: 100),
                   ],
                 ),
               ),
@@ -158,7 +144,7 @@ class _ForgotPasswordWithKeyState extends State<ForgotPasswordWithKey> {
 
   bool loading = false;
   String error;
-  forgotPasswordWithKey(BuildContext context) {
+  forgotPasswordWithKey() {
     print("Forgoting password with key");
     if (_formKey.currentState.validate()) {
       setState(() {
