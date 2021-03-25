@@ -28,18 +28,53 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
+  google_maps_flutter: ^1.0.6
+  google_maps_place_picker: ^1.0.1
+  responsive_grid: ^1.2.1+1
+  smooth_star_rating: ^1.1.1
+  carousel_slider: ^3.0.0
+  provider: ^4.3.2
+  dio: ^3.0.10
+  font_awesome_flutter: ^8.11.0
+  image_picker: ^0.6.7+12
+  multi_image_picker: ^4.6.5
+  image_cropper: ^1.3.1
+  jiffy: ^3.0.1
+  string_validator: ^0.1.4
+  shared_preferences: ^0.5.12+4
+  json_annotation: ^3.0.0
+  firebase_core: ^0.5.2
+  intl: ^0.16.0
+  firebase_messaging: ^7.0.3
+  flutter_local_notifications: ^3.0.2
+  numbers_to_words: ^0.1.2
+  scroll_to_index: 
+  incrementally_loading_listview: ^0.3.0
+  cached_network_image: ^2.5.1
+  flutter_rating_bar: ^3.0.0
+ 
+  # responsive_scaffold:
+  #   git:
+  #     url: https://github.com/AzadCoder/responsive_scaffold
+  #     ref: master
+  uni_links: ^0.4.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  # responsive_scaffold: ^1.3.0+2
-  responsive_grid: ^1.2.1+1
-  smooth_star_rating: ^1.1.1
-  carousel_slider: ^3.0.0
-  responsive_scaffold:
-    git:
-      url: https://github.com/AzadCoder/responsive_scaffold
-      ref: master
+  build_runner: ^1.0.0
+  json_serializable: ^3.5.1
+  flutter_launcher_icons: "^0.8.0"
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logo.png"
+  adaptive_icon_background: "assets/images/logo.png"
+  adaptive_icon_foreground: "assets/images/logo.png"
+
+ 
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -66,6 +101,15 @@ flutter:
     - assets/images/dashboard_icon.png
     - assets/images/categoriesIcon.png
     - assets/images/dishesIcon.png
+    - assets/images/resturantIcons.png
+    - assets/images/customerIcon.png
+    - assets/images/couponIcon.png
+    - assets/images/notification.png
+    - assets/images/edit.png
+    - assets/images/editIcon.png
+    - assets/images/delete.png
+    - assets/images/trash-white.png
+    - assets/images/purchase_order.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -89,6 +133,6 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
-  #
+  
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
