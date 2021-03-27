@@ -3,7 +3,6 @@ import '../validators/formFieldsValidators.dart';
 import '../../../themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../../constants/assest_path.dart';
 import '../../drawer/drawer.dart';
 import './forgotPassword.dart';
@@ -90,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                                   children: [
                                     InkWell(
                                       onTap: () {
-                                        print("going to forgot password");
+                                        print("Going to forgot password");
                                         Navigator.of(context).pushNamed(
                                             ForgotPassword.routeName);
                                       },
