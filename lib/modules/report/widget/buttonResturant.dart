@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ButtonRaiseResturant extends StatelessWidget {
   Function onPress;
-  String label;
+  Widget label;
   Color color;
 
   ButtonRaiseResturant({this.color, this.label, this.onPress});
@@ -15,14 +15,7 @@ class ButtonRaiseResturant extends StatelessWidget {
       ),
       elevation: 0,
       color: this.color,
-      child: Text(
-        this.label,
-        style: TextStyle(
-          fontSize: 14,
-          color: Colors.white,
-          fontWeight: FontWeight.normal,
-        ),
-      ),
+      child: label,
       onPressed: this.onPress,
     );
   }

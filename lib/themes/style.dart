@@ -58,10 +58,10 @@ final ThemeData restaurantTheme = ThemeData(
     focusColor: Color(0x1f000000),
     hoverColor: Color(0x0a000000),
     colorScheme: ColorScheme(
-      primary: Color(0xffFFBB18),
-      primaryVariant: Color(0xffFFBB2a),
-      secondary: Color(0xffFFBB18),
-      secondaryVariant: Color(0xffFFB118),
+      primary: Color(0xff504d4d),
+      primaryVariant: Color(0xff504d4d),
+      secondary: Color(0xff504d4d),
+      secondaryVariant: Color(0xff504d4d),
       surface: Color(0xffffffff),
       background: Color(0xffFFf2b3),
       error: Color(0xffd32f2f),
@@ -150,6 +150,12 @@ final ThemeData restaurantTheme = ThemeData(
   primaryTextTheme: TextTheme(
     headline4: TextStyle(
       color: Color(0xb3000000),
+      fontSize: null,
+      fontWeight: FontWeight.w400,
+      fontStyle: FontStyle.normal,
+    ),
+    headline3: TextStyle(
+      color: Color(0xb3ffffff),
       fontSize: null,
       fontWeight: FontWeight.w400,
       fontStyle: FontStyle.normal,

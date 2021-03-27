@@ -1,6 +1,9 @@
+import 'package:restaurant/modules/notifications/notification_page.dart';
+import 'package:restaurant/responsive/functionsResponsive.dart';
+import 'package:restaurant/widgets/appbar_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:restaurant/themes/colors.dart';
+import '../../themes/colors.dart';
 import '../../widgets/orderItem_widget.dart';
 
 //
@@ -20,133 +23,121 @@ class _OrderPageState extends State<OrderPage>
     _tabController = new TabController(vsync: this, length: 2);
   }
 
+  TabBar get _tabBar => TabBar(
+        indicatorWeight: 2,
+        indicatorColor: Colors.blue[100],
+        controller: _tabController,
+        onTap: (v) {
+          setState(() {
+            print(_tabController.index);
+          });
+        },
+        indicatorPadding: EdgeInsets.zero,
+        labelPadding: EdgeInsets.zero,
+        unselectedLabelColor: AppColors.green,
+        indicatorSize: TabBarIndicatorSize.label,
+        indicator: BoxDecoration(
+            // borderRadius: BorderRadius.circular(0),
+            ),
+        tabs: [
+          Tab(
+            child: Container(
+              decoration: BoxDecoration(
+                  color: _tabController.index == 0
+                      ? AppColors.green
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    bottomLeft: Radius.circular(10),
+                  ),
+                  border: Border.all(color: AppColors.green, width: 1)),
+              child: Align(
+                alignment: Alignment.center,
+                child: Text("New Orders"),
+              ),
+            ),
+            iconMargin: EdgeInsets.zero,
+          ),
+          Tab(
+            iconMargin: EdgeInsets.zero,
+            child: Container(
+              decoration: BoxDecoration(
+                  color: _tabController.index == 1
+                      ? AppColors.green
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(10),
+                    bottomRight: Radius.circular(10),
+                  ),
+                  border: Border.all(color: AppColors.green, width: 1)),
+              child: Align(
+                alignment: Alignment.center,
+                child: Text("Past Orders"),
+              ),
+            ),
+          ),
+        ],
+      );
+  final _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     double screenSize = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        title: TabBar(
-          controller: _tabController,
-          onTap: (v) {
-            setState(() {
-              print(_tabController.index);
-            });
-          },
-          indicatorPadding: EdgeInsets.zero,
-          labelPadding: EdgeInsets.zero,
-          unselectedLabelColor: AppColors.green,
-          indicatorSize: TabBarIndicatorSize.label,
-          indicator: BoxDecoration(
-              // borderRadius: BorderRadius.circular(0),
+      key: _scaffoldKey,
+      appBar: showAppBarNodepad(context)
+          ? adaptiveAppBarBuilder(
+              context,
+              AppBar(
+                title: Text("Order Page"),
+                centerTitle: true,
+                actions: [
+                  IconButton(
+                    icon: Image.asset("assets/images/notification.png"),
+                    onPressed: () {
+                      Navigator.pushNamed(context, NotificationPage.routeName);
+                    },
+                  )
+                ],
+                elevation: 0,
+                leading: showAppBarNodepad(context)
+                    ? IconButton(
+                        icon: Icon(Icons.menu),
+                        onPressed: () {
+                          Scaffold.of(context).openDrawer();
+                        },
+                      )
+                    : null,
               ),
-          tabs: [
-            Tab(
-              child: Container(
-                decoration: BoxDecoration(
-                    color: _tabController.index == 0
-                        ? AppColors.green
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      bottomLeft: Radius.circular(10),
-                    ),
-                    border: Border.all(color: AppColors.green, width: 1)),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Text("New Orders"),
-                ),
+            )
+          : AppBar(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
               ),
-              iconMargin: EdgeInsets.zero,
-            ),
-            Tab(
-              iconMargin: EdgeInsets.zero,
-              child: Container(
-                decoration: BoxDecoration(
-                    color: _tabController.index == 1
-                        ? AppColors.green
-                        : Colors.transparent,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(10),
-                      bottomRight: Radius.circular(10),
-                    ),
-                    border: Border.all(color: AppColors.green, width: 1)),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Text("Past Orders"),
-                ),
-              ),
-            ),
-          ],
-        ),
-        bottom: PreferredSize(preferredSize: Size(10, 10), child: Container()),
-      ),
-      body: TabBarView(
-        controller: _tabController,
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              title: _tabBar),
+      body: Column(
         children: [
-          SingleChildScrollView(
-            child: Column(
+          Visibility(
+            visible: showAppBarNodepad(context),
+            child: Padding(padding: new EdgeInsets.all(10), child: _tabBar),
+          ),
+          Expanded(
+            child: TabBarView(
+              physics: NeverScrollableScrollPhysics(),
+              controller: _tabController,
               children: [
-                ResponsiveGridRow(
-                  children: [
-                    ...List.generate(6, (i) {
-                      return ResponsiveGridCol(
-                        xs: 12,
-                        sm: 12,
-                        md: 12,
-                        lg: 12,
-                        xl: 6,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: OrderItem(),
-                        ),
-                      );
-                    }),
-                  ],
+                OrderItem(
+                  status: "new",
+                  scaffoldKey: _scaffoldKey,
+                ),
+                OrderItem(
+                  status: "past",
+                  scaffoldKey: _scaffoldKey,
                 ),
               ],
             ),
           ),
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                ResponsiveGridRow(
-                  children: [
-                    ...List.generate(6, (i) {
-                      return ResponsiveGridCol(
-                         xs: 12,
-                        sm: 12,
-                        md: 12,
-                        lg: 12,
-                        xl: 6,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: OrderItem(),
-                        ),
-                      );
-                    }),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          // SingleChildScrollView(
-          //   child: Column(
-          //     children: [
-          //       OrderItem(),
-          //       OrderItem(),
-          //     ],
-          //   ),
-          // ),
-          // SingleChildScrollView(
-          //   child: Column(
-          //     children: [
-          //       OrderItem(),
-          //       OrderItem(),
-          //     ],
-          //   ),
-          // ),
         ],
       ),
     );
