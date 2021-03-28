@@ -1,3 +1,8 @@
+import 'package:flutter/gestures.dart';
+import 'package:flutter/services.dart';
+import 'package:restaurant/modules/policy/Privacy&Policy.dart';
+import 'package:restaurant/modules/term/term&condition_page.dart';
+
 import '../providers/auth_provider.dart';
 import '../validators/formFieldsValidators.dart';
 import '../../../themes/colors.dart';
@@ -7,6 +12,12 @@ import '../../../constants/assest_path.dart';
 import '../../drawer/drawer.dart';
 import './forgotPassword.dart';
 import '../providers/linkListener.dart';
+import 'dart:async';
+
+// import 'package:admin/modules/Authentication/screen/forgotPasswordWithKey.dart';
+import 'package:flutter/material.dart';
+import 'package:restaurant/modules/Authentication/screen/forgotPasswordWithKey.dart';
+import 'package:uni_links/uni_links.dart';
 
 class LoginPage extends StatefulWidget {
   static String routeName = "loginpage";
@@ -15,6 +26,62 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  /////////LINK Listener START////////
+
+  StreamSubscription _sub;
+  initPlatformStateForStringUniLinks() async {
+    // Attach a listener to the links stream
+    _sub = getLinksStream().listen((String link) {
+      if (!mounted) return;
+      // if (initialLink != null) initialUri = Uri.parse(String initialLink = initialUri.toString());
+      String token = link.toString().substring(
+          link.toString().indexOf("token=") + 6, link.toString().length);
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+        return ForgotPasswordWithKey(token);
+      }));
+    }, onError: (err) {
+      if (!mounted) return;
+      setState(() {});
+    });
+
+    // Attach a second listener to the stream
+    getLinksStream().listen((String link) {
+      print('got link: $link');
+    }, onError: (err) {
+      print('got err: $err');
+    });
+
+    // Get the latest link
+    String initialLink;
+    Uri initialUri;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      initialLink = await getInitialLink();
+      print('initial link: $initialLink');
+      // if (initialLink != null) initialUri = Uri.parse(String initialLink = initialUri.toString());
+      String token = initialLink.toString().substring(
+          initialLink.toString().indexOf("token=") + 6,
+          initialLink.toString().length);
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+        return ForgotPasswordWithKey(token);
+      }));
+    } on PlatformException {
+      initialLink = 'Failed to get initial link.';
+      initialUri = null;
+    } on FormatException {
+      initialLink = 'Failed to parse the initial link as Uri.';
+      initialUri = null;
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {});
+  }
+
+  /////////LINK Listener END////////
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController _emailController = new TextEditingController();
@@ -24,8 +91,14 @@ class _LoginPageState extends State<LoginPage> {
   AuthProvider authProvider;
   @override
   void initState() {
-    initUniLinks(context);
+    initPlatformStateForStringUniLinks();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    if (_sub != null) _sub.cancel();
+    super.dispose();
   }
 
   @override
@@ -106,6 +179,37 @@ class _LoginPageState extends State<LoginPage> {
                               ],
                             ),
                           ),
+                          SizedBox(height: 20),
+                      RichText(
+                        text: TextSpan(
+                            style: TextStyle(color: Colors.black),
+                            text:
+                                "By using this app you are accepting our ",
+                            children: [
+                              TextSpan(
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Navigator.of(context)
+                                        .pushNamed(TermCondition.routeName);
+                                  },
+                                text: "Terms and Conditions",
+                                style: Theme.of(context).textTheme.subtitle2,
+                              ),
+                              TextSpan(
+                                text: " and ",
+                              ),
+                              TextSpan(
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    print('privacy policy');
+                                    Navigator.of(context)
+                                        .pushNamed(PrivacyPolicy.routeName, arguments: "login");
+                                  },
+                                text: "Privacy Policy",
+                                style: Theme.of(context).textTheme.subtitle2,
+                              ),
+                            ]),
+                      ),
                           SizedBox(height: 20),
                           error == null
                               ? Container()
