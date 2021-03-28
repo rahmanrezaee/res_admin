@@ -6,16 +6,25 @@ import 'package:restaurant/modules/term/term&condition_page.dart';
 import '../providers/auth_provider.dart';
 import '../validators/formFieldsValidators.dart';
 import '../../../themes/colors.dart';
+import 'dart:async';
+import 'dart:developer';
+import 'dart:io';
+
+import 'package:restaurant/modules/Authentication/providers/auth_provider.dart';
+import 'package:restaurant/modules/Authentication/validators/formFieldsValidators.dart';
+import 'package:restaurant/themes/colors.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../constants/assest_path.dart';
 import '../../drawer/drawer.dart';
+
+import 'package:restaurant/responsive/functionsResponsive.dart';
 import './forgotPassword.dart';
 import '../providers/linkListener.dart';
 import 'dart:async';
 
 // import 'package:admin/modules/Authentication/screen/forgotPasswordWithKey.dart';
-import 'package:flutter/material.dart';
 import 'package:restaurant/modules/Authentication/screen/forgotPasswordWithKey.dart';
 import 'package:uni_links/uni_links.dart';
 
@@ -83,20 +92,42 @@ class _LoginPageState extends State<LoginPage> {
 
   /////////LINK Listener END////////
   final _formKey = GlobalKey<FormState>();
-
+  final FirebaseMessaging _fcm = FirebaseMessaging();
+  String fcmToken = "fcm token";
   TextEditingController _emailController = new TextEditingController();
 
   TextEditingController _passwordController = new TextEditingController();
 
   AuthProvider authProvider;
+  StreamSubscription iosSubscription;
+
   @override
   void initState() {
     initPlatformStateForStringUniLinks();
+    getFcmToken();
     super.initState();
   }
 
+  Future<void> getFcmToken() async {
+    print('get Fcm Token');
+    if (Platform.isIOS) {
+      iosSubscription = _fcm.onIosSettingsRegistered.listen((data) async {
+        fcmToken = await _fcm.getToken();
+        log("firebase token $fcmToken");
+      });
+
+      _fcm.requestNotificationPermissions(IosNotificationSettings());
+    } else {
+      fcmToken = await _fcm.getToken();
+      log("firebase token $fcmToken");
+    }
+  }
+
+  bool obscureText = true;
+
   @override
   void dispose() {
+    if (iosSubscription != null) iosSubscription.cancel();
     if (_sub != null) _sub.cancel();
     super.dispose();
   }
@@ -104,156 +135,187 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     authProvider = Provider.of<AuthProvider>(context);
-    return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              double contentSize = MediaQuery.of(context).size.width;
-              double percentage = 1; //1 = 100%, .8 = 80% ...
-              if (constraints.maxWidth > 1024) {
-                percentage = .3;
-                contentSize = MediaQuery.of(context).size.width / 2;
-              } else if (constraints.maxWidth > 660.0) {
-                percentage = .4;
-                contentSize = MediaQuery.of(context).size.width / 1.8;
-              } else {
-                percentage = .9;
-                contentSize = MediaQuery.of(context).size.width / .8;
-              }
-              return SizedBox(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                      width: contentSize,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(height: 50),
-                          Image.asset("${AssestPath.logo}", width: 150),
-                          SizedBox(height: 50),
-                          Form(
-                            key: _formKey,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text("Login with your account",
-                                    style:
-                                        Theme.of(context).textTheme.headline4),
-                                SizedBox(height: 15),
-                                _loginFieldBuilder(
-                                  "Email Address",
-                                  emailValidator,
-                                  _emailController,
-                                ),
-                                SizedBox(height: 15),
-                                _loginFieldBuilder(
-                                  "Password",
-                                  passwordValidator,
-                                  _passwordController,
-                                ),
-                                SizedBox(height: 15),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        print("Going to forgot password");
-                                        Navigator.of(context).pushNamed(
-                                            ForgotPassword.routeName);
-                                      },
-                                      child: Text(
-                                        "Forgot Password",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .subtitle2,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 20),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 20),
-                      RichText(
-                        text: TextSpan(
-                            style: TextStyle(color: Colors.black),
-                            text:
-                                "By using this app you are accepting our ",
+    return SafeArea(child: Scaffold(
+      body: SingleChildScrollView(
+        child: LayoutBuilder(builder: (context, constraints) {
+          double contentSize = MediaQuery.of(context).size.width;
+          double percentage = 1; //1 = 100%, .8 = 80% ...
+          if (constraints.maxWidth > 1024) {
+            percentage = .3;
+            contentSize = MediaQuery.of(context).size.width / 2;
+          } else if (constraints.maxWidth > 660.0) {
+            percentage = .4;
+            contentSize = MediaQuery.of(context).size.width / 1.8;
+          } else {
+            percentage = .9;
+            contentSize = MediaQuery.of(context).size.width / .8;
+          }
+          return SizedBox(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  width: contentSize,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 50),
+                        Image.asset("${AssestPath.logo}", width: 150),
+                        SizedBox(height: 50),
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              TextSpan(
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    Navigator.of(context)
-                                        .pushNamed(TermCondition.routeName);
-                                  },
-                                text: "Terms and Conditions",
-                                style: Theme.of(context).textTheme.subtitle2,
+                              Text("Login with your account",
+                                  style: Theme.of(context).textTheme.headline4),
+                              SizedBox(height: 15),
+                              _loginFieldBuilder(
+                                "Email Address",
+                                emailValidator,
+                                _emailController,
                               ),
-                              TextSpan(
-                                text: " and ",
+                              SizedBox(height: 15),
+                              _loginFieldBuilder(
+                                "Password",
+                                passwordValidator,
+                                _passwordController,
                               ),
-                              TextSpan(
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    print('privacy policy');
-                                    Navigator.of(context)
-                                        .pushNamed(PrivacyPolicy.routeName, arguments: "login");
-                                  },
-                                text: "Privacy Policy",
-                                style: Theme.of(context).textTheme.subtitle2,
+                              SizedBox(height: 15),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      print("Going to forgot password");
+                                      Navigator.of(context)
+                                          .pushNamed(ForgotPassword.routeName);
+                                    },
+                                    child: Text(
+                                      "Forgot Password",
+                                      style:
+                                          Theme.of(context).textTheme.subtitle2,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ]),
-                      ),
-                          SizedBox(height: 20),
-                          error == null
-                              ? Container()
-                              : Text(error,
-                                  style: TextStyle(color: AppColors.redText)),
-                          SizedBox(height: 10),
-                          RaisedButton(
-                            padding: EdgeInsets.symmetric(vertical: 15),
-                            color: Theme.of(context).primaryColor,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                loading == true
-                                    ? CircularProgressIndicator()
-                                    : Text(
-                                        "Login",
-                                        textAlign: TextAlign.center,
-                                        style:
-                                            Theme.of(context).textTheme.button,
-                                      ),
-                              ],
-                            ),
-                            onPressed: () {
-                              login();
-                              // Navigator.pushReplacementNamed(
-                              //     context, LayoutExample.routeName);
-                            },
+                              SizedBox(height: 20),
+                            ],
                           ),
-                        ],
+                        ),
+                        SizedBox(height: 20),
+                        RichText(
+                          text: TextSpan(
+                              style: TextStyle(color: Colors.black),
+                              text: "By using this app you are accepting our ",
+                              children: [
+                                TextSpan(
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      Navigator.of(context)
+                                          .pushNamed(TermCondition.routeName);
+                                    },
+                                  text: "Terms and Conditions",
+                                  style: Theme.of(context).textTheme.subtitle2,
+                                ),
+                                TextSpan(
+                                  text: " and ",
+                                ),
+                                TextSpan(
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      print('privacy policy');
+                                      Navigator.of(context).pushNamed(
+                                          PrivacyPolicy.routeName,
+                                          arguments: "login");
+                                    },
+                                  text: "Privacy Policy",
+                                  style: Theme.of(context).textTheme.subtitle2,
+                                ),
+                              ]),
+                        ),
+                        SizedBox(height: 20),
+                        error == null
+                            ? Container()
+                            : Text(error,
+                                style: TextStyle(color: AppColors.redText)),
+                        SizedBox(height: 10),
+                        // RaisedButton(
+                        //   padding: EdgeInsets.symmetric(vertical: 15),
+                        //   color: Theme.of(context).primaryColor,
+                        //   elevation: 0,
+                        //   shape: RoundedRectangleBorder(
+                        //     borderRadius: BorderRadius.circular(8),
+                        //   ),
+                        //   focusedBorder: OutlineInputBorder(
+                        //     borderRadius:
+                        //         BorderRadius.all(Radius.circular(10.0)),
+                        //     borderSide: BorderSide(color: Colors.grey),
+                        //   ),
+                        // ),
+                      ]),
+                ),
+                SizedBox(height: 15),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        print("going to forgot password");
+                        Navigator.of(context)
+                            .pushNamed(ForgotPassword.routeName);
+                      },
+                      child: Text(
+                        "Forgot Password?",
+                        style: Theme.of(context).textTheme.subtitle2,
                       ),
                     ),
                   ],
                 ),
-              );
-            },
-          ),
-        ),
+                SizedBox(height: 20),
+                SizedBox(height: 20),
+                error == null
+                    ? Container()
+                    : Text(error, style: TextStyle(color: AppColors.redText)),
+                SizedBox(height: 10),
+                Container(
+                  width: getHelfIpadAndFullMobWidth(context),
+                  child: RaisedButton(
+                    padding: EdgeInsets.symmetric(vertical: 15),
+                    color: Theme.of(context).primaryColor,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        loading == true
+                            ? CircularProgressIndicator()
+                            : Text(
+                                "Login",
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.button,
+                              ),
+                      ],
+                    ),
+                    onPressed: () {
+                      login();
+                      // Navigator.pushReplacementNamed(
+                      //     context, LayoutExample.routeName);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          );
+        }),
       ),
-    );
+    ));
   }
 
   bool loading = false;
@@ -265,7 +327,7 @@ class _LoginPageState extends State<LoginPage> {
       });
       String email = _emailController.text;
       String password = _passwordController.text;
-      authProvider.login(email, password).then((res) {
+      authProvider.login(email, password, this.fcmToken).then((res) {
         setState(() {
           loading = false;
         });
@@ -273,7 +335,6 @@ class _LoginPageState extends State<LoginPage> {
           setState(() {
             error = null;
           });
-          print("User is loged in");
           Navigator.pushReplacementNamed(context, LayoutExample.routeName);
         } else {
           setState(() {

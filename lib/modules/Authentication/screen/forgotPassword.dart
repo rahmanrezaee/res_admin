@@ -1,5 +1,5 @@
-import '../providers/auth_provider.dart';
-import '../../../themes/colors.dart';
+import 'package:restaurant/modules/Authentication/providers/auth_provider.dart';
+import 'package:restaurant/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../validators/formFieldsValidators.dart';
@@ -25,28 +25,10 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     authProvider = Provider.of<AuthProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Row(
-          children: <Widget>[
-            InkWell(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child: Row(
-                children: [
-                  SizedBox(width: 10),
-                  Icon(Icons.arrow_back_ios, color: Colors.white),
-                  Text("back",
-                      style: TextStyle(color: Colors.white, fontSize: 20))
-                ],
-              ),
-            ),
-            Expanded(
-                child: Text("Forgot Password",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.button)),
-          ],
+        title: Text(
+          "Forgot Password",
         ),
+        centerTitle: true,
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
@@ -88,13 +70,37 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("Login with your account",
-                              style: Theme.of(context).textTheme.headline4),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            child: Text("Inter Your Email Address",
+                                style: Theme.of(context).textTheme.headline4),
+                          ),
                           SizedBox(height: 15),
                           Form(
                             key: _formKey,
                             child: _loginFieldBuilder(
                                 "Forgot Password", _emailController, () {}),
+                          ),
+                          SizedBox(height: 15),
+                          SizedBox(
+                            width: contentSize - 100,
+                            child: RaisedButton(
+                              padding: EdgeInsets.symmetric(vertical: 15),
+                              color: Theme.of(context).primaryColor,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: loading == true
+                                  ? CircularProgressIndicator()
+                                  : Text(
+                                      "Submit",
+                                      style: Theme.of(context).textTheme.button,
+                                    ),
+                              onPressed: () {
+                                forgotPassword();
+                              },
+                            ),
                           ),
                         ],
                       ),
@@ -106,27 +112,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           )
                         : Container(),
                     SizedBox(height: 15),
-                    SizedBox(
-                      width: contentSize - 100,
-                      child: RaisedButton(
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                        color: Theme.of(context).primaryColor,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: loading == true
-                            ? CircularProgressIndicator()
-                            : Text(
-                                "Submit",
-                                style: Theme.of(context).textTheme.button,
-                              ),
-                        onPressed: () {
-                          forgotPassword();
-                        },
-                      ),
-                    ),
-                    SizedBox(height: 100),
                   ],
                 ),
               ),
@@ -140,7 +125,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   bool loading = false;
   String error;
   forgotPassword() {
-    print("Submitted");
     if (_formKey.currentState.validate()) {
       setState(() {
         loading = true;
@@ -166,7 +150,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       children: [
                         Text(
                           "A link will be shared to your registered email address please click it to reset your password",
-                          style: Theme.of(context).textTheme.bodyText1,
+                          style: Theme.of(context).textTheme.subtitle1,
                           textAlign: TextAlign.center,
                         ),
                         SizedBox(height: 25),

@@ -1,19 +1,19 @@
-import '../../../GlobleService/APIRequest.dart';
-import '../../../constants/api_path.dart';
-import '../screen/login_page.dart';
+import 'package:restaurant/GlobleService/APIRequest.dart';
+import 'package:restaurant/constants/api_path.dart';
+import 'package:restaurant/modules/Authentication/screen/login_page.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import '../providers/auth_provider.dart';
-import '../../../themes/colors.dart';
+import 'package:restaurant/modules/Authentication/providers/auth_provider.dart';
+import 'package:restaurant/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../validators/formFieldsValidators.dart';
 
 class AuthProvider with ChangeNotifier {
-  Future login(String username, String password) async {
+  Future login(String username, String password, String fcm) async {
     try {
       print("Loging in");
       print({"email": username, "password": password});
@@ -21,9 +21,8 @@ class AuthProvider with ChangeNotifier {
       String url = "$baseUrl/restaurant/user/login";
       var res = await APIRequest().post(
         myUrl: url,
-        myBody: {"email": username, "password": password},
+        myBody: {"email": username, "password": password, "fcmToken": fcm},
       );
-      print(res.data);
       //getting user data
       var user = {
         'token': res.data['data']['token'],
@@ -37,8 +36,8 @@ class AuthProvider with ChangeNotifier {
       //return message
       return {"status": true, "message": "logedIn"};
     } on DioError catch (e) {
-      print(e.response.data);
-      return e.response.data;
+      print(e.response);
+      return e.response;
     }
   }
 
@@ -53,10 +52,10 @@ class AuthProvider with ChangeNotifier {
         myUrl: url,
         myBody: {"email": email},
       );
-      print(res.data);
+      print(res);
       return {'status': true};
     } on DioError catch (e) {
-      print(e);
+      print("error ${e.response}");
       return e.response.data;
     }
   }
@@ -87,6 +86,15 @@ class AuthProvider with ChangeNotifier {
 
   get token {
     return checkLoginStatus();
+  }
+
+  Future<String> resturantId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('user') == null) {
+      return '';
+    } else {
+      return json.decode(prefs.getString('user'))['userId'];
+    }
   }
 
   Future checkLoginStatus() async {
