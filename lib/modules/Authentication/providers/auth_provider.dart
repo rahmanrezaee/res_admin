@@ -45,7 +45,7 @@ class AuthProvider with ChangeNotifier {
   // expierdate
   // userid
   Future forgotPassword(email) async {
-    String url = "$baseUrl/restaurant/user/forgotpassword";
+    String url = "$baseUrl/customer/user/forgotpassword";
     print(email);
     try {
       var res = await APIRequest().post(

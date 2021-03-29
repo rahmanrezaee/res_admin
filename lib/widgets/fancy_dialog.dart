@@ -114,7 +114,7 @@ class GifDialogState extends State<FancyDialog> with TickerProviderStateMixin {
     height = MediaQuery.of(context).size.height;
     var dialogWidth = 0.36 * height;
 
-    assert(MediaQuery.of(context, nullOk: true) != null,
+    assert(MediaQuery.maybeOf(context) != null,
         '\n****context does not contain media query object***\n');
     assert(title != null, '\n****title is required***\n');
     assert(descreption != null, '\n****descreption is required***\n');
