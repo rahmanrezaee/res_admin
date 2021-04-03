@@ -230,7 +230,7 @@ class _OrderItemState extends State<OrderItem> {
                   //       color: AppColors.redText,
                   //       child: Icon(Icons.close, color: Colors.white),
                   //     ),
-                  //   ),
+                  //   ),`
                   // ]),
                   Visibility(
                     visible: item.status != "completed",
@@ -323,7 +323,7 @@ class DishItem extends StatelessWidget {
                                         "Add On List",
                                         style: Theme.of(context)
                                             .textTheme
-                                            .headline3,
+                                            .headline5,
                                         textAlign: TextAlign.center,
                                       ),
                                     ),
@@ -378,7 +378,7 @@ class DishItem extends StatelessWidget {
                               ),
                               title: Text(
                                 "Order Note",
-                                style: Theme.of(context).textTheme.headline3,
+                                style: Theme.of(context).textTheme.headline5,
                                 textAlign: TextAlign.center,
                               ),
                               titlePadding: EdgeInsets.only(top: 15),

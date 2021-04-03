@@ -98,4 +98,6 @@ class NotificationProvider with ChangeNotifier {
     loadingMore = state;
     notifyListeners();
   }
+
+  void setCountNotification(int i) {}
 }

@@ -132,7 +132,7 @@ class _LayoutExampleState extends State<LayoutExample> {
       kDesktopBreakpoint: 768,
       body: pages[pageIndex].page,
       drawer: SizedBox(
-        width: 281,
+        width: 100,
         child: Padding(
           padding: const EdgeInsets.all(15),
           child: SingleChildScrollView(
