@@ -230,7 +230,7 @@ class _OrderItemState extends State<OrderItem> {
                   //       color: AppColors.redText,
                   //       child: Icon(Icons.close, color: Colors.white),
                   //     ),
-                  //   ),
+                  //   ),`
                   // ]),
                   Visibility(
                     visible: item.status != "completed",

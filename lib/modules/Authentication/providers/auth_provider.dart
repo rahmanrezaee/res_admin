@@ -8,7 +8,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:restaurant/modules/Authentication/providers/auth_provider.dart';
 import 'package:restaurant/themes/colors.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../validators/formFieldsValidators.dart';
 
@@ -23,7 +22,9 @@ class AuthProvider with ChangeNotifier {
         myUrl: url,
         myBody: {"email": username, "password": password, "fcmToken": fcm},
       );
-      //getting user data
+
+      if(res.data != null){
+        //getting user data
       var user = {
         'token': res.data['data']['token'],
         'expierDate': DateTime.now().add(Duration(days: 1)).toString(),
@@ -33,9 +34,11 @@ class AuthProvider with ChangeNotifier {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       print(json.encode(user));
       await prefs.setString('user', json.encode(user));
+      }
       //return message
       return {"status": true, "message": "logedIn"};
     } on DioError catch (e) {
+      print("e.response");
       print(e.response);
       return e.response;
     }

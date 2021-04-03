@@ -110,19 +110,12 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> getFcmToken() async {
     print('get Fcm Token');
-    if (Platform.isIOS) {
-      iosSubscription = _fcm.onIosSettingsRegistered.listen((data) async {
-        fcmToken = await _fcm.getToken();
-        log("firebase token $fcmToken");
-      });
 
-      _fcm.requestNotificationPermissions(IosNotificationSettings());
-    } else {
-      fcmToken = await _fcm.getToken();
+    FirebaseMessaging.instance.getToken().then((valu) {
+      this.fcmToken = valu;
       log("firebase token $fcmToken");
-    }
+    });
   }
-
   bool obscureText = true;
 
   @override
@@ -328,19 +321,32 @@ class _LoginPageState extends State<LoginPage> {
       String email = _emailController.text;
       String password = _passwordController.text;
       authProvider.login(email, password, this.fcmToken).then((res) {
+        print("This is the response");
+        print(res);
         setState(() {
           loading = false;
         });
-        if (res['status'] == true) {
+
+        if(res != null){
+          if (res['status'] == true) {
+          print(res);
           setState(() {
             error = null;
           });
           Navigator.pushReplacementNamed(context, LayoutExample.routeName);
         } else {
+          print("There we have error");
           setState(() {
             error = res['message'];
           });
         }
+        }
+
+        
+      }).catchError((e,s){
+        print(s);
+        print(e);
+        print("Ti=");
       });
     }
   }

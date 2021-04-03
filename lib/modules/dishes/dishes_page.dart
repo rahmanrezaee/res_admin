@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 //packages
 import 'package:responsive_grid/responsive_grid.dart';
-import 'package:restaurant/modules/addNewDish/addNewDish_page.dart';
+import 'package:restaurant/modules/dishes/Screen/addNewDish_page.dart';
 import 'package:restaurant/providers/navigator_provider.dart';
 
 import '../../themes/style.dart';
@@ -12,7 +12,7 @@ class DishPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(routes: {
-      AddNewDish.routeName: (context) => AddNewDish(),
+      AddNewDish.routeName: (context) => AddNewDish(ModalRoute.of(context).settings.arguments),
     }, 
     
     theme: restaurantTheme, home: DishHome());
