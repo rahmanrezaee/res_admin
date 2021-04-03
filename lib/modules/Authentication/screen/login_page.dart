@@ -11,10 +11,14 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../constants/assest_path.dart';
 import '../../drawer/drawer.dart';
+import '../../Authentication/screen/forgotPasswordWithKey.dart';
 
 import 'package:restaurant/responsive/functionsResponsive.dart';
 import './forgotPassword.dart';
 import '../providers/linkListener.dart';
+import 'package:uni_links/uni_links.dart';
+
+import 'forgotPasswordWithKey.dart';
 
 class LoginPage extends StatefulWidget {
   static String routeName = "loginpage";
@@ -22,7 +26,59 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
+bool first = true;
+
 class _LoginPageState extends State<LoginPage> {
+  StreamSubscription _sub;
+  String _latestLink = 'Unknown';
+  Uri _latestUri;
+
+  /// An implementation using a [String] link
+  initPlatformStateForStringUniLinks() async {
+    // Attach a listener to the links stream
+    _sub = getLinksStream().listen((String link) {
+      if (!mounted) return;
+      _latestLink = link ?? 'Unknown';
+      _latestUri = null;
+      try {
+        if (link != null) {
+          String token = link.toString().substring(
+              link.toString().indexOf("token=") + 6, link.toString().length);
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            return ForgotPasswordWithKey(token);
+          }));
+        }
+      } on FormatException {}
+    }, onError: (err) {
+      if (!mounted) return;
+      setState(() {
+        _latestLink = 'Failed to get latest link: $err.';
+        _latestUri = null;
+      });
+    });
+
+    // Get the latest link
+    String initialLink;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      initialLink = await getInitialLink();
+      //   print('initial link: $initialLink');
+      if (initialLink != null && first == true) {
+        first = false;
+        String token = initialLink.toString().substring(
+            initialLink.toString().indexOf("token=") + 6,
+            initialLink.toString().length);
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          return ForgotPasswordWithKey(token);
+        }));
+      }
+    } on FormatException {}
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+  }
+
   final _formKey = GlobalKey<FormState>();
   final FirebaseMessaging _fcm = FirebaseMessaging();
   String fcmToken = "fcm token";
@@ -36,12 +92,14 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void dispose() {
     if (iosSubscription != null) iosSubscription.cancel();
+    if (_sub != null) _sub.cancel();
     super.dispose();
   }
 
   @override
   void initState() {
-    initUniLinks(context);
+    // initUniLinks(context);
+    initPlatformStateForStringUniLinks();
     getFcmToken();
     super.initState();
   }
