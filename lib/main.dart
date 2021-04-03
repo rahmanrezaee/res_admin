@@ -1,221 +1,100 @@
-import 'dart:async';
-import 'dart:io';
-import 'package:restaurant/modules/Authentication/providers/auth_provider.dart';
-import 'package:restaurant/modules/Resturant/statement/resturant_provider.dart';
-import 'package:restaurant/modules/categories/provider/categories_provider.dart';
-import 'package:restaurant/modules/contactUs/providers/contact_provider.dart';
-import 'package:restaurant/modules/customers/provider/customers_provider.dart';
-import 'package:restaurant/modules/notifications/provider/notificaction_provider.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
-import 'package:restaurant/modules/drawer/drawer.dart';
-import 'package:restaurant/modules/Authentication/screen/login_page.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import './themes/style.dart';
-import './routes.dart';
-import 'package:provider/provider.dart';
-import './modules/dashboard/provider/dashboard_provider.dart';
-import 'modules/coupons/statement/couponProvider.dart';
+// Copyright 2019 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
 
-void main() {
+// @dart=2.9
+
+import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:provider/provider.dart';
+import 'package:restaurant/themes/style.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'modules/Authentication/providers/auth_provider.dart';
+import 'modules/Authentication/screen/login_page.dart';
+import 'modules/Resturant/statement/resturant_provider.dart';
+import 'modules/categories/provider/categories_provider.dart';
+import 'modules/contactUs/providers/contact_provider.dart';
+import 'modules/coupons/statement/couponProvider.dart';
+import 'modules/customers/provider/customers_provider.dart';
+import 'modules/dashboard/provider/dashboard_provider.dart';
+import 'modules/drawer/drawer.dart';
+import 'modules/notifications/provider/notificaction_provider.dart';
+import 'modules/orders/orders_page_notification.dart';
+import 'routes.dart';
+
+/// Define a top-level named handler which background/terminated messages will
+/// call.
+///
+/// To verify things are working, check out the native platform logs.
+//
+
+bool isBackgroudRunning = false;
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  isBackgroudRunning = true;
+  await Firebase.initializeApp();
+
+  print(
+      'Handling a background message ${message.messageId} ${isBackgroudRunning}');
+}
+
+/// Create a [AndroidNotificationChannel] for heads up notifications
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+  'high_importance_channel', // id
+  'High Importance Notifications', // title
+  'This channel is used for important notifications.', // description
+  importance: Importance.high,
+  playSound: true,
+  showBadge: true,
+  enableLights: true,
+  enableVibration: true,
+);
+
+/// Initialize the [FlutterLocalNotificationsPlugin] package.
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  // Set the background messaging handler early on, as a named top-level function
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  /// Update the iOS foreground notification presentation options to allow
+  /// heads up notifications.
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+
   runApp(MyApp());
 }
 
+final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
+
+/// Entry point for the example application.
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  String status = 'checkingSharedPrefs';
-
-  getPrefs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getString('user') == null) {
-      setState(() {
-        status = 'userNotLogedIn';
-      });
-    } else {
-      setState(() {
-        status = 'userLogedIn';
-      });
-    }
-  }
-
-  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-  String fcmContactName;
-  String fcmContactId;
-
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      new FlutterLocalNotificationsPlugin();
-
-  Future onSelectNotification(String payload) async {
-    Navigator.pushNamed(
-      context,
-      payload,
-      arguments: {
-        "contactId": fcmContactId,
-        "name": fcmContactName,
-      },
-    );
-  }
-
-  void notifyInitialize() async {
-    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        FlutterLocalNotificationsPlugin();
-    const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('app_icon');
-    final IOSInitializationSettings initializationSettingsIOS =
-        IOSInitializationSettings(
-      requestSoundPermission: false,
-      requestBadgePermission: false,
-      requestAlertPermission: false,
-    );
-    final MacOSInitializationSettings initializationSettingsMacOS =
-        MacOSInitializationSettings(
-            requestAlertPermission: false,
-            requestBadgePermission: false,
-            requestSoundPermission: false);
-    final InitializationSettings initializationSettings =
-        InitializationSettings(
-            android: initializationSettingsAndroid,
-            iOS: initializationSettingsIOS,
-            macOS: initializationSettingsMacOS);
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: onSelectNotification);
-  }
-
-  void showNotification(
-      {message, String routeName, BuildContext context, String userId}) async {
-    var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
-      Platform.isAndroid
-          ? 'com.dfa.flutterchatdemo'
-          : 'com.duytq.flutterchatdemo',
-      'Flutter chat demo',
-      'your channel description',
-      playSound: true,
-      enableVibration: true,
-      importance: Importance.max,
-      priority: Priority.high,
-    );
-    var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
-    var platformChannelSpecifics = new NotificationDetails(
-      android: androidPlatformChannelSpecifics,
-      iOS: iOSPlatformChannelSpecifics,
-    );
-
-    await flutterLocalNotificationsPlugin.show(
-      0,
-      message['title'].toString(),
-      message['body'].toString(),
-      platformChannelSpecifics,
-      payload: routeName,
-      // payload: routeName + "::" + userId + "//" + message['title'],
-    );
-    print("Mahdi: routeName: $routeName");
-  }
-
-  void _navigateToItemDetail(Map<String, dynamic> message) {
-    fcmContactName = message['notification']['title'];
-    fcmContactId = message['data']['contactId'];
-
-    Navigator.pushNamed(
-      context,
-      message['data']['screen'],
-      arguments: {
-        "contactId": fcmContactId,
-        "name": fcmContactName,
-      },
-    );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getPrefs();
-
-    Future.delayed(Duration.zero, () {
-      _firebaseMessaging.requestNotificationPermissions();
-      _firebaseMessaging.configure(
-        onMessage: (Map<String, dynamic> message) async {
-          print("onMessage:: $message");
-          print("onMessage:: ${message['data']['screen']}");
-
-          fcmContactName = message['notification']['title'];
-          fcmContactId = message['data']['contactId'];
-
-          Platform.isAndroid
-              ? showNotification(
-                  message: message['notification'],
-                  routeName: message['data']['screen'],
-                  userId: message['data']['contactId'],
-                  context: context,
-                )
-              : showNotification(
-                  message: message['aps']['alert'],
-                  routeName: message['data']['screen'],
-                  userId: message['data']['contactId'],
-                  context: context,
-                );
-
-          // _navigateToItemDetail(message);
-        },
-        onLaunch: (Map<String, dynamic> message) async {
-          print("onLaunch: $message");
-          print("onLaunch:: ${message['data']['screen']}");
-          _navigateToItemDetail(message);
-        },
-        onResume: (Map<String, dynamic> message) async {
-          print("onResume: $message");
-          print("onResume:: ${message['data']['screen']}");
-          _navigateToItemDetail(message);
-        },
-      );
-    });
-
-    super.initState();
-  }
-
-  // StreamSubscription _sub;
-  // Future<Null> initUniLinks() async {
-  //   // Uri parsing may fail, so we use a try/catch FormatException.
-  //   try {
-  //     Uri initialUri = await getInitialUri();
-  //     String myUri = initialUri.toString();
-  //   } on FormatException {
-  //     // Handle exception by warning the user their action did not succeed
-  //     // return?
-  //   } catch (e) {
-  //     // print("Mahdi: initUniLinks: Error $e");
-  //   }
-
-  //   print("Mahdi: initUniLinks: 2");
-  //   _sub = getUriLinksStream().listen((Uri uri) {
-  //     String token = uri.toString().substring(
-  //         uri.toString().indexOf("token=") + 6, uri.toString().length);
-
-  //     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-  //       return ForgotPasswordWithKey(token);
-  //     }));
-  //     print("This is the token and nothing more. : $token");
-  //   }, onError: (err) {
-  //     print("Mahdi: initUniLinks: Error $err");
-  //   });
-  // }
-
-  Widget page = LoginPage();
   @override
   Widget build(BuildContext context) {
-    if (status == "userLogedIn") {
-      page = LayoutExample();
-    }
-    return status == "checkingSharedPrefs"
-        ? MaterialApp(
-            home: Scaffold(body: Center(child: CircularProgressIndicator())))
-        : MultiProvider(
+    return MultiProvider(
             providers: [
               ChangeNotifierProvider<ResturantProvider>(
                   create: (_) => ResturantProvider()),
@@ -238,9 +117,117 @@ class _MyAppState extends State<MyApp> {
               debugShowCheckedModeBanner: false,
               title: 'Flutter Demo',
               theme: restaurantTheme,
-              home: page,
+              home: Application(),
               routes: routes,
             ),
           );
+  }
+}
+
+
+
+/// Renders the example application.
+class Application extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _Application();
+}
+
+class _Application extends State<Application> {
+  String status = 'checkingSharedPrefs';
+
+  Future selectNotification(String payload) async {
+    print("payload $payload");
+    if (payload != null) {
+      debugPrint('notification payload: $payload');
+    }
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => OrdersPageNotification()));
+  }
+
+  getPrefs() async {
+    await FirebaseMessaging.instance.requestPermission(
+      announcement: true,
+      carPlay: true,
+      criticalAlert: true,
+    );
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('user') == null) {
+      setState(() {
+        status = 'userNotLogedIn';
+      });
+    } else {
+      setState(() {
+        status = 'userLogedIn';
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getPrefs();
+
+    print("firebase message is setuping...");
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      RemoteNotification notification = message.notification;
+      AndroidNotification android = message.notification?.android;
+
+      // print("found"); /// Create an Android Notification Channel.
+      ///
+      /// We use this channel in the `AndroidManifest.xml` file to override the
+      /// default FCM channel to enable heads up notifications.
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
+          ?.createNotificationChannel(channel);
+
+// initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
+      const AndroidInitializationSettings initializationSettingsAndroid =
+          AndroidInitializationSettings('app_icon');
+      final InitializationSettings initializationSettings =
+          InitializationSettings(android: initializationSettingsAndroid);
+      await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+          onSelectNotification: selectNotification);
+
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                channel.description,
+                icon: 'launch_background',
+              ),
+            ));
+      }
+
+      if (notification != null) {
+        NotificationProvider notificationProvider =
+            Provider.of<NotificationProvider>(context, listen: false);
+
+        if (notificationProvider.notificatins == null)
+          await notificationProvider.fetchNotifications();
+
+        notificationProvider
+            .setCountNotification(notificationProvider.maxItems + 1);
+      }
+    });
+  }
+
+  Widget page = LoginPage();
+
+  @override
+  Widget build(BuildContext context) {
+    if (status == "userLogedIn") {
+      page = LayoutExample();
+    }
+    return status == "checkingSharedPrefs"
+        ? Center(child: CircularProgressIndicator())
+        : page;
   }
 }

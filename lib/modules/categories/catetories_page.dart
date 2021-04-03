@@ -97,7 +97,7 @@ class _CatetoriesListPageState extends State<CatetoriesListPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text("Categories",
-                        style: Theme.of(context).textTheme.headline4),
+                        style: Theme.of(context).textTheme.headline5),
                     SizedBox(
                       width: 35,
                       height: 35,
@@ -282,7 +282,7 @@ class _CatetoriesListPageState extends State<CatetoriesListPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(category.categoryName,
-                style: Theme.of(context).textTheme.headline4),
+                style: Theme.of(context).textTheme.headline6),
             Text("${category.foodNumber} Dishes",
                 style: TextStyle(color: Colors.grey)),
             Row(

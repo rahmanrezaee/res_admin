@@ -324,7 +324,7 @@ class _AddNewDishState extends State<AddNewDish> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("Preparation Time",
-                              style: Theme.of(context).textTheme.headline3),
+                              style: Theme.of(context).textTheme.headline6),
                           SizedBox(width: 50),
                           OutlineButton(
                             padding: EdgeInsets.symmetric(
@@ -355,7 +355,7 @@ class _AddNewDishState extends State<AddNewDish> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text("Addon:",
-                                  style: Theme.of(context).textTheme.headline3),
+                                  style: Theme.of(context).textTheme.headline6),
                               SizedBox(
                                 width: 35,
                                 height: 35,
@@ -397,7 +397,7 @@ class _AddNewDishState extends State<AddNewDish> {
                                                       "New Add On",
                                                       style: Theme.of(context)
                                                           .textTheme
-                                                          .headline4,
+                                                          .headline6,
                                                     ),
                                                   ),
                                                   Divider(),
@@ -558,7 +558,7 @@ class _AddNewDishState extends State<AddNewDish> {
                                                     "${dishModel.addOnDishAdmin[index].name}",
                                                     style: Theme.of(context)
                                                         .textTheme
-                                                        .headline4)),
+                                                        .headline6)),
                                             Text(
                                                 "Price: ${dishModel.addOnDishAdmin[index].price}"),
                                           ],

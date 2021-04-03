@@ -30,7 +30,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Rahman Rezaiee",
-                      style: Theme.of(context).textTheme.headline4),
+                      style: Theme.of(context).textTheme.headline6),
                   SizedBox(height: 5),
                   Text("johndoe2021@gmail.com",
                       style: TextStyle(color: Colors.black45)),
