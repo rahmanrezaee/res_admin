@@ -2,17 +2,18 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:restaurant/modules/Authentication/providers/auth_provider.dart';
-import 'package:restaurant/modules/Authentication/validators/formFieldsValidators.dart';
-import 'package:restaurant/themes/colors.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:restaurant/modules/Authentication/providers/auth_provider.dart';
+import 'package:restaurant/modules/Authentication/validators/formFieldsValidators.dart';
+import 'package:restaurant/modules/policy/Privacy&Policy.dart';
+import 'package:restaurant/modules/term/term&condition_page.dart';
+import 'package:restaurant/responsive/functionsResponsive.dart';
+import 'package:restaurant/themes/colors.dart';
 import '../../../constants/assest_path.dart';
 import '../../drawer/drawer.dart';
-
-import 'package:restaurant/responsive/functionsResponsive.dart';
 import './forgotPassword.dart';
 import '../providers/linkListener.dart';
 
@@ -24,7 +25,6 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  final FirebaseMessaging _fcm = FirebaseMessaging();
   String fcmToken = "fcm token";
   TextEditingController _emailController = new TextEditingController();
 
@@ -48,17 +48,11 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> getFcmToken() async {
     print('get Fcm Token');
-    if (Platform.isIOS) {
-      iosSubscription = _fcm.onIosSettingsRegistered.listen((data) async {
-        fcmToken = await _fcm.getToken();
-        log("firebase token $fcmToken");
-      });
 
-      _fcm.requestNotificationPermissions(IosNotificationSettings());
-    } else {
-      fcmToken = await _fcm.getToken();
+    FirebaseMessaging.instance.getToken().then((valu) {
+      this.fcmToken = valu;
       log("firebase token $fcmToken");
-    }
+    });
   }
 
   bool obscureText = true;
@@ -86,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text("Login with your account",
-                          style: Theme.of(context).textTheme.headline4),
+                          style: Theme.of(context).textTheme.headline6),
                       SizedBox(height: 15),
                       Container(
                         width: getHelfIpadAndFullMobWidth(context),
@@ -166,17 +160,17 @@ class _LoginPageState extends State<LoginPage> {
                                   .pushNamed(ForgotPassword.routeName);
                             },
                             child: Text(
-                              "Forgot Password?",
+                              "Forgot Password",
                               style: Theme.of(context).textTheme.subtitle2,
                             ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 10),
                     ],
                   ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 5),
                 error == null
                     ? Container()
                     : Text(error, style: TextStyle(color: AppColors.redText)),
@@ -210,6 +204,38 @@ class _LoginPageState extends State<LoginPage> {
                     },
                   ),
                 ),
+                SizedBox(height: 10),
+                RichText(
+                  text: TextSpan(
+                      style: TextStyle(color: Colors.black),
+                      text: "By clicking on Log In you are accepting our ",
+                      children: [
+                        TextSpan(
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.of(context)
+                                    .pushNamed(TermCondition.routeName);
+                              },
+                            text: "Terms and Conditions",
+                            style: TextStyle(
+                                color: Colors.green,
+                                fontWeight: FontWeight.w500)),
+                        TextSpan(
+                          text: " and ",
+                        ),
+                        TextSpan(
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              print('privacy policy');
+                              Navigator.of(context)
+                                  .pushNamed(PrivacyPolicy.routeName);
+                            },
+                          text: "Privacy Policy",
+                          style: TextStyle(
+                              color: Colors.green, fontWeight: FontWeight.w500),
+                        ),
+                      ]),
+                ),
               ],
             ),
           ),
@@ -231,6 +257,8 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           loading = false;
         });
+
+        log("res $res");
         if (res['status'] == true) {
           setState(() {
             error = null;

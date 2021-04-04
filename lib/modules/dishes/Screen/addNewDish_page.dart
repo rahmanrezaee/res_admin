@@ -116,7 +116,7 @@ class _AddNewDishState extends State<AddNewDish> {
         title: Text("${this.dishId != null ? "Edit Dish" : "Add New Dish"}"),
         actions: [
           Container(
-            width: 100,
+            width: 110,
             child: IconButton(
                 icon: Row(
                   children: [
@@ -285,6 +285,41 @@ class _AddNewDishState extends State<AddNewDish> {
                       ),
                       SizedBox(height: 10),
                       TextFormField(
+                        initialValue: "${dishModel.tax ?? ""}",
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          hintText: "Tax",
+                          hintStyle: TextStyle(color: Colors.grey),
+                          contentPadding: EdgeInsets.only(left: 10, top: 20),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0)),
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0)),
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            dishModel.tax = double.parse(value);
+                          });
+                        },
+                        validator: (String value) {
+                          if (value.isEmpty) {
+                            return "Your Tax  is Empty";
+                          }
+                        },
+                        onSaved: (value) {
+                          setState(() {
+                            dishModel.tax = double.parse(value);
+                          });
+                        },
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
                         initialValue: dishModel.description,
                         minLines: 5,
                         maxLines: 6,
@@ -324,7 +359,7 @@ class _AddNewDishState extends State<AddNewDish> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("Preparation Time",
-                              style: Theme.of(context).textTheme.headline3),
+                              style: Theme.of(context).textTheme.headline6),
                           SizedBox(width: 50),
                           OutlineButton(
                             padding: EdgeInsets.symmetric(
@@ -355,7 +390,7 @@ class _AddNewDishState extends State<AddNewDish> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text("Addon:",
-                                  style: Theme.of(context).textTheme.headline3),
+                                  style: Theme.of(context).textTheme.headline6),
                               SizedBox(
                                 width: 35,
                                 height: 35,
@@ -397,7 +432,7 @@ class _AddNewDishState extends State<AddNewDish> {
                                                       "New Add On",
                                                       style: Theme.of(context)
                                                           .textTheme
-                                                          .headline4,
+                                                          .headline6,
                                                     ),
                                                   ),
                                                   Divider(),
@@ -558,7 +593,7 @@ class _AddNewDishState extends State<AddNewDish> {
                                                     "${dishModel.addOnDishAdmin[index].name}",
                                                     style: Theme.of(context)
                                                         .textTheme
-                                                        .headline4)),
+                                                        .headline6)),
                                             Text(
                                                 "Price: ${dishModel.addOnDishAdmin[index].price}"),
                                           ],

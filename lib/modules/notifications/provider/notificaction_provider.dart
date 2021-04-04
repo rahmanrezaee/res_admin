@@ -1,9 +1,10 @@
-import 'package:restaurant/GlobleService/APIRequest.dart';
-import 'package:restaurant/constants/api_path.dart';
-import 'package:restaurant/modules/Authentication/providers/auth_provider.dart';
-import 'package:restaurant/modules/notifications/models/notification_model.dart';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:restaurant/GlobleService/APIRequest.dart';
+import 'package:restaurant/constants/UrlConstants.dart';
+import 'package:restaurant/modules/Authentication/providers/auth_provider.dart';
+import 'package:restaurant/modules/notifications/models/notification_model.dart';
 
 class NotificationProvider with ChangeNotifier {
   bool loadingMore;
@@ -11,6 +12,14 @@ class NotificationProvider with ChangeNotifier {
   int maxItems;
   int page = 1;
   int lastPage;
+
+  int countNotification = 0;
+
+  void setCountNotification(int mount) {
+    countNotification = mount;
+    clearToNullList();
+    notifyListeners();
+  }
 
   List<NotificationModel> notificatins;
   void setPage(int t) {
@@ -35,9 +44,9 @@ class NotificationProvider with ChangeNotifier {
 
       print("result $result");
 
-      maxItems = result.data['data']['totalDocs'];
-      page = result.data['data']['page'];
-      lastPage = result.data['data']['totalPages'];
+      maxItems = result.data['data']['notification']['totalDocs'];
+      page = result.data['data']['notification']['page'];
+      lastPage = result.data['data']['notification']['totalPages'];
       print("result $lastPage");
 
       if (page == lastPage) {
@@ -48,8 +57,7 @@ class NotificationProvider with ChangeNotifier {
 
       List<NotificationModel> loadedProducts = [];
 
-      (result.data['data']['docs'] as List).forEach((notify) {
-        print("result $notify");
+      (result.data['data']['notification']['docs'] as List).forEach((notify) {
         loadedProducts.add(NotificationModel.fromJson(notify));
       });
 
@@ -97,5 +105,9 @@ class NotificationProvider with ChangeNotifier {
   showLoadingBottom(bool state) {
     loadingMore = state;
     notifyListeners();
+  }
+
+  void incrementQuentity() {
+    fetchNotifications();
   }
 }
