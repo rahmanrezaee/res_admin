@@ -8,6 +8,8 @@ import 'package:restaurant/modules/dishes/Screen/addNewDish_page.dart';
 import 'package:restaurant/themes/colors.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+
+import 'package:restaurant/modules/notifications/widget/NotificationAppBarWidget.dart';
 //provider
 import '../provider/dashboard_provider.dart';
 //widgets
@@ -36,14 +38,7 @@ class _DashboardPageState extends State<DashboardPage> {
         AppBar(
           title: Text("Dashboard"),
           centerTitle: true,
-          actions: [
-            IconButton(
-              icon: Image.asset("assets/images/notification.png"),
-              onPressed: () {
-                Navigator.pushNamed(context, NotificationPage.routeName);
-              },
-            )
-          ],
+          actions: [NotificationAppBarWidget()],
           leading: IconButton(
             icon: Icon(Icons.menu),
             onPressed: () {

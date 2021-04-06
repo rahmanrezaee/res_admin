@@ -39,8 +39,8 @@ class AuthProvider with ChangeNotifier {
       return {"status": true, "message": "logedIn"};
     } on DioError catch (e) {
       print("e.response");
-      print(e.response.data);
-      return e.response;
+      print(e.response);
+      return e.response.data;
     }
   }
 
