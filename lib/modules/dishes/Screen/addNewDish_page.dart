@@ -649,7 +649,7 @@ class _AddNewDishState extends State<AddNewDish> {
             _isLoading = false;
           });
 
-          if (result == true) {
+          if (result['status'] == true) {
             print("Mahdi: Executed 2");
             _scaffoldKey.currentState.showSnackBar(SnackBar(
               content: Text("Successfuly Updated."),
@@ -659,37 +659,38 @@ class _AddNewDishState extends State<AddNewDish> {
               Map pa = {
                 "catId": dishModel.categoryId,
               };
-
-              Navigator.pushReplacementNamed(context, DishPage.routeName,
-                  arguments: pa);
+              Navigator.pushReplacementNamed(
+                context,
+                DishPage.routeName,
+                arguments: pa,
+              );
             });
           } else {
-            print("Mahdi: Executed 3");
-
             _scaffoldKey.currentState.showSnackBar(SnackBar(
-              content: Text("Something went wrong!! Please try again later."),
+              content: Text("${result['message']}"),
               duration: Duration(seconds: 4),
             ));
           }
 
           print("Mahdi: Executed 4");
-        }).catchError((error) {
-          print("Mahdi Error: $error");
-          setState(() {
-            _isLoading = false;
-          });
-          _scaffoldKey.currentState.showSnackBar(SnackBar(
-            content: Text("Something went wrong!! Please try again later."),
-            duration: Duration(seconds: 4),
-          ));
         });
+        // }).catchError((error) {
+        //   print("Mahdi Error: $error");
+        //   setState(() {
+        //     _isLoading = false;
+        //   });
+        //   _scaffoldKey.currentState.showSnackBar(SnackBar(
+        //     content: Text("${result['message']}"),
+        //     duration: Duration(seconds: 4),
+        //   ));
+        // });
       } else {
         addDishService(dishModel.sendMap()).then((result) {
           setState(() {
             _isLoading = false;
           });
 
-          if (result == true) {
+          if (result['status'] == true) {
             print("Mahdi: Executed 2");
             _scaffoldKey.currentState.showSnackBar(SnackBar(
               content: Text("Successfuly added."),
@@ -702,22 +703,23 @@ class _AddNewDishState extends State<AddNewDish> {
             print("Mahdi: Executed 3");
 
             _scaffoldKey.currentState.showSnackBar(SnackBar(
-              content: Text("Something went wrong!! Please try again later."),
+              content: Text("${result['message']}"),
               duration: Duration(seconds: 4),
             ));
           }
 
           print("Mahdi: Executed 4");
-        }).catchError((error) {
-          print("Mahdi Error: $error");
-          setState(() {
-            _isLoading = false;
-          });
-          _scaffoldKey.currentState.showSnackBar(SnackBar(
-            content: Text("Something went wrong!! Please try again later."),
-            duration: Duration(seconds: 4),
-          ));
         });
+        // }).catchError((error) {
+        //   print("Mahdi Error: $error");
+        //   setState(() {
+        //     _isLoading = false;
+        //   });
+        //   _scaffoldKey.currentState.showSnackBar(SnackBar(
+        //     content: Text("Something went wrong!! Please try again later."),
+        //     duration: Duration(seconds: 4),
+        //   ));
+        // });
       }
     } else {
       setState(() {
