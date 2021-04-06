@@ -52,6 +52,8 @@ class _AddNewDishState extends State<AddNewDish> {
 
   @override
   void initState() {
+
+    dishModel.preparationTime = "00:00";
     dishId = widget.params['dishId'];
     catId = widget.params['catId'];
 

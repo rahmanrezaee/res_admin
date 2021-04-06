@@ -79,7 +79,7 @@ Future addDishService(data) async {
     print(e.error);
     print(e.request);
     print(e.type);
-    return e.response;
+    return e.response.data;
   }
 }
 
