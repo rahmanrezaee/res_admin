@@ -7,6 +7,7 @@ import 'package:restaurant/modules/Resturant/Models/Resturant.dart';
 import 'package:restaurant/modules/Resturant/Models/location.dart';
 import 'package:restaurant/modules/Resturant/statement/resturant_provider.dart';
 import 'package:restaurant/modules/notifications/notification_page.dart';
+import 'package:restaurant/modules/notifications/widget/NotificationAppBarWidget.dart';
 import 'package:restaurant/modules/report/widget/TextfieldResturant.dart';
 import 'package:restaurant/modules/report/widget/buttonResturant.dart';
 import 'package:restaurant/responsive/functionsResponsive.dart';
@@ -97,14 +98,7 @@ class _ResturantFormState extends State<ResturantForm> {
                 title: Text("My Profile"),
                 automaticallyImplyLeading: false,
                 centerTitle: true,
-                actions: [
-                  IconButton(
-                    icon: Image.asset("assets/images/notification.png"),
-                    onPressed: () {
-                      Navigator.pushNamed(context, NotificationPage.routeName);
-                    },
-                  )
-                ],
+                actions: [NotificationAppBarWidget()],
                 leading: IconButton(
                   icon: Icon(Icons.menu),
                   onPressed: () {

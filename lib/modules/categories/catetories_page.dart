@@ -2,6 +2,7 @@ import 'package:restaurant/modules/dishes/Screen/addNewDish_page.dart';
 import 'package:restaurant/modules/categories/provider/categories_provider.dart';
 import 'package:restaurant/modules/dishes/Screen/dishes_page.dart';
 import 'package:restaurant/modules/notifications/notification_page.dart';
+import 'package:restaurant/modules/notifications/widget/NotificationAppBarWidget.dart';
 import 'package:restaurant/responsive/functionsResponsive.dart';
 import 'package:restaurant/themes/style.dart';
 import 'package:restaurant/widgets/fancy_dialog.dart';
@@ -58,14 +59,7 @@ class _CatetoriesListPageState extends State<CatetoriesListPage> {
                 title: Text("Manage Category"),
                 automaticallyImplyLeading: false,
                 centerTitle: true,
-                actions: [
-                  IconButton(
-                    icon: Image.asset("assets/images/notification.png"),
-                    onPressed: () {
-                      Navigator.pushNamed(context, NotificationPage.routeName);
-                    },
-                  )
-                ],
+                actions: [NotificationAppBarWidget()],
                 leading: IconButton(
                   icon: Icon(Icons.menu),
                   onPressed: () {

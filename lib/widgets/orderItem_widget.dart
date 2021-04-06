@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ffi';
 
 import 'package:restaurant/modules/dishes/Models/AddonModel.dart';
@@ -98,6 +99,7 @@ class _OrderItemState extends State<OrderItem> {
   }
 
   Widget getItem(OrderModels item) {
+    log("status ${item.status}");
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -159,113 +161,158 @@ class _OrderItemState extends State<OrderItem> {
               ),
             ),
             SizedBox(height: 10),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(children: [
-                    Text(
-                      "Pick Up at: ${item.timePicker ?? "00:00"} ",
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.normal,
-                        color: AppColors.green,
-                      ),
+            Visibility(
+              child: Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Visibility(
+                      visible: item.status == "active",
+                      child: Row(children: [
+                        SizedBox(
+                          width: 35,
+                          height: 35,
+                          child: RaisedButton(
+                            padding: EdgeInsets.all(0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            elevation: 0,
+                            color: AppColors.green,
+                            child: Icon(Icons.check, color: Colors.white),
+                            onPressed: () {
+                              OrderServices()
+                                  .pickup(item.id, "accepted")
+                                  .then((value) {
+                                getOrderData();
+                                widget.scaffoldKey.currentState
+                                    .showSnackBar(SnackBar(
+                                  content: Text("Succecfully Done"),
+                                  duration: Duration(seconds: 4),
+                                ));
+                              });
+                            },
+                          ),
+                        ),
+                        SizedBox(width: 20),
+                        SizedBox(
+                          width: 35,
+                          height: 35,
+                          child: RaisedButton(
+                            padding: EdgeInsets.all(0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            elevation: 0,
+                            onPressed: () {
+                              OrderServices()
+                                  .pickup(item.id, "rejected")
+                                  .then((value) {
+                                getOrderData();
+                                widget.scaffoldKey.currentState
+                                    .showSnackBar(SnackBar(
+                                  content: Text("Succecfully Done"),
+                                  duration: Duration(seconds: 4),
+                                ));
+                              });
+                            },
+                            color: AppColors.redText,
+                            child: Icon(Icons.close, color: Colors.white),
+                          ),
+                        ),
+                      ]),
                     ),
-                    SizedBox(width: 15),
-                    SizedBox(
-                      width: 35,
-                      height: 35,
+                    Visibility(
+                      visible: item.status == "accepted",
+                      child: Row(children: [
+                        Text(
+                          "Pick Up at: ${item.timePicker ?? "00:00"} ",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                            color: AppColors.green,
+                          ),
+                        ),
+                        SizedBox(width: 15),
+                        SizedBox(
+                          width: 35,
+                          height: 35,
+                          child: RaisedButton(
+                            padding: EdgeInsets.all(0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            elevation: 0,
+                            color: AppColors.green,
+                            child: Icon(Icons.edit, color: Colors.white),
+                            onPressed: () async {
+                              item.timePicker = await _selectTime(context);
+
+                              OrderServices()
+                                  .updatepickupDate(item.id, item.timePicker)
+                                  .then((value) {
+                                getOrderData();
+                                widget.scaffoldKey.currentState
+                                    .showSnackBar(SnackBar(
+                                  content: Text("Succecfully Done"),
+                                  duration: Duration(seconds: 2),
+                                ));
+                              });
+                            },
+                          ),
+                        ),
+                      ]),
+                    ),
+                    Visibility(
+                      visible: item.status == "accepted",
                       child: RaisedButton(
-                        padding: EdgeInsets.all(0),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 5,
                         ),
                         elevation: 0,
-                        color: AppColors.green,
-                        child: Icon(Icons.edit, color: Colors.white),
-                        onPressed: () async {
-                          item.timePicker = await _selectTime(context);
-
+                        color: Colors.white,
+                        textColor: Theme.of(context).primaryColor,
+                        child: Text("Mark Picked Up",
+                            style: TextStyle(
+                                fontWeight: FontWeight.normal, fontSize: 14)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          side: BorderSide(
+                              width: 1, color: Theme.of(context).primaryColor),
+                        ),
+                        onPressed: () {
                           OrderServices()
-                              .updatepickupDate(item.id, item.timePicker)
+                              .pickup(item.id, "pickedUp")
                               .then((value) {
                             getOrderData();
                             widget.scaffoldKey.currentState
                                 .showSnackBar(SnackBar(
                               content: Text("Succecfully Done"),
-                              duration: Duration(seconds: 2),
+                              duration: Duration(seconds: 4),
                             ));
                           });
                         },
                       ),
                     ),
-                  ]),
-                  // Row(children: [
-                  //   SizedBox(
-                  //     width: 35,
-                  //     height: 35,
-                  //     child: RaisedButton(
-                  //       padding: EdgeInsets.all(0),
-                  //       shape: RoundedRectangleBorder(
-                  //         borderRadius: BorderRadius.circular(10),
-                  //       ),
-                  //       elevation: 0,
-                  //       color: AppColors.green,
-                  //       child: Icon(Icons.check, color: Colors.white),
-                  //       onPressed: () {},
-                  //     ),
-                  //   ),
-                  //   SizedBox(width: 20),
-                  //   SizedBox(
-                  //     width: 35,
-                  //     height: 35,
-                  //     child: RaisedButton(
-                  //       padding: EdgeInsets.all(0),
-                  //       shape: RoundedRectangleBorder(
-                  //         borderRadius: BorderRadius.circular(10),
-                  //       ),
-                  //       elevation: 0,
-                  //       onPressed: () {},
-                  //       color: AppColors.redText,
-                  //       child: Icon(Icons.close, color: Colors.white),
-                  //     ),
-                  //   ),`
-                  // ]),
-                  Visibility(
-                    visible: item.status != "completed",
-                    child: RaisedButton(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 5,
-                      ),
-                      elevation: 0,
-                      color: Colors.white,
-                      textColor: Theme.of(context).primaryColor,
-                      child: Text("Mark Picked Up",
-                          style: TextStyle(
-                              fontWeight: FontWeight.normal, fontSize: 14)),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        side: BorderSide(
-                            width: 1, color: Theme.of(context).primaryColor),
-                      ),
-                      onPressed: () {
-                        OrderServices()
-                            .pickup(item.id, "completed")
-                            .then((value) {
-                          getOrderData();
-                          widget.scaffoldKey.currentState.showSnackBar(SnackBar(
-                            content: Text("Succecfully Done"),
-                            duration: Duration(seconds: 4),
-                          ));
-                        });
-                      },
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
+            Visibility(
+                visible: item.status == "pickedUp" || item.status == "rejected",
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text("Status :",
+                        style: TextStyle(
+                            fontWeight: FontWeight.normal, fontSize: 14)),
+                    Text("${item.status}",
+                        style: TextStyle(
+                            fontWeight: FontWeight.normal, fontSize: 14)),
+                  ],
+                )),
           ],
         ),
       ),

@@ -63,7 +63,7 @@ final ThemeData restaurantTheme = ThemeData(
       secondary: Color(0xff504d4d),
       secondaryVariant: Color(0xff504d4d),
       surface: Color(0xffffffff),
-      background: Color(0xffFFf2b3),
+      background: Color(0xff90caf9),
       error: Color(0xffd32f2f),
       onPrimary: Color(0xffffffff),
       onSecondary: Color(0xffffffff),
@@ -75,15 +75,15 @@ final ThemeData restaurantTheme = ThemeData(
   ),
   textTheme: TextTheme(
     headline4: TextStyle(
-      color: Color(0x8a000000),
-      fontSize: null,
-      fontWeight: FontWeight.w400,
+      color: Color(0xff000000),
+      fontSize: 18,
+      fontWeight: FontWeight.w600,
       fontStyle: FontStyle.normal,
     ),
-    headline5: TextStyle(
-      color: Color(0x8a000000),
-      fontSize: null,
-      fontWeight: FontWeight.w400,
+    headline3: TextStyle(
+      color: Color(0xff000000),
+      fontSize: 20,
+      fontWeight: FontWeight.w700,
       fontStyle: FontStyle.normal,
     ),
     headline2: TextStyle(
@@ -105,8 +105,8 @@ final ThemeData restaurantTheme = ThemeData(
       fontStyle: FontStyle.normal,
     ),
     subtitle1: TextStyle(
-      color: Color(0xdd000000),
-      fontSize: null,
+      color: Colors.black,
+      fontSize: 14,
       fontWeight: FontWeight.w400,
       fontStyle: FontStyle.normal,
     ),
@@ -117,8 +117,8 @@ final ThemeData restaurantTheme = ThemeData(
       fontStyle: FontStyle.normal,
     ),
     bodyText1: TextStyle(
-      color: Color(0xdd000000),
-      fontSize: null,
+      color: Color(0xff000000),
+      fontSize: 20,
       fontWeight: FontWeight.w400,
       fontStyle: FontStyle.normal,
     ),
@@ -129,15 +129,13 @@ final ThemeData restaurantTheme = ThemeData(
       fontStyle: FontStyle.normal,
     ),
     button: TextStyle(
-      color: Color(0xddFFFFFF),
-      fontSize: null,
-      fontWeight: FontWeight.w400,
+      color: Colors.white,
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
       fontStyle: FontStyle.normal,
     ),
     subtitle2: TextStyle(
-      color: Color(0xff000000),
-      fontSize: null,
-      fontWeight: FontWeight.w400,
+      color: Color(0xff76B261),
       fontStyle: FontStyle.normal,
     ),
     overline: TextStyle(
@@ -209,9 +207,9 @@ final ThemeData restaurantTheme = ThemeData(
       fontStyle: FontStyle.normal,
     ),
     button: TextStyle(
-      color: Color(0xffffffff),
-      fontSize: null,
-      fontWeight: FontWeight.w400,
+      color: Colors.white,
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
       fontStyle: FontStyle.normal,
     ),
     subtitle2: TextStyle(
@@ -234,7 +232,7 @@ final ThemeData restaurantTheme = ThemeData(
       fontWeight: FontWeight.w400,
       fontStyle: FontStyle.normal,
     ),
-    headline5: TextStyle(
+    headline3: TextStyle(
       color: Color(0xb3ffffff),
       fontSize: null,
       fontWeight: FontWeight.w400,
@@ -252,7 +250,7 @@ final ThemeData restaurantTheme = ThemeData(
       fontWeight: FontWeight.w400,
       fontStyle: FontStyle.normal,
     ),
-    headline3: TextStyle(
+    headline5: TextStyle(
       color: Color(0xffffffff),
       fontSize: null,
       fontWeight: FontWeight.w400,
@@ -289,9 +287,9 @@ final ThemeData restaurantTheme = ThemeData(
       fontStyle: FontStyle.normal,
     ),
     button: TextStyle(
-      color: Color(0xffffffff),
-      fontSize: null,
-      fontWeight: FontWeight.w400,
+      color: Colors.white,
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
       fontStyle: FontStyle.normal,
     ),
     subtitle2: TextStyle(
@@ -420,29 +418,6 @@ final ThemeData restaurantTheme = ThemeData(
     color: Color(0xdd000000),
     opacity: 1,
     size: 24,
-  ),
-  sliderTheme: SliderThemeData(
-    activeTrackColor: null,
-    inactiveTrackColor: null,
-    disabledActiveTrackColor: null,
-    disabledInactiveTrackColor: null,
-    activeTickMarkColor: null,
-    inactiveTickMarkColor: null,
-    disabledActiveTickMarkColor: null,
-    disabledInactiveTickMarkColor: null,
-    thumbColor: null,
-    disabledThumbColor: null,
-    // thumbShape: null(),
-    overlayColor: null,
-    valueIndicatorColor: null,
-    // valueIndicatorShape: null(),
-    showValueIndicator: null,
-    valueIndicatorTextStyle: TextStyle(
-      color: Color(0xffffffff),
-      fontSize: null,
-      fontWeight: FontWeight.w400,
-      fontStyle: FontStyle.normal,
-    ),
   ),
   tabBarTheme: TabBarTheme(
     indicatorSize: TabBarIndicatorSize.tab,

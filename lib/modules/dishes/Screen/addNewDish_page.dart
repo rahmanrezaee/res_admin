@@ -52,6 +52,8 @@ class _AddNewDishState extends State<AddNewDish> {
 
   @override
   void initState() {
+
+    dishModel.preparationTime = "00:00";
     dishId = widget.params['dishId'];
     catId = widget.params['catId'];
 
@@ -116,7 +118,7 @@ class _AddNewDishState extends State<AddNewDish> {
         title: Text("${this.dishId != null ? "Edit Dish" : "Add New Dish"}"),
         actions: [
           Container(
-            width: 100,
+            width: 110,
             child: IconButton(
                 icon: Row(
                   children: [
@@ -282,6 +284,41 @@ class _AddNewDishState extends State<AddNewDish> {
                             ),
                           ],
                         ),
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        initialValue: "${dishModel.tax ?? ""}",
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          hintText: "Tax",
+                          hintStyle: TextStyle(color: Colors.grey),
+                          contentPadding: EdgeInsets.only(left: 10, top: 20),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0)),
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0)),
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            dishModel.tax = double.parse(value);
+                          });
+                        },
+                        validator: (String value) {
+                          if (value.isEmpty) {
+                            return "Your Tax  is Empty";
+                          }
+                        },
+                        onSaved: (value) {
+                          setState(() {
+                            dishModel.tax = double.parse(value);
+                          });
+                        },
                       ),
                       SizedBox(height: 10),
                       TextFormField(
@@ -614,7 +651,7 @@ class _AddNewDishState extends State<AddNewDish> {
             _isLoading = false;
           });
 
-          if (result == true) {
+          if (result['status'] == true) {
             print("Mahdi: Executed 2");
             _scaffoldKey.currentState.showSnackBar(SnackBar(
               content: Text("Successfuly Updated."),
@@ -624,37 +661,38 @@ class _AddNewDishState extends State<AddNewDish> {
               Map pa = {
                 "catId": dishModel.categoryId,
               };
-
-              Navigator.pushReplacementNamed(context, DishPage.routeName,
-                  arguments: pa);
+              Navigator.pushReplacementNamed(
+                context,
+                DishPage.routeName,
+                arguments: pa,
+              );
             });
           } else {
-            print("Mahdi: Executed 3");
-
             _scaffoldKey.currentState.showSnackBar(SnackBar(
-              content: Text("Something went wrong!! Please try again later."),
+              content: Text("${result['message']}"),
               duration: Duration(seconds: 4),
             ));
           }
 
           print("Mahdi: Executed 4");
-        }).catchError((error) {
-          print("Mahdi Error: $error");
-          setState(() {
-            _isLoading = false;
-          });
-          _scaffoldKey.currentState.showSnackBar(SnackBar(
-            content: Text("Something went wrong!! Please try again later."),
-            duration: Duration(seconds: 4),
-          ));
         });
+        // }).catchError((error) {
+        //   print("Mahdi Error: $error");
+        //   setState(() {
+        //     _isLoading = false;
+        //   });
+        //   _scaffoldKey.currentState.showSnackBar(SnackBar(
+        //     content: Text("${result['message']}"),
+        //     duration: Duration(seconds: 4),
+        //   ));
+        // });
       } else {
         addDishService(dishModel.sendMap()).then((result) {
           setState(() {
             _isLoading = false;
           });
 
-          if (result == true) {
+          if (result['status'] == true) {
             print("Mahdi: Executed 2");
             _scaffoldKey.currentState.showSnackBar(SnackBar(
               content: Text("Successfuly added."),
@@ -667,22 +705,23 @@ class _AddNewDishState extends State<AddNewDish> {
             print("Mahdi: Executed 3");
 
             _scaffoldKey.currentState.showSnackBar(SnackBar(
-              content: Text("Something went wrong!! Please try again later."),
+              content: Text("${result['message']}"),
               duration: Duration(seconds: 4),
             ));
           }
 
           print("Mahdi: Executed 4");
-        }).catchError((error) {
-          print("Mahdi Error: $error");
-          setState(() {
-            _isLoading = false;
-          });
-          _scaffoldKey.currentState.showSnackBar(SnackBar(
-            content: Text("Something went wrong!! Please try again later."),
-            duration: Duration(seconds: 4),
-          ));
         });
+        // }).catchError((error) {
+        //   print("Mahdi Error: $error");
+        //   setState(() {
+        //     _isLoading = false;
+        //   });
+        //   _scaffoldKey.currentState.showSnackBar(SnackBar(
+        //     content: Text("Something went wrong!! Please try again later."),
+        //     duration: Duration(seconds: 4),
+        //   ));
+        // });
       }
     } else {
       setState(() {

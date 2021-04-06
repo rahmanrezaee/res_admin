@@ -30,6 +30,7 @@ import 'modules/drawer/drawer.dart';
 import 'modules/notifications/provider/notificaction_provider.dart';
 import 'modules/orders/orders_page_notification.dart';
 import 'routes.dart';
+import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 
 /// Define a top-level named handler which background/terminated messages will
 /// call.
@@ -95,36 +96,39 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-            providers: [
-              ChangeNotifierProvider<ResturantProvider>(
-                  create: (_) => ResturantProvider()),
-              ChangeNotifierProvider<AuthProvider>(
-                  create: (_) => AuthProvider()),
-              ChangeNotifierProvider<DashboardProvider>(
-                  create: (_) => DashboardProvider()),
-              ChangeNotifierProvider<CustomersProvider>(
-                  create: (_) => CustomersProvider()),
-              ChangeNotifierProvider<CategoryProvider>(
-                  create: (_) => CategoryProvider()),
-              ChangeNotifierProvider<CoupenProvider>(
-                  create: (_) => CoupenProvider()),
-              ChangeNotifierProvider<ContactProvider>(
-                  create: (_) => ContactProvider()),
-              ChangeNotifierProvider<NotificationProvider>(
-                  create: (_) => NotificationProvider()),
-            ],
-            child: MaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: 'Flutter Demo',
-              theme: restaurantTheme,
-              home: Application(),
-              routes: routes,
-            ),
-          );
+      providers: [
+        ChangeNotifierProvider<ResturantProvider>(
+            create: (_) => ResturantProvider()),
+        ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
+        ChangeNotifierProvider<DashboardProvider>(
+            create: (_) => DashboardProvider()),
+        ChangeNotifierProvider<CustomersProvider>(
+            create: (_) => CustomersProvider()),
+        ChangeNotifierProvider<CategoryProvider>(
+            create: (_) => CategoryProvider()),
+        ChangeNotifierProvider<CoupenProvider>(create: (_) => CoupenProvider()),
+        ChangeNotifierProvider<ContactProvider>(
+            create: (_) => ContactProvider()),
+        ChangeNotifierProvider<NotificationProvider>(
+            create: (_) => NotificationProvider()),
+      ],
+      child: ConnectivityAppWrapper(
+        app: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Demo',
+          theme: restaurantTheme,
+          home: ConnectivityWidgetWrapper(
+            stacked: true,
+            height: 30,
+            message: "Connecting...",
+            child: Application(),
+          ),
+          routes: routes,
+        ),
+      ),
+    );
   }
 }
-
-
 
 /// Renders the example application.
 class Application extends StatefulWidget {
