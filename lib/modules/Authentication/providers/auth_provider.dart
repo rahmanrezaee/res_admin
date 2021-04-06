@@ -23,24 +23,24 @@ class AuthProvider with ChangeNotifier {
         myBody: {"email": username, "password": password, "fcmToken": fcm},
       );
 
-      if(res.data != null){
+      if (res.data != null) {
         //getting user data
-      var user = {
-        'token': res.data['data']['token'],
-        'expierDate': DateTime.now().add(Duration(days: 1)).toString(),
-        'userId': res.data['data']['user']['_id'],
-      };
-      //saving user data to sharedpreferences
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      print(json.encode(user));
-      await prefs.setString('user', json.encode(user));
+        var user = {
+          'token': res.data['data']['token'],
+          'expierDate': DateTime.now().add(Duration(days: 1)).toString(),
+          'userId': res.data['data']['user']['_id'],
+        };
+        //saving user data to sharedpreferences
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        print(json.encode(user));
+        await prefs.setString('user', json.encode(user));
       }
       //return message
       return {"status": true, "message": "logedIn"};
     } on DioError catch (e) {
       print("e.response");
       print(e.response);
-      return e.response;
+      return e.response.data;
     }
   }
 

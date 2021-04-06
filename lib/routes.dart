@@ -6,9 +6,8 @@ import 'package:restaurant/modules/dishes/Screen/dishes_page.dart';
 import 'package:restaurant/modules/drawer/drawer.dart';
 import 'package:restaurant/modules/notifications/notification_page.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:restaurant/modules/companyPage/Privacy&Policy.dart';
-import 'package:restaurant/modules/dishes/Screen/addNewDish_page.dart';
-import 'package:restaurant/modules/companyPage/term&condition_page.dart';
+import 'package:restaurant/modules/policy/Privacy&Policy.dart';
+import 'package:restaurant/modules/term/term&condition_page.dart';
 
 var routes = <String, WidgetBuilder>{
   LayoutExample.routeName: (context) => LayoutExample(),

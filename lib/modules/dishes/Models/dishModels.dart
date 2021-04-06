@@ -12,6 +12,7 @@ class DishModel {
   String restaurantId;
   String categoryId;
   double price;
+  double tax;
   List<List<AddonItems>> addOn = [];
   List<AddonItems> addOnDishAdmin = [];
   List orderNote = [];
@@ -29,6 +30,7 @@ class DishModel {
       this.foodName = element['foodName'];
       this.quantity = element['quantity'];
       this.price = double.parse("${element['price']}");
+      this.tax = double.parse("${element['tax']}");
       List addonLi = element['addOn'];
       orderNote = element['orderNote'];
 
@@ -52,6 +54,7 @@ class DishModel {
       this.foodName = element['name'];
       this.visibility = element['visibility'];
       this.price = double.parse("${element['price']}");
+      this.tax = double.parse("${element['tax']}");
 
       List photosRest = element['photos'];
 
@@ -71,6 +74,7 @@ class DishModel {
       "categoryId": this.categoryId,
       "name": this.foodName,
       "price": this.price,
+      "tax": this.tax,
       "addOn": this
           .addOnDishAdmin
           .map((data) => {"name": data.name, "price": data.price})
@@ -95,6 +99,7 @@ class DishModel {
       this.description = extractedData['food']['description'];
       this.preparationTime = extractedData['food']['preparationTime'];
       this.price = double.parse("${extractedData['food']['price']}");
+      this.tax = double.parse("${extractedData['food']['tax']}");
 
       List photosRest = extractedData['food']['photos'];
 
