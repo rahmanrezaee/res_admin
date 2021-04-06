@@ -167,12 +167,14 @@ class _LoginPageState extends State<LoginPage> {
                                 "Email Address",
                                 emailValidator,
                                 _emailController,
+                                false,
                               ),
                               SizedBox(height: 15),
                               _loginFieldBuilder(
                                 "Password",
                                 passwordValidator,
                                 _passwordController,
+                                true,
                               ),
                               SizedBox(height: 15),
                               Row(
@@ -185,15 +187,45 @@ class _LoginPageState extends State<LoginPage> {
                                           .pushNamed(ForgotPassword.routeName);
                                     },
                                     child: Text(
-                                      "Forgot Password",
+                                      "Forgot Password?",
                                       style:
                                           Theme.of(context).textTheme.subtitle2,
                                     ),
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 20),
+                              SizedBox(height: 10),
                             ],
+                          ),
+                        ),
+                        Container(
+                          width: getHelfIpadAndFullMobWidth(context),
+                          child: RaisedButton(
+                            padding: EdgeInsets.symmetric(vertical: 15),
+                            color: Theme.of(context).primaryColor,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                loading == true
+                                    ? CircularProgressIndicator()
+                                    : Text(
+                                        "Login",
+                                        textAlign: TextAlign.center,
+                                        style:
+                                            Theme.of(context).textTheme.button,
+                                      ),
+                              ],
+                            ),
+                            onPressed: () {
+                              login();
+                              // Navigator.pushReplacementNamed(
+                              //     context, LayoutExample.routeName);
+                            },
                           ),
                         ),
                         SizedBox(height: 20),
@@ -209,7 +241,7 @@ class _LoginPageState extends State<LoginPage> {
                                           .pushNamed(TermCondition.routeName);
                                     },
                                   text: "Terms and Conditions",
-                                  style: Theme.of(context).textTheme.subtitle2,
+                                  style: TextStyle(color: AppColors.green),
                                 ),
                                 TextSpan(
                                   text: " and ",
@@ -223,7 +255,7 @@ class _LoginPageState extends State<LoginPage> {
                                           arguments: "login");
                                     },
                                   text: "Privacy Policy",
-                                  style: Theme.of(context).textTheme.subtitle2,
+                                  style: TextStyle(color: AppColors.green),
                                 ),
                               ]),
                         ),
@@ -249,57 +281,57 @@ class _LoginPageState extends State<LoginPage> {
                       ]),
                 ),
                 SizedBox(height: 15),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        print("going to forgot password");
-                        Navigator.of(context)
-                            .pushNamed(ForgotPassword.routeName);
-                      },
-                      child: Text(
-                        "Forgot Password?",
-                        style: Theme.of(context).textTheme.subtitle2,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 20),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     InkWell(
+                //       onTap: () {
+                //         print("going to forgot password");
+                //         Navigator.of(context)
+                //             .pushNamed(ForgotPassword.routeName);
+                //       },
+                //       child: Text(
+                //         "Forgot Password?",
+                //         style: Theme.of(context).textTheme.subtitle2,
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                // SizedBox(height: 20),
                 SizedBox(height: 20),
                 error == null
                     ? Container()
                     : Text(error, style: TextStyle(color: AppColors.redText)),
                 SizedBox(height: 10),
-                Container(
-                  width: getHelfIpadAndFullMobWidth(context),
-                  child: RaisedButton(
-                    padding: EdgeInsets.symmetric(vertical: 15),
-                    color: Theme.of(context).primaryColor,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        loading == true
-                            ? CircularProgressIndicator()
-                            : Text(
-                                "Login",
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.button,
-                              ),
-                      ],
-                    ),
-                    onPressed: () {
-                      login();
-                      // Navigator.pushReplacementNamed(
-                      //     context, LayoutExample.routeName);
-                    },
-                  ),
-                ),
+                // Container(
+                //   // width: getHelfIpadAndFullMobWidth(context),
+                //   child: RaisedButton(
+                //     padding: EdgeInsets.symmetric(vertical: 15),
+                //     color: Theme.of(context).primaryColor,
+                //     elevation: 0,
+                //     shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.circular(8),
+                //     ),
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.center,
+                //       crossAxisAlignment: CrossAxisAlignment.center,
+                //       children: [
+                //         loading == true
+                //             ? CircularProgressIndicator()
+                //             : Text(
+                //                 "Login",
+                //                 textAlign: TextAlign.center,
+                //                 style: Theme.of(context).textTheme.button,
+                //               ),
+                //       ],
+                //     ),
+                //     onPressed: () {
+                //       login();
+                //       // Navigator.pushReplacementNamed(
+                //       //     context, LayoutExample.routeName);
+                //     },
+                //   ),
+                // ),
               ],
             ),
           );
@@ -338,22 +370,19 @@ class _LoginPageState extends State<LoginPage> {
             });
           }
         }
-      }).catchError((e, s) {
-        print(s);
-        print(e);
-        print("Ti=");
       });
     }
   }
 }
 
-_loginFieldBuilder(
-    String hintText, Function validator, TextEditingController controller) {
+_loginFieldBuilder(String hintText, Function validator,
+    TextEditingController controller, bool secure) {
   return TextFormField(
     controller: controller,
     validator: (v) {
       return validator(v);
     },
+    obscureText: secure,
     decoration: InputDecoration(
       hintText: hintText,
       hintStyle: TextStyle(color: Colors.grey),
