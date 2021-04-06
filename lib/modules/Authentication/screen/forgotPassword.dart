@@ -199,6 +199,7 @@ _loginFieldBuilder(
     // validator: (e) {
     // return validator(e);
     // },
+    keyboardType: TextInputType.emailAddress,
     decoration: InputDecoration(
       hintText: hintText,
       hintStyle: TextStyle(color: Colors.grey),

@@ -16,23 +16,6 @@ class TermCondition extends StatelessWidget {
               AppBar(
                 title: Text("Terms and Conditions"),
                 centerTitle: true,
-                actions: [
-                  IconButton(
-                    icon: Image.asset("assets/images/notification.png"),
-                    onPressed: () {
-                      Navigator.pushNamed(context, NotificationPage.routeName);
-                    },
-                  )
-                ],
-                elevation: 0,
-                leading: showAppBarNodepad(context)
-                    ? IconButton(
-                        icon: Icon(Icons.menu),
-                        onPressed: () {
-                          Scaffold.of(context).openDrawer();
-                        },
-                      )
-                    : null,
               ),
             )
           : PreferredSize(

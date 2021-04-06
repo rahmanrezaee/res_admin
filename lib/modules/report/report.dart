@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant/modules/Resturant/statement/resturant_provider.dart';
 import 'package:restaurant/modules/notifications/notification_page.dart';
+import 'package:restaurant/modules/notifications/widget/NotificationAppBarWidget.dart';
 import 'package:restaurant/modules/report/Services/ReportServices.dart';
 import 'package:restaurant/modules/report/widget/TextfieldResturant.dart';
 import 'package:restaurant/modules/report/widget/buttonResturant.dart';
@@ -58,14 +59,7 @@ class _ReportPageState extends State<ReportPage> {
           AppBar(
             title: Text("Reports"),
             centerTitle: true,
-            actions: [
-              IconButton(
-                icon: Image.asset("assets/images/notification.png"),
-                onPressed: () {
-                  Navigator.pushNamed(context, NotificationPage.routeName);
-                },
-              )
-            ],
+            actions: [NotificationAppBarWidget()],
             elevation: 0,
             leading: showAppBarNodepad(context)
                 ? IconButton(
