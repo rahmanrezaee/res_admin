@@ -157,7 +157,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             child: LabelDashBoard(
                               color: Colors.white,
                               title:
-                                  "Total earning Today: ${dashProvider.getDashData['totalEarningToday']} \$",
+                                  "Total earning Today: ${double.parse((dashProvider.getDashData['totalEarningToday']).toString()).toStringAsFixed(2)} \$",
                             ),
                           ),
                         ),

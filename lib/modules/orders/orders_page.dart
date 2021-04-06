@@ -1,4 +1,5 @@
 import 'package:restaurant/modules/notifications/notification_page.dart';
+import 'package:restaurant/modules/notifications/widget/NotificationAppBarWidget.dart';
 import 'package:restaurant/responsive/functionsResponsive.dart';
 import 'package:restaurant/widgets/appbar_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -90,14 +91,7 @@ class _OrderPageState extends State<OrderPage>
               AppBar(
                 title: Text("Order Page"),
                 centerTitle: true,
-                actions: [
-                  IconButton(
-                    icon: Image.asset("assets/images/notification.png"),
-                    onPressed: () {
-                      Navigator.pushNamed(context, NotificationPage.routeName);
-                    },
-                  )
-                ],
+                actions: [NotificationAppBarWidget()],
                 elevation: 0,
                 leading: showAppBarNodepad(context)
                     ? IconButton(
