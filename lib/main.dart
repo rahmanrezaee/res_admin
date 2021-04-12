@@ -115,7 +115,7 @@ class _MyAppState extends State<MyApp> {
       child: ConnectivityAppWrapper(
         app: MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
+          title: 'Manager App',
           theme: restaurantTheme,
           home: ConnectivityWidgetWrapper(
             stacked: true,

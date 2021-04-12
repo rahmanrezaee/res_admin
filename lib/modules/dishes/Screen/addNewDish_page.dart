@@ -52,7 +52,6 @@ class _AddNewDishState extends State<AddNewDish> {
 
   @override
   void initState() {
-
     dishModel.preparationTime = "00:00";
     dishId = widget.params['dishId'];
     catId = widget.params['catId'];
@@ -231,7 +230,7 @@ class _AddNewDishState extends State<AddNewDish> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 15),
+                      SizedBox(height: 30),
                       SizedBox(
                         width: double.infinity,
                         height: 50,
@@ -285,12 +284,13 @@ class _AddNewDishState extends State<AddNewDish> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: 20),
                       TextFormField(
                         initialValue: "${dishModel.tax ?? ""}",
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           hintText: "Tax",
+                          errorStyle: TextStyle(color: Colors.red),
                           hintStyle: TextStyle(color: Colors.grey),
                           contentPadding: EdgeInsets.only(left: 10, top: 20),
                           enabledBorder: OutlineInputBorder(
@@ -299,6 +299,16 @@ class _AddNewDishState extends State<AddNewDish> {
                             borderSide: BorderSide(color: Colors.grey),
                           ),
                           focusedBorder: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0)),
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0)),
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(10.0)),
                             borderSide: BorderSide(color: Colors.grey),
@@ -335,6 +345,16 @@ class _AddNewDishState extends State<AddNewDish> {
                             borderSide: BorderSide(color: Colors.grey),
                           ),
                           focusedBorder: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0)),
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10.0)),
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
                             borderRadius:
                                 BorderRadius.all(Radius.circular(10.0)),
                             borderSide: BorderSide(color: Colors.grey),
@@ -771,17 +791,26 @@ class _AddNewDishState extends State<AddNewDish> {
   }
 }
 
+// ignore: unused_element
 _textFieldBuilder(String hintText) {
   return TextField(
     decoration: InputDecoration(
       hintText: hintText,
       hintStyle: TextStyle(color: Colors.grey),
-      contentPadding: EdgeInsets.only(left: 10),
+      contentPadding: EdgeInsets.only(left: 10, top: 20),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
         borderSide: BorderSide(color: Colors.grey),
       ),
       focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        borderSide: BorderSide(color: Colors.grey),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        borderSide: BorderSide(color: Colors.grey),
+      ),
+      errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
         borderSide: BorderSide(color: Colors.grey),
       ),
