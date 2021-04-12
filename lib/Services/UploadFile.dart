@@ -114,7 +114,7 @@ openImagePickerModal(context) {
                 ),
                 width: double.infinity,
                 child: Text(
-                  'Choice Image',
+                  'Choose Image',
                 ),
               ),
               SizedBox(
@@ -129,7 +129,7 @@ openImagePickerModal(context) {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         FaIcon(FontAwesomeIcons.camera),
-                        Text('Comara'),
+                        Text('Camera'),
                       ],
                     ),
                     onPressed: () async {
@@ -143,7 +143,7 @@ openImagePickerModal(context) {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         FaIcon(FontAwesomeIcons.images),
-                        Text('Gallary'),
+                        Text('Gallery'),
                       ],
                     ),
                     onPressed: () async {

@@ -169,7 +169,7 @@ class _ResturantFormState extends State<ResturantForm> {
                                 children: [
                                   Expanded(
                                       child: Text(
-                                          "${resturantModel.resturantName}")),
+                                          "${resturantModel.resturantName}",style: TextStyle(),)),
                                 ],
                               ),
                               SizedBox(height: 5),

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:restaurant/modules/Authentication/providers/auth_provider.dart';
 import 'package:restaurant/themes/colors.dart';
 import 'package:flutter/material.dart';
@@ -58,9 +60,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     SizedBox(height: 20),
                     Card(
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(10.0),
                         child: Text(
-                          "Forgotten your Password ? Don't worry just type in your Registered Email address and we will take it from there",
+                          "Forgotten your Password ?\nDon't worry just type in your Registered Email address and we will take it from there",
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -72,14 +74,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         children: [
                           Container(
                             alignment: Alignment.centerLeft,
-                            child: Text("Inter Your Email Address",
+                            child: Text("Enter Your Email Address",
                                 style: Theme.of(context).textTheme.headline4),
                           ),
                           SizedBox(height: 15),
                           Form(
                             key: _formKey,
-                            child: _loginFieldBuilder(
-                                "Forgot Password", _emailController, () {}),
+                            child: _loginFieldBuilder("Email Address",
+                                _emailController, emailValidator),
                           ),
                           SizedBox(height: 15),
                           SizedBox(
@@ -141,39 +143,42 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 return LayoutBuilder(builder: (context, constraints) {
                   return SizedBox(
                     width: 400,
-                    child: SimpleDialog(
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      contentPadding: EdgeInsets.all(15),
-                      children: [
-                        Text(
-                          "A link will be shared to your registered email address please click it to reset your password",
-                          style: Theme.of(context).textTheme.subtitle1,
-                          textAlign: TextAlign.center,
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                      child: SimpleDialog(
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        SizedBox(height: 25),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          child: RaisedButton(
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            color: Theme.of(context).primaryColor,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Text(
-                              "OK",
-                              style: Theme.of(context).textTheme.button,
-                            ),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              // Navigator.pushNamed(context, )
-                            },
+                        contentPadding: EdgeInsets.all(15),
+                        children: [
+                          Text(
+                            "A link will be shared to your registered email address please click it to reset your password",
+                            style: Theme.of(context).textTheme.subtitle1,
+                            textAlign: TextAlign.start,
                           ),
-                        ),
-                      ],
+                          SizedBox(height: 25),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            child: RaisedButton(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              color: Theme.of(context).primaryColor,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text(
+                                "OK",
+                                style: Theme.of(context).textTheme.button,
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                // Navigator.pushNamed(context, )
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 });
@@ -196,12 +201,13 @@ _loginFieldBuilder(
     String hintText, TextEditingController controller, Function validator) {
   return TextFormField(
     controller: controller,
-    // validator: (e) {
-    // return validator(e);
-    // },
+    validator: (e) {
+      return validator(e);
+    },
     keyboardType: TextInputType.emailAddress,
     decoration: InputDecoration(
       hintText: hintText,
+      errorStyle: TextStyle(color: Colors.red),
       hintStyle: TextStyle(color: Colors.grey),
       contentPadding: EdgeInsets.only(left: 10),
       enabledBorder: OutlineInputBorder(
