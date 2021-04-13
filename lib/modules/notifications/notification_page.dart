@@ -23,12 +23,6 @@ class NotificationPage extends StatelessWidget {
           ? AppBar(
               title: Text("Notifications"),
               centerTitle: true,
-              actions: [
-                IconButton(
-                  icon: Icon(Icons.delete_outline_outlined),
-                  onPressed: () {},
-                ),
-              ],
             )
           : PreferredSize(
               preferredSize: Size(10, 20),
@@ -43,34 +37,36 @@ class NotificationPage extends StatelessWidget {
                   builder: (context, snapshot) {
                     return Center(child: CircularProgressIndicator());
                   })
-              : IncrementallyLoadingListView(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  hasMore: () => value.hasMoreItems,
-                  itemCount: () => value.notificatins.length,
-                  loadMore: () async {
-                    await value.fetchNotifications();
-                  },
-                  onLoadMore: () {
-                    value.showLoadingBottom(true);
-                  },
-                  onLoadMoreFinished: () {
-                    value.showLoadingBottom(false);
-                  },
-                  loadMoreOffsetFromBottom: 0,
-                  itemBuilder: (context, index) {
-                    if ((value.loadingMore ?? false) &&
-                        index == value.notificatins.length - 1) {
-                      return Column(
-                        children: <Widget>[
-                          NotificationItem(value.notificatins[index]),
-                          PlaceholderItemCard()
-                        ],
-                      );
-                    }
-                    return NotificationItem(value.notificatins[index]);
-                  },
-                );
+              : value.notificatins.isEmpty
+                  ? Center(child: Text("No Notification"))
+                  : IncrementallyLoadingListView(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      hasMore: () => value.hasMoreItems,
+                      itemCount: () => value.notificatins.length,
+                      loadMore: () async {
+                        await value.fetchNotifications();
+                      },
+                      onLoadMore: () {
+                        value.showLoadingBottom(true);
+                      },
+                      onLoadMoreFinished: () {
+                        value.showLoadingBottom(false);
+                      },
+                      loadMoreOffsetFromBottom: 0,
+                      itemBuilder: (context, index) {
+                        if ((value.loadingMore ?? false) &&
+                            index == value.notificatins.length - 1) {
+                          return Column(
+                            children: <Widget>[
+                              NotificationItem(value.notificatins[index]),
+                              PlaceholderItemCard()
+                            ],
+                          );
+                        }
+                        return NotificationItem(value.notificatins[index]);
+                      },
+                    );
         },
       ),
     );

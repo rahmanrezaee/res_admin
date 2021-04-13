@@ -23,8 +23,6 @@ import 'modules/Authentication/screen/login_page.dart';
 import 'modules/Resturant/statement/resturant_provider.dart';
 import 'modules/categories/provider/categories_provider.dart';
 import 'modules/contactUs/providers/contact_provider.dart';
-import 'modules/coupons/statement/couponProvider.dart';
-import 'modules/customers/provider/customers_provider.dart';
 import 'modules/dashboard/provider/dashboard_provider.dart';
 import 'modules/drawer/drawer.dart';
 import 'modules/notifications/provider/notificaction_provider.dart';
@@ -97,35 +95,55 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<ResturantProvider>(
-            create: (_) => ResturantProvider()),
         ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
-        ChangeNotifierProvider<DashboardProvider>(
-            create: (_) => DashboardProvider()),
-        ChangeNotifierProvider<CustomersProvider>(
-            create: (_) => CustomersProvider()),
-        ChangeNotifierProvider<CategoryProvider>(
-            create: (_) => CategoryProvider()),
-        ChangeNotifierProvider<CoupenProvider>(create: (_) => CoupenProvider()),
-        ChangeNotifierProvider<ContactProvider>(
-            create: (_) => ContactProvider()),
-        ChangeNotifierProvider<NotificationProvider>(
-            create: (_) => NotificationProvider()),
-      ],
-      child: ConnectivityAppWrapper(
-        app: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
-          theme: restaurantTheme,
-          home: ConnectivityWidgetWrapper(
-            stacked: true,
-            height: 30,
-            message: "Connecting...",
-            child: Application(),
-          ),
-          routes: routes,
+        ChangeNotifierProxyProvider<AuthProvider, ResturantProvider>(
+          update: (context, auth, __) => ResturantProvider(auth),
+          create: (context) => ResturantProvider(null),
         ),
-      ),
+        ChangeNotifierProxyProvider<AuthProvider, DashboardProvider>(
+          update: (context, auth, __) => DashboardProvider(auth),
+          create: (context) => DashboardProvider(null),
+        ),
+       
+        ChangeNotifierProxyProvider<AuthProvider, CategoryProvider>(
+          update: (context, auth, __) => CategoryProvider(auth),
+          create: (context) => CategoryProvider(null),
+        ),
+        ChangeNotifierProxyProvider<AuthProvider, ContactProvider>(
+          update: (context, auth, __) => ContactProvider(auth),
+          create: (context) => ContactProvider(null),
+        ),
+        ChangeNotifierProxyProvider<AuthProvider, NotificationProvider>(
+          update: (context, auth, __) => NotificationProvider(auth),
+          create: (context) => NotificationProvider(null),
+        ),
+      ],
+      child: Consumer<AuthProvider>(builder: (context, snapshot, b) {
+        return ConnectivityAppWrapper(
+          app: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Flutter Demo',
+            theme: restaurantTheme,
+            home: ConnectivityWidgetWrapper(
+              stacked: true,
+              height: 30,
+              message: "Connecting...",
+              child: snapshot.token != null
+                  ? Application()
+                  : FutureBuilder(
+                      future: snapshot.autoLogin(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return LoginPage();
+                        } else {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                      }),
+            ),
+            routes: routes,
+          ),
+        );
+      }),
     );
   }
 }
@@ -154,17 +172,6 @@ class _Application extends State<Application> {
       carPlay: true,
       criticalAlert: true,
     );
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getString('user') == null) {
-      setState(() {
-        status = 'userNotLogedIn';
-      });
-    } else {
-      setState(() {
-        status = 'userLogedIn';
-      });
-    }
   }
 
   @override
@@ -223,15 +230,8 @@ class _Application extends State<Application> {
     });
   }
 
-  Widget page = LoginPage();
-
   @override
   Widget build(BuildContext context) {
-    if (status == "userLogedIn") {
-      page = LayoutExample();
-    }
-    return status == "checkingSharedPrefs"
-        ? Center(child: CircularProgressIndicator())
-        : page;
+    return LayoutExample();
   }
 }

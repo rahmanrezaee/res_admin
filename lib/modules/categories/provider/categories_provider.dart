@@ -12,6 +12,8 @@ import '../models/restaurant_model.dart';
 class CategoryProvider with ChangeNotifier {
   ///cat List
   List<CategoryModel> _categories;
+  AuthProvider auth;
+  CategoryProvider(this.auth);
   get getCategories => _categories;
 
   setCategoryToNull() {
@@ -23,7 +25,7 @@ class CategoryProvider with ChangeNotifier {
     String url = "$baseUrl/restaurant/category";
     var res = await APIRequest().get(
       myUrl: url,
-      token: await AuthProvider().token,
+      token: auth.token,
     );
     this._categories = [];
     (res.data['data'] as List).forEach((category) {
@@ -41,7 +43,7 @@ class CategoryProvider with ChangeNotifier {
         myUrl: url,
         myBody: {"restaurantId": resId, "categoryName": newCategory},
         myHeaders: {
-          "token": await AuthProvider().token,
+          "token": auth.token,
         },
       );
 
@@ -62,7 +64,7 @@ class CategoryProvider with ChangeNotifier {
         "categoryName": category,
       },
       myHeaders: {
-        "token": await AuthProvider().token,
+        "token": auth.token,
       },
     );
     this._categories = null;
@@ -77,7 +79,7 @@ class CategoryProvider with ChangeNotifier {
     //getting data
     String url = "$baseUrl/public/category/$categryId";
     var res = await APIRequest().delete(myUrl: url, myBody: null, myHeaders: {
-      'token': await AuthProvider().token,
+      'token': auth.token,
     });
     this._categories = null;
     notifyListeners();

@@ -325,7 +325,7 @@ final ThemeData restaurantTheme = ThemeData(
       fontStyle: FontStyle.normal,
     ),
     errorStyle: TextStyle(
-      color: Color(0xdd000000),
+      color: Color(0xddFF0000),
       fontSize: null,
       fontWeight: FontWeight.w400,
       fontStyle: FontStyle.normal,

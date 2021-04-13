@@ -2,6 +2,7 @@ import 'package:restaurant/modules/Authentication/providers/auth_provider.dart';
 import 'package:restaurant/modules/Authentication/screen/login_page.dart';
 import 'package:restaurant/modules/Resturant/Screen/formResturant.dart';
 import 'package:restaurant/modules/notifications/notification_page.dart';
+import 'package:restaurant/modules/notifications/widget/NotificationAppBarWidget.dart';
 import 'package:restaurant/responsive/functionsResponsive.dart';
 import 'package:restaurant/scaffold/templates/layout/scaffold.dart';
 import 'package:flutter/material.dart';
@@ -122,71 +123,90 @@ class _LayoutExampleState extends State<LayoutExample> {
     return ResponsiveScaffold(
       kDesktopBreakpoint: 768,
       body: pages[pageIndex].page,
+      drawerWidth: 200.0,
       drawer: SizedBox(
         width: 100,
-        child: Padding(
-          padding: const EdgeInsets.all(15),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                ListView(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  children: <Widget>[
-                    ...pages.map((page) {
-                      int index = pages.indexOf(page);
-
-                      if (index == pages.length - 1) {
-                        if (showAppBarNodepad(context)) {
-                          return SizedBox();
-                        }
-                      }
-
-                      return drawerListItemBuilder(
-                        icon: page.icon,
-                        title: page.title,
-                        isActive: pageIndex == index,
-                        onClick: () {
-                          setState(() {
-                            pageIndex = index;
-                          });
-                          if (showAppBarNodepad(context)) {
-                            Navigator.pop(context);
-                          }
-                        },
-                      );
-                    }).toList(),
-                  ],
+        child: Column(
+          children: [
+            Visibility(
+              visible: showAppBarNodepad(context),
+              child: AppBar(
+                centerTitle: true,
+                title: Text("Menu"),
+                leading: IconButton(
+                  icon: new Icon(Icons.menu),
+                  onPressed: () => Navigator.of(context).pop(),
                 ),
-                InkWell(
-                  onTap: () {
-                    AuthProvider().logOut(context);
-                    Navigator.pushReplacementNamed(
-                        context, LoginPage.routeName);
-                  },
-                  child: Card(
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                // actions: [
+                //   NotificationAppBarWidget(),
+                // ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ListView(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      children: <Widget>[
+                        ...pages.map((page) {
+                          int index = pages.indexOf(page);
+
+                          if (index == pages.length - 1) {
+                            if (showAppBarNodepad(context)) {
+                              return SizedBox();
+                            }
+                          }
+
+                          return drawerListItemBuilder(
+                            icon: page.icon,
+                            title: page.title,
+                            isActive: pageIndex == index,
+                            onClick: () {
+                              setState(() {
+                                pageIndex = index;
+                              });
+                              if (showAppBarNodepad(context)) {
+                                Navigator.pop(context);
+                              }
+                            },
+                          );
+                        }).toList(),
+                      ],
                     ),
-                    elevation: 2,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.logout,
+                    InkWell(
+                      onTap: () {
+                        AuthProvider().logOut(context);
+                        Navigator.pushReplacementNamed(
+                            context, LoginPage.routeName);
+                      },
+                      child: Card(
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        elevation: 2,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.logout,
+                              ),
+                              SizedBox(width: 10),
+                              Expanded(child: Text("Logout")),
+                            ],
                           ),
-                          SizedBox(width: 10),
-                          Expanded(child: Text("Logout")),
-                        ],
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

@@ -1,4 +1,3 @@
-
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:restaurant/GlobleService/APIRequest.dart';
@@ -14,6 +13,9 @@ class NotificationProvider with ChangeNotifier {
   int lastPage;
 
   int countNotification = 0;
+  AuthProvider auth;
+
+  NotificationProvider(this.auth);
 
   void setCountNotification(int mount) {
     countNotification = mount;
@@ -38,9 +40,8 @@ class NotificationProvider with ChangeNotifier {
 
   fetchNotifications() async {
     try {
-      final result = await APIRequest().get(
-          myUrl: "$baseUrl/public/notification",
-          token: await AuthProvider().token);
+      final result = await APIRequest()
+          .get(myUrl: "$baseUrl/public/notification", token: auth.token);
 
       print("result $result");
 
@@ -86,7 +87,7 @@ class NotificationProvider with ChangeNotifier {
       final response = await APIRequest().post(
         myBody: {},
         myHeaders: {
-          "token": await AuthProvider().token,
+          "token": auth.token,
         },
         myUrl: url.toString(),
       );

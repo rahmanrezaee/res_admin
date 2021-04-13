@@ -1,6 +1,9 @@
 //core
+import 'package:provider/provider.dart';
+import 'package:restaurant/modules/Authentication/providers/auth_provider.dart';
 import 'package:restaurant/modules/dishes/DishServics/dishServices.dart';
 import 'package:restaurant/modules/dishes/Models/dishModels.dart';
+import 'package:restaurant/modules/notifications/widget/NotificationAppBarWidget.dart';
 import 'package:restaurant/widgets/fancy_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -20,14 +23,18 @@ class DishPage extends StatefulWidget {
 class _DishHomeState extends State<DishPage> {
   bool isLoadDish = true;
 
+  final keySc = GlobalKey<ScaffoldState>();
+
   List<DishModel> dishList;
   String catId;
 
   Future getDish;
+  AuthProvider authProvider;
   @override
   void initState() {
+    authProvider = Provider.of<AuthProvider>(context, listen: false);
     catId = widget.params['catId'];
-    getDish = getFootListWithoutPro(catId).then((value) {
+    getDish = getFootListWithoutPro(catId, authProvider).then((value) {
       dishList = value;
     });
 
@@ -38,6 +45,7 @@ class _DishHomeState extends State<DishPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: keySc,
       resizeToAvoidBottomInset: false,
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
@@ -46,65 +54,94 @@ class _DishHomeState extends State<DishPage> {
           borderRadius: BorderRadius.circular(10),
         ),
         title: Text("Manage Dishes"),
+        centerTitle: true,
         bottom: isLoading
             ? PreferredSize(
                 preferredSize: Size(10, 10),
                 child: LinearProgressIndicator(),
               )
             : null,
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.add,
+        actions: [NotificationAppBarWidget()],
+      ),
+      body: Column(
+        children: [
+          SizedBox(height: 15),
+          Card(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Dish of Category",
+                      style: Theme.of(context).textTheme.headline4),
+                  SizedBox(
+                    width: 35,
+                    height: 35,
+                    child: RaisedButton(
+                      padding: EdgeInsets.all(0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      elevation: 0,
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed(AddNewDish.routeName, arguments: {
+                          "dishId": null,
+                          "catId": catId,
+                        }).then((value) {
+                          print("Done Adding");
+                          getFootListWithoutPro(catId, authProvider)
+                              .then((value) {
+                            setState(() {
+                              dishList = value;
+                            });
+                          });
+                        });
+                      },
+                      color: Theme.of(context).primaryColor,
+                      child: Icon(Icons.add, color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            onPressed: () {
-              Navigator.of(context).pushNamed(AddNewDish.routeName, arguments: {
-                "dishId": null,
-                "catId": catId,
-              }).then((value) {
-                print("Done Adding");
-                getFootListWithoutPro(catId).then((value) {
-                  setState(() {
-                    dishList = value;
-                  });
-                });
-              });
-            },
           ),
+          FutureBuilder(
+              future: getDish,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text("error in Fetch orders"),
+                    );
+                  } else {
+                    return dishList.isEmpty
+                        ? Center(
+                            child: Text("No Dish"),
+                          )
+                        : SingleChildScrollView(
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: ResponsiveGridRow(
+                                children: getColumnDish(dishList),
+                              ),
+                            ),
+                          );
+                  }
+                } else {
+                  return Center(
+                    child: Text("error in Fetch orders"),
+                  );
+                }
+              }),
         ],
       ),
-      body: FutureBuilder(
-          future: getDish,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasError) {
-                return Center(
-                  child: Text("error in Fetch orders"),
-                );
-              } else {
-                return dishList.isEmpty
-                    ? Center(
-                        child: Text("No Dish"),
-                      )
-                    : SingleChildScrollView(
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: ResponsiveGridRow(
-                            children: getColumnDish(dishList),
-                          ),
-                        ),
-                      );
-              }
-            } else {
-              return Center(
-                child: Text("error in Fetch orders"),
-              );
-            }
-          }),
     );
   }
 
@@ -126,23 +163,19 @@ class _DishHomeState extends State<DishPage> {
                       setState(() {
                         isLoading = true;
                       });
-                      deleteDish(element.foodId).then((res) {
+                      deleteDish(element.foodId, authProvider).then((res) {
                         setState(() {
                           isLoading = false;
                         });
                         if (res) {
-                          // ScaffoldMessenger.of(context)
-                          //     .showSnackBar(SnackBar(
-                          //   content: Text(
-                          //       "The Category Deleted Successfully"),
-                          // ));
-
+                          keySc.currentState.showSnackBar(SnackBar(
+                                content:
+                                    Text("The Category Deleted Successfully"),
+                              ));
                         } else {
-                          // ScaffoldMessenger.of(context)
-                          //     .showSnackBar(SnackBar(
-                          //   content: Text(res['message']),
-                          // ));
-
+                          keySc.currentState.showSnackBar(SnackBar(
+                                content: Text(res['message']),
+                              ));
                         }
                       });
                     },
@@ -170,6 +203,13 @@ class DishItem extends StatefulWidget {
 class _DishItemState extends State<DishItem> {
   int visible = 0;
   int quantity = 0;
+
+  AuthProvider authProvider;
+  @override
+  void initState() {
+    authProvider = Provider.of<AuthProvider>(context, listen: false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -221,7 +261,7 @@ class _DishItemState extends State<DishItem> {
                             !widget.dishItem.visibility;
                       });
                       changeVisiablity(widget.dishItem.foodId,
-                              !widget.dishItem.visibility)
+                              !widget.dishItem.visibility, authProvider)
                           .then((value) {
                         if (!value) {
                           setState(() {

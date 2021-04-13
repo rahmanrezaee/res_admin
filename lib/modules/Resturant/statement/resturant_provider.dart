@@ -9,6 +9,8 @@ import 'dart:convert';
 
 class ResturantProvider with ChangeNotifier {
   List<ResturantModel> listResturant;
+  AuthProvider auth;
+  ResturantProvider(this.auth);
 
   Future<bool> deleteResturant(resturantId) async {
     try {
@@ -33,13 +35,11 @@ class ResturantProvider with ChangeNotifier {
     }
   }
 
-
   Future<ResturantModel> getSingleResturant(id) async {
     try {
       String url = "$baseUrl/admin/restaurant/profile/$id";
 
-      final result =
-          await APIRequest().get(myUrl: url, token: await AuthProvider().token);
+      final result = await APIRequest().get(myUrl: url, token: auth.token);
 
       print("result $result");
 
@@ -63,8 +63,7 @@ class ResturantProvider with ChangeNotifier {
     try {
       String url = "$baseUrl/admin/restaurant";
 
-      final result =
-          await APIRequest().get(myUrl: url, token: await AuthProvider().token);
+      final result = await APIRequest().get(myUrl: url, token: auth.token);
 
       print("result $result");
 
@@ -101,8 +100,7 @@ class ResturantProvider with ChangeNotifier {
     try {
       String url = "$baseUrl/admin/restaurant";
 
-      final result =
-          await APIRequest().get(myUrl: url, token: await AuthProvider().token);
+      final result = await APIRequest().get(myUrl: url, token: auth.token);
 
       print("result $result");
 
@@ -138,7 +136,7 @@ class ResturantProvider with ChangeNotifier {
       final response = await APIRequest().post(
         myBody: data,
         myHeaders: {
-          "token": await AuthProvider().token,
+          "token": auth.token,
         },
         myUrl: url.toString(),
       );
@@ -170,7 +168,7 @@ class ResturantProvider with ChangeNotifier {
       final response = await APIRequest().put(
         myBody: data,
         myHeaders: {
-          "token": await AuthProvider().token,
+          "token": auth.token,
         },
         myUrl: url.toString(),
       );

@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'dart:ffi';
+import 'dart:ui';
 
+import 'package:provider/provider.dart';
 import 'package:restaurant/modules/dishes/Models/AddonModel.dart';
 import 'package:restaurant/modules/dishes/Models/dishModels.dart';
 import 'package:restaurant/modules/orders/Models/OrderModels.dart';
@@ -24,18 +26,17 @@ class OrderItem extends StatefulWidget {
 class _OrderItemState extends State<OrderItem> {
   Future getOrder;
 
+  AuthProvider auth;
   @override
   void initState() {
-    super.initState();
+    auth = Provider.of<AuthProvider>(context, listen: false);
 
     getOrderData();
   }
 
   getOrderData() {
     getOrder = OrderServices()
-        .getSingleOrder(
-      state: widget.status,
-    )
+        .getSingleOrder(state: widget.status, auth: auth)
         .then((value) {
       setState(() {
         orderList = value;
@@ -182,7 +183,7 @@ class _OrderItemState extends State<OrderItem> {
                             child: Icon(Icons.check, color: Colors.white),
                             onPressed: () {
                               OrderServices()
-                                  .pickup(item.id, "accepted")
+                                  .pickup(item.id, "accepted", auth)
                                   .then((value) {
                                 getOrderData();
                                 widget.scaffoldKey.currentState
@@ -206,7 +207,7 @@ class _OrderItemState extends State<OrderItem> {
                             elevation: 0,
                             onPressed: () {
                               OrderServices()
-                                  .pickup(item.id, "rejected")
+                                  .pickup(item.id, "rejected", auth)
                                   .then((value) {
                                 getOrderData();
                                 widget.scaffoldKey.currentState
@@ -249,7 +250,8 @@ class _OrderItemState extends State<OrderItem> {
                               item.timePicker = await _selectTime(context);
 
                               OrderServices()
-                                  .updatepickupDate(item.id, item.timePicker)
+                                  .updatepickupDate(
+                                      item.id, item.timePicker, auth)
                                   .then((value) {
                                 getOrderData();
                                 widget.scaffoldKey.currentState
@@ -283,7 +285,7 @@ class _OrderItemState extends State<OrderItem> {
                         ),
                         onPressed: () {
                           OrderServices()
-                              .pickup(item.id, "pickedUp")
+                              .pickup(item.id, "pickedUp", auth)
                               .then((value) {
                             getOrderData();
                             widget.scaffoldKey.currentState
@@ -352,46 +354,49 @@ class DishItem extends StatelessWidget {
                 showDialog(
                     context: context,
                     builder: (context) {
-                      return StatefulBuilder(builder: (context, setState) {
-                        return ListTileTheme(
-                          iconColor: AppColors.green,
-                          textColor: AppColors.green,
-                          child: Theme(
-                              data: Theme.of(context).copyWith(
-                                  toggleableActiveColor: AppColors.green),
-                              child: SimpleDialog(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                title: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        "Add On List",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline5,
-                                        textAlign: TextAlign.center,
+                      return BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                        child: StatefulBuilder(builder: (context, setState) {
+                          return ListTileTheme(
+                            iconColor: AppColors.green,
+                            textColor: AppColors.green,
+                            child: Theme(
+                                data: Theme.of(context).copyWith(
+                                    toggleableActiveColor: AppColors.green),
+                                child: SimpleDialog(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  title: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          "Add On List",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline5,
+                                          textAlign: TextAlign.center,
+                                        ),
                                       ),
-                                    ),
-                                    IconButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        icon: Icon(Icons.close))
+                                      IconButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          icon: Icon(Icons.close))
+                                    ],
+                                  ),
+                                  titlePadding: EdgeInsets.only(top: 15),
+                                  children: [
+                                    Divider(),
+                                    getAddonList(model.addOn, context)
                                   ],
-                                ),
-                                titlePadding: EdgeInsets.only(top: 15),
-                                children: [
-                                  Divider(),
-                                  getAddonList(model.addOn, context)
-                                ],
-                                // children: Column(
-                                //   children: [],
-                                // ),
-                              )),
-                        );
-                      });
+                                  // children: Column(
+                                  //   children: [],
+                                  // ),
+                                )),
+                          );
+                        }),
+                      );
                     });
               },
             ),
@@ -412,68 +417,71 @@ class DishItem extends StatelessWidget {
                 showDialog(
                     context: context,
                     builder: (context) {
-                      return StatefulBuilder(builder: (context, setState) {
-                        return ListTileTheme(
-                          iconColor: AppColors.green,
-                          textColor: AppColors.green,
-                          child: Theme(
-                            data: Theme.of(context).copyWith(
-                                toggleableActiveColor: AppColors.green),
-                            child: SimpleDialog(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                      return BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                        child: StatefulBuilder(builder: (context, setState) {
+                          return ListTileTheme(
+                            iconColor: AppColors.green,
+                            textColor: AppColors.green,
+                            child: Theme(
+                              data: Theme.of(context).copyWith(
+                                  toggleableActiveColor: AppColors.green),
+                              child: SimpleDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                title: Text(
+                                  "Order Note",
+                                  style: Theme.of(context).textTheme.headline5,
+                                  textAlign: TextAlign.center,
+                                ),
+                                titlePadding: EdgeInsets.only(top: 15),
+                                contentPadding: EdgeInsets.all(15),
+                                children: [
+                                  Divider(),
+                                  Container(
+                                    height: getHelfDeviceHeightSize(context),
+                                    width: 200,
+                                    child: ListView.builder(
+                                      itemCount: model.orderNote.length,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, i) {
+                                        return new Column(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                top: 10,
+                                                bottom: 5,
+                                              ),
+                                              child: new Text(
+                                                "${NumberToWords.convert(i + 1, "en")} dish",
+                                              ),
+                                            ),
+                                            Container(
+                                              width: double.infinity,
+                                              padding: EdgeInsets.all(10),
+                                              color: Colors.grey[100],
+                                              child: new Text(
+                                                model.orderNote[i] == ""
+                                                    ? "No Instrucation"
+                                                    : model.orderNote[i],
+                                                style: new TextStyle(
+                                                    fontSize: 14.0),
+                                              ),
+                                            ),
+                                            Divider()
+                                          ],
+                                        );
+                                      },
+                                    ),
+                                  )
+                                ],
                               ),
-                              title: Text(
-                                "Order Note",
-                                style: Theme.of(context).textTheme.headline5,
-                                textAlign: TextAlign.center,
-                              ),
-                              titlePadding: EdgeInsets.only(top: 15),
-                              contentPadding: EdgeInsets.all(15),
-                              children: [
-                                Divider(),
-                                Container(
-                                  height: getHelfDeviceHeightSize(context),
-                                  width: 200,
-                                  child: ListView.builder(
-                                    itemCount: model.orderNote.length,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemBuilder: (context, i) {
-                                      return new Column(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                              top: 10,
-                                              bottom: 5,
-                                            ),
-                                            child: new Text(
-                                              "${NumberToWords.convert(i + 1, "en")} dish",
-                                            ),
-                                          ),
-                                          Container(
-                                            width: double.infinity,
-                                            padding: EdgeInsets.all(10),
-                                            color: Colors.grey[100],
-                                            child: new Text(
-                                              model.orderNote[i] == ""
-                                                  ? "No Instrucation"
-                                                  : model.orderNote[i],
-                                              style:
-                                                  new TextStyle(fontSize: 14.0),
-                                            ),
-                                          ),
-                                          Divider()
-                                        ],
-                                      );
-                                    },
-                                  ),
-                                )
-                              ],
                             ),
-                          ),
-                        );
-                      });
+                          );
+                        }),
+                      );
                     });
               },
             ),

@@ -1,15 +1,15 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:restaurant/GlobleService/APIRequest.dart';
 import 'package:restaurant/constants/UrlConstants.dart';
 import 'package:restaurant/modules/Authentication/providers/auth_provider.dart';
 
-Future getReport({fromDate, toDate, type, coupenCode}) async {
+Future getReport({fromDate, toDate, type, coupenCode,@required AuthProvider auth}) async {
   try {
     String url =
         "$baseUrl/restaurant/report?type=$type${coupenCode != null && coupenCode != "" ? "&couponCode=" + coupenCode : ""}${fromDate != null ? "&fromDate=" + fromDate : ""}${toDate != null ? "&toDate=" + toDate : ""}";
 
-    final result =
-        await APIRequest().get(myUrl: url, token: await AuthProvider().token);
+    final result = await APIRequest().get(myUrl: url, token: auth.token);
 
     print("result $result");
 
@@ -24,7 +24,7 @@ Future getReport({fromDate, toDate, type, coupenCode}) async {
   }
 }
 
-Future getSendReportEmil({fromDate, toDate, coupenCode}) async {
+Future getSendReportEmil({fromDate, toDate, coupenCode,@required AuthProvider auth}) async {
   try {
     String url = "$baseUrl/restaurant/report/email-report-orders";
 
@@ -47,10 +47,8 @@ Future getSendReportEmil({fromDate, toDate, coupenCode}) async {
     }
 
     print(data);
-    final result = await APIRequest().post(
-        myUrl: url,
-        myHeaders: {"token": await AuthProvider().token},
-        myBody: data);
+    final result = await APIRequest()
+        .post(myUrl: url, myHeaders: {"token": auth.token}, myBody: data);
 
     print("result $result");
 
@@ -65,7 +63,7 @@ Future getSendReportEmil({fromDate, toDate, coupenCode}) async {
   }
 }
 
-Future getSendReportEmailEarnings({fromDate, toDate}) async {
+Future getSendReportEmailEarnings({fromDate, toDate,@required AuthProvider auth}) async {
   try {
     String url = "$baseUrl/restaurant/report/email-report-earnings";
 
@@ -83,10 +81,8 @@ Future getSendReportEmailEarnings({fromDate, toDate}) async {
     }
 
     print(data);
-    final result = await APIRequest().post(
-        myUrl: url,
-        myHeaders: {"token": await AuthProvider().token},
-        myBody: data);
+    final result = await APIRequest()
+        .post(myUrl: url, myHeaders: {"token": auth.token}, myBody: data);
 
     print("result $result");
 
