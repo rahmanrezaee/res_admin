@@ -53,10 +53,7 @@ class _AddNewDishState extends State<AddNewDish> {
   AuthProvider authProvider;
   @override
   void initState() {
-<<<<<<< HEAD
     authProvider = Provider.of<AuthProvider>(context, listen: false);
-=======
->>>>>>> 7990f0d76b86ce4d1e224a735f3745b180fd7b1f
     dishModel.preparationTime = "00:00";
     dishId = widget.params['dishId'];
     catId = widget.params['catId'];
@@ -241,7 +238,6 @@ class _AddNewDishState extends State<AddNewDish> {
                           ),
                         ],
                       ),
-<<<<<<< HEAD
                       isSubmiting == true && imgList.isEmpty
                           ? Container(
                               padding: EdgeInsets.only(left: 10, top: 10),
@@ -253,57 +249,6 @@ class _AddNewDishState extends State<AddNewDish> {
                                   fontSize: 13,
                                 ),
                                 textAlign: TextAlign.left,
-=======
-                      SizedBox(height: 30),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 50,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: TextFormFieldResturant(
-                                initValue: dishModel.foodName,
-                                hintText: "Dish Name",
-                                onChange: (value) {
-                                  setState(() {
-                                    dishModel.foodName = value;
-                                  });
-                                },
-                                valide: (String value) {
-                                  if (value.isEmpty) {
-                                    return "Your Dish  Name is Empty";
-                                  }
-                                },
-                                onSave: (value) {
-                                  setState(() {
-                                    dishModel.foodName = value;
-                                  });
-                                },
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Expanded(
-                              child: TextFormFieldResturant(
-                                initValue: "${dishModel.price ?? ""}",
-                                typetext: TextInputType.number,
-                                hintText: "Price",
-                                onChange: (value) {
-                                  setState(() {
-                                    dishModel.price = double.parse(value);
-                                  });
-                                },
-                                valide: (String value) {
-                                  if (value.isEmpty) {
-                                    return "Your Price  is Empty";
-                                  }
-                                },
-                                onSave: (value) {
-                                  setState(() {
-                                    dishModel.price = double.parse(value);
-                                  });
-                                },
->>>>>>> 7990f0d76b86ce4d1e224a735f3745b180fd7b1f
                               ),
                             )
                           : Container(),
@@ -338,7 +283,6 @@ class _AddNewDishState extends State<AddNewDish> {
                             ),
                           ),
                         ),
-<<<<<<< HEAD
                         ResponsiveGridCol(
                           lg: 6,
                           md: 6,
@@ -392,38 +336,6 @@ class _AddNewDishState extends State<AddNewDish> {
                               dishModel.tax = double.parse(value);
                             });
                           },
-=======
-                      ),
-                      SizedBox(height: 20),
-                      TextFormField(
-                        initialValue: "${dishModel.tax ?? ""}",
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          hintText: "Tax",
-                          errorStyle: TextStyle(color: Colors.red),
-                          hintStyle: TextStyle(color: Colors.grey),
-                          contentPadding: EdgeInsets.only(left: 10, top: 20),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(color: Colors.grey),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(color: Colors.grey),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(color: Colors.grey),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(color: Colors.grey),
-                          ),
->>>>>>> 7990f0d76b86ce4d1e224a735f3745b180fd7b1f
                         ),
                       ),
                       SizedBox(height: 10),
