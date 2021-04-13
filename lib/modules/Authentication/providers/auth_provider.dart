@@ -1,17 +1,14 @@
-import 'package:restaurant/GlobleService/APIRequest.dart';
-import 'package:restaurant/constants/api_path.dart';
-import 'package:restaurant/modules/Authentication/screen/login_page.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:restaurant/GlobleService/APIRequest.dart';
+import 'package:restaurant/constants/UrlConstants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:restaurant/modules/Authentication/providers/auth_provider.dart';
-import 'package:restaurant/themes/colors.dart';
-import 'package:provider/provider.dart';
-import '../validators/formFieldsValidators.dart';
 
 class AuthProvider with ChangeNotifier {
+  String _token;
+
   Future login(String username, String password, String fcm) async {
     try {
       print("Loging in");
@@ -22,24 +19,20 @@ class AuthProvider with ChangeNotifier {
         myUrl: url,
         myBody: {"email": username, "password": password, "fcmToken": fcm},
       );
-
-      if (res.data != null) {
-        //getting user data
-        var user = {
-          'token': res.data['data']['token'],
-          'expierDate': DateTime.now().add(Duration(days: 1)).toString(),
-          'userId': res.data['data']['user']['_id'],
-        };
-        //saving user data to sharedpreferences
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        print(json.encode(user));
-        await prefs.setString('user', json.encode(user));
-      }
+      //getting user data
+      var user = {
+        'token': res.data['data']['token'],
+        'expierDate': DateTime.now().add(Duration(days: 1)).toString(),
+        'userId': res.data['data']['user']['_id'],
+      };
+      //saving user data to sharedpreferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      print(json.encode(user));
+      await prefs.setString('user', json.encode(user));
       //return message
       return {"status": true, "message": "logedIn"};
     } on DioError catch (e) {
-      print("e.response");
-      print(e.response);
+      print(e.response.data);
       return e.response.data;
     }
   }
@@ -48,7 +41,7 @@ class AuthProvider with ChangeNotifier {
   // expierdate
   // userid
   Future forgotPassword(email) async {
-    String url = "$baseUrl/customer/user/forgotpassword";
+    String url = "$baseUrl/restaurant/user/forgotpassword";
     print(email);
     try {
       var res = await APIRequest().post(
@@ -88,7 +81,29 @@ class AuthProvider with ChangeNotifier {
   }
 
   get token {
-    return checkLoginStatus();
+    return _token;
+  }
+
+  Future checkLoginStatus() async {}
+
+  refreshToken() {}
+
+  Future<bool> autoLogin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('user') == null) {
+      _token = null;
+    } else {
+      //Checking expiery date
+      DateTime expireDate =
+          DateTime.parse(json.decode(prefs.getString('user'))['expierDate']);
+      if (DateTime.now().isAfter(expireDate.add(Duration(days: 1)))) {
+        _token = null;
+      } else {
+        _token = json.decode(prefs.getString('user'))['token'];
+      }
+    }
+    notifyListeners();
+    return true;
   }
 
   Future<String> resturantId() async {
@@ -100,21 +115,24 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future checkLoginStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getString('user') == null) {
-      return '';
-    } else {
-      //Checking expiery date
-      DateTime expireDate =
-          DateTime.parse(json.decode(prefs.getString('user'))['expierDate']);
-      if (DateTime.now().isAfter(expireDate.add(Duration(days: 1)))) {
-        return refreshToken();
-      } else {
-        return json.decode(prefs.getString('user'))['token'];
-      }
+  Future submitPass(String _oldPass, String _newPass) async {
+    try {
+      var params = {
+        "oldPassword": _oldPass,
+        "newPassword": _newPass,
+      };
+
+      String url = "$baseUrl/restaurant/user/changepassword";
+
+      final response = await APIRequest()
+          .post(myUrl: url, myBody: params, myHeaders: {"token": _token});
+
+      print("Hello: submitContact: $response");
+
+      return response.data;
+    } on DioError catch (e) {
+      print(e.response);
+      return e.response.data;
     }
   }
-
-  refreshToken() {}
 }

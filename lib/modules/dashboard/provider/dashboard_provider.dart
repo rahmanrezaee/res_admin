@@ -9,6 +9,9 @@ import 'dart:convert';
 
 class DashboardProvider with ChangeNotifier {
   var _dashboardData;
+  AuthProvider auth;
+
+  DashboardProvider(this.auth);
   get getDashData => _dashboardData;
   bool openForOrder;
   bool autoAcceptOrder;
@@ -18,8 +21,7 @@ class DashboardProvider with ChangeNotifier {
   fetchDashData() async {
     // if (token == '') {
     String url = "$baseUrl/restaurant/dashboard";
-    var res =
-        await APIRequest().get(myUrl: url, token: await AuthProvider().token);
+    var res = await APIRequest().get(myUrl: url, token: auth.token);
     this._dashboardData = res.data['data'];
 
     openForOrder = _dashboardData['restaurant']['openForOrder'];
@@ -38,7 +40,7 @@ class DashboardProvider with ChangeNotifier {
       final response = await APIRequest().put(
         myBody: {"openForOrder": state},
         myHeaders: {
-          "token": await AuthProvider().token,
+          "token": auth.token,
         },
         myUrl: url.toString(),
       );
@@ -66,7 +68,7 @@ class DashboardProvider with ChangeNotifier {
       final response = await APIRequest().put(
         myBody: {"autoAcceptOrder": state},
         myHeaders: {
-          "token": await AuthProvider().token,
+          "token": auth.token,
         },
         myUrl: url.toString(),
       );

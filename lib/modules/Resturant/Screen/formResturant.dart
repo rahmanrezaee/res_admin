@@ -2,9 +2,12 @@ import 'dart:async';
 
 import 'package:restaurant/Services/UploadFile.dart';
 import 'package:restaurant/constants/UrlConstants.dart';
+import 'package:restaurant/constants/assest_path.dart';
 import 'package:restaurant/modules/Authentication/providers/auth_provider.dart';
+import 'package:restaurant/modules/Authentication/screen/login_page.dart';
 import 'package:restaurant/modules/Resturant/Models/Resturant.dart';
 import 'package:restaurant/modules/Resturant/Models/location.dart';
+import 'package:restaurant/modules/Resturant/Screen/changePassword_page.dart';
 import 'package:restaurant/modules/Resturant/statement/resturant_provider.dart';
 import 'package:restaurant/modules/notifications/notification_page.dart';
 import 'package:restaurant/modules/notifications/widget/NotificationAppBarWidget.dart';
@@ -169,7 +172,10 @@ class _ResturantFormState extends State<ResturantForm> {
                                 children: [
                                   Expanded(
                                       child: Text(
-                                          "${resturantModel.resturantName}",style: TextStyle(),)),
+                                    "${resturantModel.resturantName}",
+                                    style:
+                                        Theme.of(context).textTheme.headline6,
+                                  )),
                                 ],
                               ),
                               SizedBox(height: 5),
@@ -236,6 +242,80 @@ class _ResturantFormState extends State<ResturantForm> {
                           ],
                         ),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Column(
+                          children: [
+                            Row(children: [
+                              Visibility(
+                                child: Expanded(
+                                  child: RaisedButton(
+                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                    color: Theme.of(context).primaryColor,
+                                    elevation: 0,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Text(
+                                      "Change Password",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ChangePasswordPage()),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ]),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: RaisedButton(
+                                padding: EdgeInsets.symmetric(vertical: 10),
+                                color: Theme.of(context).primaryColor,
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Log Out",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    SizedBox(width: 10),
+                                    Icon(
+                                      Icons.exit_to_app,
+                                      color: Colors.white,
+                                      size: 25,
+                                    )
+                                  ],
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pushAndRemoveUntil(
+                                    CupertinoPageRoute(
+                                        builder: (context) => LoginPage()),
+                                    (_) => false,
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                       Container(
                         child: Card(
                           child: Padding(
@@ -245,27 +325,6 @@ class _ResturantFormState extends State<ResturantForm> {
                                   Expanded(child: _dataBody()),
                                 ],
                               )),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormFieldResturant(
-                          initValue: resturantModel.password,
-                          hintText: "New Password",
-                          onChange: (value) {
-                            setState(() {
-                              resturantModel.password = value;
-                            });
-                          },
-                          onSave: (value) {
-                            if (value == null || value == "") {
-                              return null;
-                            } else {
-                              setState(() {
-                                resturantModel.password = value;
-                              });
-                            }
-                          },
                         ),
                       ),
                       Center(

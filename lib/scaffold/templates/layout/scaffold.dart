@@ -10,6 +10,7 @@ class ResponsiveScaffold extends StatelessWidget {
     this.body,
     // this.trailing,
     this.floatingActionButton,
+    this.drawerWidth = 200.0,
     // this.menuIcon,
     // this.endIcon,
     this.kTabletBreakpoint = 720.0,
@@ -30,7 +31,7 @@ class ResponsiveScaffold extends StatelessWidget {
 
   final kTabletBreakpoint;
   final kDesktopBreakpoint;
-  final _drawerWidth = 200.0;
+  final drawerWidth;
 
   // final IconData menuIcon, endIcon;
 
@@ -50,7 +51,7 @@ class ResponsiveScaffold extends StatelessWidget {
                   children: <Widget>[
                     if (drawer != null) ...[
                       SizedBox(
-                        width: _drawerWidth,
+                        width: drawerWidth,
                         child: Drawer(
                           child: SafeArea(
                             child: drawer,
@@ -69,7 +70,7 @@ class ResponsiveScaffold extends StatelessWidget {
                             ),
                             if (endDrawer != null) ...[
                               Container(
-                                width: _drawerWidth,
+                                width: drawerWidth,
                                 child: Drawer(
                                   elevation: 3.0,
                                   child: SafeArea(
@@ -87,7 +88,7 @@ class ResponsiveScaffold extends StatelessWidget {
                 if (floatingActionButton != null) ...[
                   Positioned(
                     top: 100.0,
-                    left: _drawerWidth - 30,
+                    left: drawerWidth - 30,
                     child: floatingActionButton,
                   )
                 ],
@@ -129,7 +130,7 @@ class ResponsiveScaffold extends StatelessWidget {
                       ),
                       if (endDrawer != null) ...[
                         Container(
-                          width: _drawerWidth,
+                          width: drawerWidth,
                           child: Drawer(
                             elevation: 3.0,
                             child: SafeArea(

@@ -4,6 +4,7 @@ import 'package:restaurant/modules/Authentication/providers/auth_provider.dart';
 import 'package:restaurant/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:string_validator/string_validator.dart';
 import '../validators/formFieldsValidators.dart';
 
 class ForgotPassword extends StatefulWidget {
@@ -80,8 +81,18 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           SizedBox(height: 15),
                           Form(
                             key: _formKey,
-                            child: _loginFieldBuilder("Email Address",
-                                _emailController, emailValidator),
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            child: _loginFieldBuilder(
+                                "Forgot Password", _emailController, (value) {
+                              if (value == null) {
+                                return "Please fill Your email";
+                              }
+
+                              if (!isEmail(value)) {
+                                return "Please Fill correct email";
+                              }
+                            }),
                           ),
                           SizedBox(height: 15),
                           SizedBox(
@@ -100,7 +111,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                       style: Theme.of(context).textTheme.button,
                                     ),
                               onPressed: () {
-                                forgotPassword();
+                                if (_formKey.currentState.validate()) {
+                                  forgotPassword();
+                                }
                               },
                             ),
                           ),
@@ -141,10 +154,10 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               context: context,
               builder: (context) {
                 return LayoutBuilder(builder: (context, constraints) {
-                  return SizedBox(
-                    width: 400,
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                  return BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                    child: SizedBox(
+                      width: 400,
                       child: SimpleDialog(
                         elevation: 5,
                         shape: RoundedRectangleBorder(
@@ -155,7 +168,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           Text(
                             "A link will be shared to your registered email address please click it to reset your password",
                             style: Theme.of(context).textTheme.subtitle1,
-                            textAlign: TextAlign.start,
+                            textAlign: TextAlign.center,
                           ),
                           SizedBox(height: 25),
                           SizedBox(
@@ -210,6 +223,7 @@ _loginFieldBuilder(
       errorStyle: TextStyle(color: Colors.red),
       hintStyle: TextStyle(color: Colors.grey),
       contentPadding: EdgeInsets.only(left: 10),
+      errorStyle: TextStyle(color: Colors.red),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
         borderSide: BorderSide(color: Colors.grey),

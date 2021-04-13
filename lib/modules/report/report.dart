@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:restaurant/modules/Authentication/providers/auth_provider.dart';
 import 'package:restaurant/modules/Resturant/statement/resturant_provider.dart';
 import 'package:restaurant/modules/notifications/notification_page.dart';
 import 'package:restaurant/modules/notifications/widget/NotificationAppBarWidget.dart';
@@ -25,8 +26,10 @@ class _ReportPageState extends State<ReportPage> {
   List<Map> listRest = [
     {"display": "All Resturant", "value": "none"}
   ];
+  AuthProvider auth;
   @override
   void initState() {
+    auth = Provider.of<AuthProvider>(context, listen: false);
     snapshot = Provider.of<ResturantProvider>(context, listen: false);
 
     getResturantList = snapshot.getResturantList().then((value) {
@@ -199,10 +202,11 @@ class _ReportPageState extends State<ReportPage> {
                                         isLoading = true;
                                       });
                                       getSendReportEmil(
-                                        fromDate: startDateOrder,
-                                        toDate: endDateOrder,
-                                        coupenCode: couponController.text,
-                                      ).then((value) {
+                                              fromDate: startDateOrder,
+                                              toDate: endDateOrder,
+                                              coupenCode: couponController.text,
+                                              auth: auth)
+                                          .then((value) {
                                         setState(() {
                                           isLoading = false;
                                         });
@@ -238,6 +242,7 @@ class _ReportPageState extends State<ReportPage> {
                                         fromDate: startDateOrder,
                                         toDate: endDateOrder,
                                         coupenCode: couponController.text,
+                                        auth: auth
                                       ).then((value) {
                                         setState(() {
                                           earning = "${value}";
@@ -374,7 +379,7 @@ class _ReportPageState extends State<ReportPage> {
                                       });
                                       getSendReportEmailEarnings(
                                         fromDate: startDateEarn,
-                                        toDate: endDateEarn,
+                                        toDate: endDateEarn,  auth: auth
                                       ).then((value) {
                                         setState(() {
                                           isLoading = false;
@@ -410,7 +415,7 @@ class _ReportPageState extends State<ReportPage> {
                                       getReport(
                                         type: "earnings",
                                         fromDate: startDateEarn,
-                                        toDate: endDateEarn,
+                                        toDate: endDateEarn,  auth: auth
                                       ).then((value) {
                                         setState(() {
                                           income = "${value}";

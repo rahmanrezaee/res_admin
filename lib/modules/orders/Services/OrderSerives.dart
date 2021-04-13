@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:restaurant/GlobleService/APIRequest.dart';
 import 'package:restaurant/constants/UrlConstants.dart';
 import 'package:restaurant/modules/Authentication/providers/auth_provider.dart';
@@ -5,15 +6,13 @@ import 'package:restaurant/modules/orders/Models/OrderModels.dart';
 import 'package:dio/dio.dart';
 
 class OrderServices {
-  Future<List<OrderModels>> getSingleOrder({
-    state,
-  }) async {
+  Future<List<OrderModels>> getSingleOrder(
+      {state, @required AuthProvider auth}) async {
     List<OrderModels> listOrder;
     try {
       String url = "$baseUrl/restaurant/order?status=$state";
 
-      final result =
-          await APIRequest().get(myUrl: url, token: await AuthProvider().token);
+      final result = await APIRequest().get(myUrl: url, token: auth.token);
 
       print("result $result");
 
@@ -42,13 +41,13 @@ class OrderServices {
     }
   }
 
-  Future<bool> pickup(orderId, statue) async {
+  Future<bool> pickup(orderId, statue, AuthProvider auth) async {
     try {
       String url = "$baseUrl/admin/order/$orderId";
 
       final result = await APIRequest().post(
           myUrl: url,
-          myHeaders: {"token": await AuthProvider().token},
+          myHeaders: {"token": auth.token},
           myBody: {"status": statue});
 
       print("result $result $result");
@@ -62,13 +61,13 @@ class OrderServices {
     }
   }
 
-  Future<bool> updatepickupDate(orderId, pickUpTime) async {
+  Future<bool> updatepickupDate(orderId, pickUpTime,AuthProvider auth) async {
     try {
       String url = "$baseUrl/admin/order/pickuptime/$orderId";
 
       final result = await APIRequest().post(
           myUrl: url,
-          myHeaders: {"token": await AuthProvider().token},
+          myHeaders: {"token": auth.token},
           myBody: {"pickUpTime": pickUpTime});
 
       print("result $result");

@@ -9,6 +9,9 @@ import 'dart:convert';
 
 class ContactProvider with ChangeNotifier {
   List<ContactModel> contacts;
+  AuthProvider auth;
+
+  ContactProvider(this.auth);
   List<ContactModel> get getContacts => this.contacts;
 
   Future<bool> fetchContacts() async {
@@ -17,8 +20,7 @@ class ContactProvider with ChangeNotifier {
 
       print("URl $url");
 
-      final result =
-          await APIRequest().get(myUrl: url, token: await AuthProvider().token);
+      final result = await APIRequest().get(myUrl: url, token: auth.token);
 
       print("result $result");
 

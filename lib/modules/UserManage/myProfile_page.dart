@@ -6,7 +6,6 @@ import 'package:restaurant/responsive/functionsResponsive.dart';
 import 'package:restaurant/widgets/appbar_widget.dart';
 import 'package:restaurant/widgets/orderItem_widget.dart';
 //widgets
-import 'package:restaurant/widgets/commentItem_widget.dart';
 
 class MyProfilePage extends StatefulWidget {
   @override
