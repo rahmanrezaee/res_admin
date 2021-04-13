@@ -36,14 +36,23 @@ class TextFormFieldResturant extends StatelessWidget {
       validator: this.valide,
       decoration: InputDecoration(
         hintText: hintText,
+        errorStyle: TextStyle(color: Colors.red),
         suffixIcon: Icon(this.icon),
         hintStyle: TextStyle(color: Colors.grey),
-        contentPadding: EdgeInsets.only(left: 10),
+        contentPadding: EdgeInsets.only(left: 10, top: 20),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
           borderSide: BorderSide(color: Colors.grey),
         ),
         focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          borderSide: BorderSide(color: Colors.grey),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          borderSide: BorderSide(color: Colors.grey),
+        ),
+        errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(Radius.circular(10.0)),
           borderSide: BorderSide(color: Colors.grey),
         ),

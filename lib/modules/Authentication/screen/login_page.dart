@@ -76,12 +76,18 @@ class _LoginPageState extends State<LoginPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(height: 50),
+                      Text(
+                        "Login",
+                        style: Theme.of(context).textTheme.headline5.copyWith(
+                            fontWeight: FontWeight.bold, color: Colors.black),
+                      ),
+                      SizedBox(height: 20),
                       Image.asset("${AssestPath.logo}", width: 150),
                       SizedBox(height: 50),
                       Form(
                         key: _formKey,
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text("Login with your account",
                                 style: Theme.of(context).textTheme.headline4),
@@ -103,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             SizedBox(height: 15),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 InkWell(
                                   onTap: () {
@@ -113,43 +119,18 @@ class _LoginPageState extends State<LoginPage> {
                                   },
                                   child: Text(
                                     "Forgot Password?",
-                                    style:
-                                        Theme.of(context).textTheme.subtitle2,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle2
+                                        .copyWith(
+                                            decoration:
+                                                TextDecoration.underline),
                                   ),
                                 ),
                               ],
                             ),
                             SizedBox(height: 10),
                           ],
-                        ),
-                      ),
-                      Container(
-                        width: getHelfIpadAndFullMobWidth(context),
-                        child: RaisedButton(
-                          padding: EdgeInsets.symmetric(vertical: 15),
-                          color: Theme.of(context).primaryColor,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              loading == true
-                                  ? CircularProgressIndicator()
-                                  : Text(
-                                      "Login",
-                                      textAlign: TextAlign.center,
-                                      style: Theme.of(context).textTheme.button,
-                                    ),
-                            ],
-                          ),
-                          onPressed: () {
-                            login();
-                            // Navigator.pushReplacementNamed(
-                            //     context, LayoutExample.routeName);
-                          },
                         ),
                       ),
                       SizedBox(height: 20),
@@ -182,6 +163,38 @@ class _LoginPageState extends State<LoginPage> {
                                 style: TextStyle(color: AppColors.green),
                               ),
                             ]),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        width: getHelfIpadAndFullMobWidth(context),
+                        child: RaisedButton(
+                          padding: EdgeInsets.symmetric(vertical: 15),
+                          color: Theme.of(context).primaryColor,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              loading == true
+                                  ? CircularProgressIndicator()
+                                  : Text(
+                                      "Login",
+                                      textAlign: TextAlign.center,
+                                      style: Theme.of(context).textTheme.button,
+                                    ),
+                            ],
+                          ),
+                          onPressed: () {
+                            login();
+                            // Navigator.pushReplacementNamed(
+                            //     context, LayoutExample.routeName);
+                          },
+                        ),
                       ),
                       SizedBox(height: 20),
                       error == null
@@ -239,6 +252,7 @@ _loginFieldBuilder(String hintText, Function validator, textInputType,
     keyboardType: textInputType ?? TextInputType.text,
     decoration: InputDecoration(
       hintText: hintText,
+      errorStyle: TextStyle(color: Colors.red),
       hintStyle: TextStyle(color: Colors.grey),
       contentPadding: EdgeInsets.only(left: 10),
       enabledBorder: OutlineInputBorder(

@@ -61,9 +61,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     SizedBox(height: 20),
                     Card(
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(10.0),
                         child: Text(
-                          "Forgotten your Password ? Don't worry just type in your Registered Email address and we will take it from there",
+                          "Forgotten your Password ?\nDon't worry just type in your Registered Email address and we will take it from there",
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -75,7 +75,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         children: [
                           Container(
                             alignment: Alignment.centerLeft,
-                            child: Text("Inter Your Email Address",
+                            child: Text("Enter Your Email Address",
                                 style: Theme.of(context).textTheme.headline4),
                           ),
                           SizedBox(height: 15),
@@ -220,6 +220,7 @@ _loginFieldBuilder(
     keyboardType: TextInputType.emailAddress,
     decoration: InputDecoration(
       hintText: hintText,
+      errorStyle: TextStyle(color: Colors.red),
       hintStyle: TextStyle(color: Colors.grey),
       contentPadding: EdgeInsets.only(left: 10),
       errorStyle: TextStyle(color: Colors.red),
