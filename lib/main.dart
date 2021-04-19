@@ -104,7 +104,6 @@ class _MyAppState extends State<MyApp> {
           update: (context, auth, __) => DashboardProvider(auth),
           create: (context) => DashboardProvider(null),
         ),
-       
         ChangeNotifierProxyProvider<AuthProvider, CategoryProvider>(
           update: (context, auth, __) => CategoryProvider(auth),
           create: (context) => CategoryProvider(null),
@@ -122,7 +121,7 @@ class _MyAppState extends State<MyApp> {
         return ConnectivityAppWrapper(
           app: MaterialApp(
             debugShowCheckedModeBanner: false,
-            title: 'Flutter Demo',
+            title: 'Manager App',
             theme: restaurantTheme,
             home: ConnectivityWidgetWrapper(
               stacked: true,

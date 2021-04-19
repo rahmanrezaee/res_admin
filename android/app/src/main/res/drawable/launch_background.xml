@@ -6,7 +6,7 @@
     <!-- You can insert your own image assets here -->
     <item
         android:gravity="center"
-        android:height="100pt"
+     
         android:right="0dp"
         android:bottom="0dp"
         android:left="0dp"
