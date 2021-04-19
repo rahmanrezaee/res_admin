@@ -1,30 +1,31 @@
-import 'package:restaurant/modules/notifications/notification_page.dart';
-import 'package:restaurant/responsive/functionsResponsive.dart';
-import 'package:restaurant/widgets/appbar_widget.dart';
+
 import 'package:flutter/material.dart';
 import './services/term&condition_service.dart';
 
-class TermCondition extends StatelessWidget {
+class TermCondition extends StatefulWidget {
   static String routeName = "TermCondition";
+
+  @override
+  _TermConditionState createState() => _TermConditionState();
+}
+
+class _TermConditionState extends State<TermCondition> {
   TermConditionService termConditionService = new TermConditionService();
+
+  Future getData;
+
+  @override
+  void initState() {
+    super.initState();
+    getData = termConditionService.getTerm();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: showAppBarNodepad(context)
-          ? adaptiveAppBarBuilder(
-              context,
-              AppBar(
-                title: Text("Terms and Conditions"),
-                centerTitle: true,
-              ),
-            )
-          : PreferredSize(
-              preferredSize: Size(10, 20),
-              child: SizedBox(
-                height: 60,
-              )),
+      appBar: AppBar(centerTitle: true, title: Text("Terms and Conditions")),
       body: FutureBuilder(
-          future: termConditionService.getTerm(),
+          future: getData,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return SingleChildScrollView(

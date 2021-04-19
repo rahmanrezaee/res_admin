@@ -1,9 +1,9 @@
-import 'package:restaurant/modules/Authentication/providers/auth_provider.dart';
-import 'package:restaurant/modules/Authentication/screen/login_page.dart';
-import 'package:restaurant/themes/colors.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../validators/formFieldsValidators.dart';
+import 'package:restaurant/modules/Authentication/providers/auth_provider.dart';
+import 'package:restaurant/themes/colors.dart';
 
 class ForgotPasswordWithKey extends StatefulWidget {
   static String routeName = "ForgotPasswordWithKey";
@@ -20,12 +20,14 @@ class _ForgotPasswordWithKeyState extends State<ForgotPasswordWithKey> {
 
   TextEditingController _passwordController = new TextEditingController();
 
+  final _scaffoldKey = new GlobalKey<ScaffoldState>();
   AuthProvider authProvider;
 
   @override
   Widget build(BuildContext context) {
     authProvider = Provider.of<AuthProvider>(context);
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text(
           "Rest Password",
@@ -83,9 +85,13 @@ class _ForgotPasswordWithKeyState extends State<ForgotPasswordWithKey> {
                             child: Column(
                               children: [
                                 _loginFieldBuilder(
-                                    "New Password", _passwordController, (v) {
+                                    "New Password", _passwordController,
+                                    (String v) {
                                   print(v);
                                   if (v == '') {
+                                    return "Please Enter Password!";
+                                  }
+                                  if (v.length < 6) {
                                     return "Please add more character!";
                                   }
                                 }),
@@ -131,7 +137,6 @@ class _ForgotPasswordWithKeyState extends State<ForgotPasswordWithKey> {
                             style: TextStyle(color: AppColors.redText),
                           )
                         : Container(),
-                    SizedBox(height: 15),
                   ],
                 ),
               ),
@@ -150,6 +155,7 @@ class _ForgotPasswordWithKeyState extends State<ForgotPasswordWithKey> {
       setState(() {
         loading = true;
       });
+      FocusScope.of(context).requestFocus(new FocusNode());
       String password = _passwordController.text;
       authProvider
           .forgotPasswordWithKey(password, widget.forgotPasswordToken)
@@ -158,9 +164,12 @@ class _ForgotPasswordWithKeyState extends State<ForgotPasswordWithKey> {
           loading = false;
         });
         if (res['status'] == true) {
-          Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
-          setState(() {
-            error = null;
+          _scaffoldKey.currentState.showSnackBar(SnackBar(
+            content: Text("Successfuly Password Changed."),
+            duration: Duration(seconds: 3),
+          ));
+          Timer(Duration(seconds: 3), () {
+            Navigator.of(context).pop();
           });
         } else {
           setState(() {

@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:restaurant/modules/Authentication/providers/auth_provider.dart';
+import 'package:restaurant/modules/Authentication/screen/login_page.dart';
 import 'package:restaurant/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -186,7 +187,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                               ),
                               onPressed: () {
                                 Navigator.of(context).pop();
-                                // Navigator.pushNamed(context, )
+                                        Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
                               },
                             ),
                           ),
