@@ -53,6 +53,7 @@ class _AddNewDishState extends State<AddNewDish> {
   AuthProvider authProvider;
   @override
   void initState() {
+    authProvider = Provider.of<AuthProvider>(context, listen: false);
     dishModel.preparationTime = "00:00";
     dishId = widget.params['dishId'];
     catId = widget.params['catId'];
@@ -237,58 +238,20 @@ class _AddNewDishState extends State<AddNewDish> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 30),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 50,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: TextFormFieldResturant(
-                                initValue: dishModel.foodName,
-                                hintText: "Dish Name",
-                                onChange: (value) {
-                                  setState(() {
-                                    dishModel.foodName = value;
-                                  });
-                                },
-                                valide: (String value) {
-                                  if (value.isEmpty) {
-                                    return "Your Dish  Name is Empty";
-                                  }
-                                },
-                                onSave: (value) {
-                                  setState(() {
-                                    dishModel.foodName = value;
-                                  });
-                                },
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Expanded(
-                              child: TextFormFieldResturant(
-                                initValue: "${dishModel.price ?? ""}",
-                                typetext: TextInputType.number,
-                                hintText: "Price",
-                                onChange: (value) {
-                                  setState(() {
-                                    dishModel.price = double.parse(value);
-                                  });
-                                },
-                                valide: (String value) {
-                                  if (value.isEmpty) {
-                                    return "Your Price  is Empty";
-                                  }
-                                },
-                                onSave: (value) {
-                                  setState(() {
-                                    dishModel.price = double.parse(value);
-                                  });
-                                },
+                      isSubmiting == true && imgList.isEmpty
+                          ? Container(
+                              padding: EdgeInsets.only(left: 10, top: 10),
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Please Add at least a Image",
+                                style: TextStyle(
+                                  color: Colors.redAccent,
+                                  fontSize: 13,
+                                ),
+                                textAlign: TextAlign.left,
                               ),
                             )
-                          :Container(),
+                          : Container(),
                       SizedBox(height: 15),
                       ResponsiveGridRow(children: [
                         ResponsiveGridCol(
@@ -320,36 +283,59 @@ class _AddNewDishState extends State<AddNewDish> {
                             ),
                           ),
                         ),
-                      ],
-                      SizedBox(height: 20),
-                      TextFormField(
-                        initialValue: "${dishModel.tax ?? ""}",
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
+                        ResponsiveGridCol(
+                          lg: 6,
+                          md: 6,
+                          sm: 12,
+                          xl: 12,
+                          xs: 12,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormFieldResturant(
+                              initValue: "${dishModel.price ?? ""}",
+                              typetext: TextInputType.number,
+                              hintText: "Price",
+                              onChange: (value) {
+                                setState(() {
+                                  dishModel.price = double.parse(value);
+                                });
+                              },
+                              valide: (String value) {
+                                if (value.isEmpty) {
+                                  return "Your Price  is Empty";
+                                }
+                              },
+                              onSave: (value) {
+                                setState(() {
+                                  dishModel.price = double.parse(value);
+                                });
+                              },
+                            ),
+                          ),
+                        )
+                      ]),
+                      SizedBox(height: 10),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: TextFormFieldResturant(
+                          initValue: "${dishModel.tax ?? ""}",
+                          typetext: TextInputType.number,
                           hintText: "Tax",
-                          errorStyle: TextStyle(color: Colors.red),
-                          hintStyle: TextStyle(color: Colors.grey),
-                          contentPadding: EdgeInsets.only(left: 10, top: 20),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(color: Colors.grey),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(color: Colors.grey),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(color: Colors.grey),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(color: Colors.grey),
-                          ),
+                          onChange: (value) {
+                            setState(() {
+                              dishModel.tax = double.parse(value);
+                            });
+                          },
+                          valide: (String value) {
+                            if (value.isEmpty) {
+                              return "Your tax  is Empty";
+                            }
+                          },
+                          onSave: (value) {
+                            setState(() {
+                              dishModel.tax = double.parse(value);
+                            });
+                          },
                         ),
                       ),
                       SizedBox(height: 10),

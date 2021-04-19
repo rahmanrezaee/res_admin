@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:restaurant/modules/Authentication/providers/auth_provider.dart';
 import 'package:restaurant/modules/Authentication/screen/login_page.dart';
 import 'package:restaurant/themes/colors.dart';
@@ -22,10 +24,12 @@ class _ForgotPasswordWithKeyState extends State<ForgotPasswordWithKey> {
 
   AuthProvider authProvider;
 
+  final _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     authProvider = Provider.of<AuthProvider>(context);
     return Scaffold(
+      key:_scaffoldKey,
       appBar: AppBar(
         title: Text(
           "Rest Password",
@@ -158,7 +162,15 @@ class _ForgotPasswordWithKeyState extends State<ForgotPasswordWithKey> {
           loading = false;
         });
         if (res['status'] == true) {
-          Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
+          
+          _scaffoldKey.currentState.showSnackBar(SnackBar(
+            content: Text("Successfuly Password Changed."),
+            duration: Duration(seconds: 3),
+          ));
+          Timer(Duration(seconds: 3), () {
+            Navigator.of(context).pop();
+          });
+
           setState(() {
             error = null;
           });
