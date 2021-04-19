@@ -130,6 +130,7 @@ class _MyAppState extends State<MyApp> {
               message: "Connecting...",
               child: snapshot.token != null
                   ? Application()
+                  
                   : FutureBuilder(
                       future: snapshot.autoLogin(),
                       builder: (context, snapshot) {
