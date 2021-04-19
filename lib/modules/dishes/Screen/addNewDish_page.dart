@@ -293,7 +293,8 @@ class _AddNewDishState extends State<AddNewDish> {
                             padding: const EdgeInsets.all(8.0),
                             child: TextFormFieldResturant(
                               initValue: "${dishModel.price ?? ""}",
-                              typetext: TextInputType.number,
+                              typetext: TextInputType.numberWithOptions(
+                                  decimal: true),
                               hintText: "Price",
                               onChange: (value) {
                                 setState(() {
@@ -319,7 +320,8 @@ class _AddNewDishState extends State<AddNewDish> {
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: TextFormFieldResturant(
                           initValue: "${dishModel.tax ?? ""}",
-                          typetext: TextInputType.number,
+                          typetext:
+                              TextInputType.numberWithOptions(decimal: true),
                           hintText: "Tax",
                           onChange: (value) {
                             setState(() {
@@ -550,9 +552,10 @@ class _AddNewDishState extends State<AddNewDish> {
                                                                   TextFormFieldResturant(
                                                                 hintText:
                                                                     "Add On Price",
-                                                                typetext:
-                                                                    TextInputType
-                                                                        .number,
+                                                                typetext: TextInputType
+                                                                    .numberWithOptions(
+                                                                        decimal:
+                                                                            true),
                                                                 onChange:
                                                                     (value) {
                                                                   setState(() {
