@@ -12,9 +12,7 @@ class OrderServices {
     try {
       String url = "$baseUrl/restaurant/order?status=$state";
 
-      final result = await APIRequest().get(myUrl: url, token: auth.token);
-
-      print("result $result");
+        final result = await APIRequest().get(myUrl: url, token: auth.token);
 
       final extractedData = result.data["data"]['docs'];
 
@@ -24,8 +22,12 @@ class OrderServices {
       }
 
       final List<OrderModels> loadedOrder = [];
-
+      print("extractedData $extractedData");
+      int i = 0;
       extractedData.forEach((tableData) {
+        i++;
+
+        print("elements $i");
         loadedOrder.add(OrderModels.toJson(tableData));
       });
 

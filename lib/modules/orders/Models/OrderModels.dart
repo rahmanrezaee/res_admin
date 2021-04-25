@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:restaurant/modules/dishes/Models/dishModels.dart';
 
 class OrderModels {
@@ -14,8 +16,9 @@ class OrderModels {
   String date;
   String timePicker;
 
-  OrderModels.toJson(tableData) {
+  OrderModels.toJson(Map tableData) {
     try {
+      print("order model $tableData");
       this.status = tableData['status'] ?? "";
       this.id = tableData['_id'] ?? "";
       this.restaurantId = tableData['restaurantId'] ?? "";
@@ -35,6 +38,7 @@ class OrderModels {
           items.add(DishModel.toJson(element));
         });
       }
+      log("done until end");
     } catch (e) {
       print("Hey Rahman: $e");
     }

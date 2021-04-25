@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:geocoder/geocoder.dart';
 import 'package:restaurant/Services/UploadFile.dart';
 import 'package:restaurant/constants/UrlConstants.dart';
 import 'package:restaurant/constants/assest_path.dart';
@@ -9,6 +10,7 @@ import 'package:restaurant/modules/Resturant/Models/Resturant.dart';
 import 'package:restaurant/modules/Resturant/Models/location.dart';
 import 'package:restaurant/modules/Resturant/Screen/changePassword_page.dart';
 import 'package:restaurant/modules/Resturant/statement/resturant_provider.dart';
+import 'package:restaurant/modules/dashboard/provider/dashboard_provider.dart';
 import 'package:restaurant/modules/notifications/notification_page.dart';
 import 'package:restaurant/modules/notifications/widget/NotificationAppBarWidget.dart';
 import 'package:restaurant/modules/report/widget/TextfieldResturant.dart';
@@ -36,6 +38,7 @@ class _ResturantFormState extends State<ResturantForm> {
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool _autoValidate = false;
   bool _isLoading = false;
+  bool _isLoadingTop = false;
   TextEditingController locationPickerController = new TextEditingController();
   TimeOfDay selectedTime = TimeOfDay.now();
   ResturantModel resturantModel = new ResturantModel();
@@ -68,12 +71,15 @@ class _ResturantFormState extends State<ResturantForm> {
     if (picked_s != null) return "${picked_s.hour}:${picked_s.minute}";
   }
 
+  DashboardProvider dashboardProvider;
   @override
   void initState() {
+    dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
     getRestuantData();
     super.initState();
   }
 
+  String addressLine = "Loading";
   void getRestuantData() {
     AuthProvider().resturantId().then((value) {
       Provider.of<ResturantProvider>(context, listen: false)
@@ -81,10 +87,30 @@ class _ResturantFormState extends State<ResturantForm> {
           .then((value) {
         setState(() {
           resturantModel = value;
-          _loadUpdate = true;
-          locationPickerController.text =
-              "(${resturantModel.location.lat.toStringAsFixed(2)}, ${resturantModel.location.log.toStringAsFixed(2)})";
         });
+        print(
+            "lat ${resturantModel.location.lat} ${resturantModel.location.log}");
+        final coordinates = new Coordinates(
+            resturantModel.location.lat, resturantModel.location.log);
+        Geocoder.google("AIzaSyBY1nLDcGY1NNgV89rnDR8jg_eBsQBJ39E")
+            .findAddressesFromCoordinates(coordinates)
+            .then((value) {
+          List<Address> addresses = value;
+
+          print("address ${value[0].addressLine}");
+
+          setState(() {
+            if (addresses.isNotEmpty) {
+              Address first = addresses[0];
+
+              addressLine = "(${first.addressLine})";
+            } else {
+              addressLine = "Not Found Address";
+            }
+          });
+        });
+
+        _loadUpdate = true;
       });
     });
   }
@@ -95,29 +121,32 @@ class _ResturantFormState extends State<ResturantForm> {
         resizeToAvoidBottomInset: false,
         resizeToAvoidBottomPadding: false,
         key: _scaffoldKey,
-        appBar: showAppBarNodepad(context)
-            ? AppBar(
-                elevation: .2,
-                title: Text("My Profile"),
-                automaticallyImplyLeading: false,
-                centerTitle: true,
-                actions: [NotificationAppBarWidget()],
-                leading: IconButton(
+        appBar: AppBar(
+          elevation: .2,
+          title: Text("My Profile"),
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+          actions: [
+            showAppBarNodepad(context) ? NotificationAppBarWidget() : SizedBox()
+          ],
+          leading: showAppBarNodepad(context)
+              ? IconButton(
                   icon: Icon(Icons.menu),
                   onPressed: () {
                     Scaffold.of(context).openDrawer();
                   },
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                // bottom:
-              )
-            : PreferredSize(
-                preferredSize: Size(10, 20),
-                child: SizedBox(
-                  height: 60,
-                )),
+                )
+              : SizedBox(),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          bottom: _isLoadingTop
+              ? PreferredSize(
+                  preferredSize: Size(10, 10),
+                  child: LinearProgressIndicator(),
+                )
+              : null,
+        ),
         body: _loadUpdate
             ? SingleChildScrollView(
                 child: Form(
@@ -181,9 +210,7 @@ class _ResturantFormState extends State<ResturantForm> {
                               SizedBox(height: 5),
                               Row(
                                 children: [
-                                  Expanded(
-                                      child: Text(
-                                          "${resturantModel.location.lat.toStringAsFixed(2)}, ${resturantModel.location.log.toStringAsFixed(2)}")),
+                                  Expanded(child: Text("$addressLine")),
                                 ],
                               ),
                               SizedBox(height: 5),
@@ -213,7 +240,16 @@ class _ResturantFormState extends State<ResturantForm> {
                                   value: resturantModel.openForOrder,
                                   onChanged: (value) {
                                     setState(() {
-                                      resturantModel.openForOrder = value;
+                                      _isLoadingTop = true;
+                                    });
+                                    dashboardProvider
+                                        .resturantChangeStateOpenForOrder(
+                                            resturantModel.id, value)
+                                        .then((done) {
+                                      setState(() {
+                                        resturantModel.openForOrder = value;
+                                        _isLoadingTop = false;
+                                      });
                                     });
                                   },
                                   // trackColor: AppColors.green,
@@ -232,7 +268,16 @@ class _ResturantFormState extends State<ResturantForm> {
                                   value: resturantModel.autoAcceptOrder,
                                   onChanged: (value) {
                                     setState(() {
-                                      resturantModel.autoAcceptOrder = value;
+                                      _isLoadingTop = true;
+                                    });
+                                    dashboardProvider
+                                        .resturantChangeStateAutoAcceptOrder(
+                                            resturantModel.id, value)
+                                        .then((done) {
+                                      setState(() {
+                                        resturantModel.autoAcceptOrder = value;
+                                        _isLoadingTop = false;
+                                      });
                                     });
                                   },
                                   // trackColor: AppColors.green,

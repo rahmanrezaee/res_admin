@@ -113,10 +113,10 @@ Future deleteDish(id, AuthProvider auth) async {
   try {
     //getting token
 
-    String url = "$baseUrl/restaurant/dish/$id";
+    String url = "$baseUrl/restaurant/food/$id";
     var res = await APIRequest()
         .delete(myUrl: url, myBody: null, myHeaders: {'token': auth.token});
-
+    print("delete of dish ${res.data}");
     return res.data;
   } on DioError catch (e) {
     print("error In Response");

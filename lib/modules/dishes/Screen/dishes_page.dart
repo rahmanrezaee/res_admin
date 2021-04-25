@@ -163,19 +163,26 @@ class _DishHomeState extends State<DishPage> {
                       setState(() {
                         isLoading = true;
                       });
+
                       deleteDish(element.foodId, authProvider).then((res) {
                         setState(() {
                           isLoading = false;
                         });
-                        if (res) {
+                        if (res["status"]) {
                           keySc.currentState.showSnackBar(SnackBar(
-                                content:
-                                    Text("The Category Deleted Successfully"),
-                              ));
+                            content: Text("The Dish Deleted Successfully"),
+                          ));
+
+                          getFootListWithoutPro(catId, authProvider)
+                              .then((value) {
+                            setState(() {
+                              dishList = value;
+                            });
+                          });
                         } else {
                           keySc.currentState.showSnackBar(SnackBar(
-                                content: Text(res['message']),
-                              ));
+                            content: Text("${res["message"]}"),
+                          ));
                         }
                       });
                     },
