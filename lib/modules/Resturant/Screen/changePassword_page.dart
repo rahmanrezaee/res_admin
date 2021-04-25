@@ -51,7 +51,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               SizedBox(height: 15),
               TextFormField(
                 controller: _oldPass,
-                validator: (value) {
+                validator: (String value) {
                   if (value.isEmpty) {
                     return "Please Enter your Old Password.";
                   }
@@ -84,10 +84,14 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               SizedBox(height: 10),
               TextFormField(
                 controller: _newPass,
-                validator: (value) {
+                validator: (String value) {
                   if (value.isEmpty) {
                     return "Please Enter your New Password.";
                   }
+                  if (_oldPass.text == value) {
+                    return "New Password Is Same Old Password.";
+                  }
+
                   return null;
                 },
                 obscureText: true,

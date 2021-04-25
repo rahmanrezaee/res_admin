@@ -16,6 +16,13 @@ class _MyProfilePageState extends State<MyProfilePage> {
   bool openForOrder = false;
   bool autoAcceptOrder = true;
 
+   @override
+  void initState() {
+    
+    
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -139,6 +146,7 @@ class _MyProfilePageState extends State<MyProfilePage> {
                     setState(() {
                       autoAcceptOrder = value;
                     });
+
                   },
                   // trackColor: AppColors.green,
                 ),

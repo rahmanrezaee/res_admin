@@ -24,13 +24,38 @@ class DishModel {
 
   DishModel();
 
+  // DishModel.toJson(element) {
+  //   try {
+  //     this.foodId = element['foodId'];
+  //     this.foodName = element['foodName'];
+  //     this.quantity = element['quantity'];
+  //     this.price = double.parse("${element['price']}");
+  //     this.tax = double.parse("${element['tax']}");
+  //     List addonLi = element['addOn'];
+  //     orderNote = element['orderNote'];
+
+  //     if (addonLi != null && addonLi.isNotEmpty) {
+  //       addonLi.forEach((element) {
+  //         List<AddonItems> temp = [];
+
+  //         element.forEach((elementItem) {
+  //           temp.add(AddonItems.toJson(elementItem));
+  //         });
+  //         addOn.add(temp);
+  //       });
+  //     }
+  //   } catch (e) {
+  //     print("Error In dish $e");
+  //   }
+  // }
+  //
   DishModel.toJson(element) {
     try {
-      this.foodId = element['foodId'];
-      this.foodName = element['foodName'];
+      this.foodId = element['_id'];
+      this.foodName = element['name'];
       this.quantity = element['quantity'];
       this.price = double.parse("${element['price']}");
-      this.tax = double.parse("${element['tax']}");
+
       List addonLi = element['addOn'];
       orderNote = element['orderNote'];
 
@@ -45,7 +70,7 @@ class DishModel {
         });
       }
     } catch (e) {
-      print("Error In dish $e");
+      print("Error In dish one $e");
     }
   }
   DishModel.toCatJson(element) {
