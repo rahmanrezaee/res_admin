@@ -4,14 +4,13 @@ import 'package:restaurant/GlobleService/APIRequest.dart';
 import 'package:restaurant/constants/UrlConstants.dart';
 import 'package:restaurant/modules/Authentication/providers/auth_provider.dart';
 
-Future getReport({fromDate, toDate, type, coupenCode,@required AuthProvider auth}) async {
+Future getReport(
+    {fromDate, toDate, type, coupenCode, @required AuthProvider auth}) async {
   try {
     String url =
         "$baseUrl/restaurant/report?type=$type${coupenCode != null && coupenCode != "" ? "&couponCode=" + coupenCode : ""}${fromDate != null ? "&fromDate=" + fromDate : ""}${toDate != null ? "&toDate=" + toDate : ""}";
-
+    print("url $url");
     final result = await APIRequest().get(myUrl: url, token: auth.token);
-
-    print("result $result");
 
     final extractedData = result.data["data"];
     return extractedData;
@@ -24,10 +23,12 @@ Future getReport({fromDate, toDate, type, coupenCode,@required AuthProvider auth
   }
 }
 
-Future getSendReportEmil({fromDate, toDate, coupenCode,@required AuthProvider auth}) async {
+Future getSendReportEmil(
+    {fromDate, toDate, coupenCode, @required AuthProvider auth}) async {
   try {
-    String url = "$baseUrl/restaurant/report/email-report-orders";
-
+    String url =
+        "$baseUrl/restaurant/report/email-report-orders?${coupenCode != null && coupenCode != "" ? "&couponCode=" + coupenCode : ""}${fromDate != null ? "&fromDate=" + fromDate : ""}${toDate != null ? "&toDate=" + toDate : ""}";
+    print("url $url");
     Map data = {};
 
     if (fromDate != null) {
@@ -63,10 +64,12 @@ Future getSendReportEmil({fromDate, toDate, coupenCode,@required AuthProvider au
   }
 }
 
-Future getSendReportEmailEarnings({fromDate, toDate,@required AuthProvider auth}) async {
+Future getSendReportEmailEarnings(
+    {fromDate, toDate, @required AuthProvider auth}) async {
   try {
-    String url = "$baseUrl/restaurant/report/email-report-earnings";
-
+    String url =
+        "$baseUrl/restaurant/report/email-report-earnings?${fromDate != null ? "&fromDate=" + fromDate : ""}${toDate != null ? "&toDate=" + toDate : ""}";
+    print("url $url");
     Map data = {};
 
     if (fromDate != null) {

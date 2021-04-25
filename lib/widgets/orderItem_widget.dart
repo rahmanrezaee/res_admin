@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:ffi';
 import 'dart:ui';
 
+import 'package:num_to_txt/num_to_txt.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant/modules/dishes/Models/AddonModel.dart';
 import 'package:restaurant/modules/dishes/Models/dishModels.dart';
@@ -326,179 +327,9 @@ class DishItem extends StatelessWidget {
   DishModel model;
 
   DishItem({Key key, this.model}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 40,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            Text("${model.foodName}"),
-            FlatButton.icon(
-              textColor: AppColors.green,
-              label: Text(
-                "View Add On",
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-              icon: Icon(
-                Icons.description_rounded,
-                color: AppColors.green,
-              ),
-              onPressed: () {
-                int _isRadioSelected = 1;
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                        child: StatefulBuilder(builder: (context, setState) {
-                          return ListTileTheme(
-                            iconColor: AppColors.green,
-                            textColor: AppColors.green,
-                            child: Theme(
-                                data: Theme.of(context).copyWith(
-                                    toggleableActiveColor: AppColors.green),
-                                child: SimpleDialog(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  title: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          "Add On List",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline5,
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                      IconButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          icon: Icon(Icons.close))
-                                    ],
-                                  ),
-                                  titlePadding: EdgeInsets.only(top: 15),
-                                  children: [
-                                    Divider(),
-                                    getAddonList(model.addOn, context)
-                                  ],
-                                  // children: Column(
-                                  //   children: [],
-                                  // ),
-                                )),
-                          );
-                        }),
-                      );
-                    });
-              },
-            ),
-            FlatButton.icon(
-              textColor: AppColors.green,
-              label: Text(
-                "View Note",
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-              icon: Icon(
-                Icons.description_rounded,
-                color: AppColors.green,
-              ),
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                        child: StatefulBuilder(builder: (context, setState) {
-                          return ListTileTheme(
-                            iconColor: AppColors.green,
-                            textColor: AppColors.green,
-                            child: Theme(
-                              data: Theme.of(context).copyWith(
-                                  toggleableActiveColor: AppColors.green),
-                              child: SimpleDialog(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                title: Text(
-                                  "Order Note",
-                                  style: Theme.of(context).textTheme.headline5,
-                                  textAlign: TextAlign.center,
-                                ),
-                                titlePadding: EdgeInsets.only(top: 15),
-                                contentPadding: EdgeInsets.all(15),
-                                children: [
-                                  Divider(),
-                                  Container(
-                                    height: getHelfDeviceHeightSize(context),
-                                    width: 200,
-                                    child: ListView.builder(
-                                      itemCount: model.orderNote.length,
-                                      physics: NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      itemBuilder: (context, i) {
-                                        return new Column(
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                top: 10,
-                                                bottom: 5,
-                                              ),
-                                              child: new Text(
-                                                "${NumberToWords.convert(i + 1, "en")} dish",
-                                              ),
-                                            ),
-                                            Container(
-                                              width: double.infinity,
-                                              padding: EdgeInsets.all(10),
-                                              color: Colors.grey[100],
-                                              child: new Text(
-                                                model.orderNote[i] == ""
-                                                    ? "No Instrucation"
-                                                    : model.orderNote[i],
-                                                style: new TextStyle(
-                                                    fontSize: 14.0),
-                                              ),
-                                            ),
-                                            Divider()
-                                          ],
-                                        );
-                                      },
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
-                        }),
-                      );
-                    });
-              },
-            ),
-            Text("Qty : ${model.quantity}"),
-            SizedBox(
-              width: 20,
-            ),
-            Text("Price : ${model.price}"),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget getAddonList(List<List<AddonItems>> addOn, context) {
     return Container(
-      height: getDeviceHeightSize(context),
+      height: getDeviceHeightSize(context) - 500,
       width: getDeviceWidthSize(context),
       child: SingleChildScrollView(
         physics: ScrollPhysics(),
@@ -510,7 +341,7 @@ class DishItem extends StatelessWidget {
               shrinkWrap: true,
               itemBuilder: (context, i) {
                 return new ExpansionTile(
-                  title: new Text("${NumberToWords.convert(i + 1, "en")} dish",
+                  title: new Text("${NumToTxt.numToOrdinal(i + 1)} dish",
                       style: Theme.of(context).textTheme.headline6),
                   children: <Widget>[
                     addOn[i].length > 0
@@ -555,4 +386,414 @@ class DishItem extends StatelessWidget {
 
     return columnContent;
   }
+
+  @override
+  Widget build(BuildContext context) {
+    log("food ${model.sendMap()}");
+    return Container(
+      height: 40,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            Text("${model.foodName}"),
+            FlatButton.icon(
+              textColor: AppColors.green,
+              label: Text(
+                "View Add On",
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+              icon: Icon(
+                Icons.description_rounded,
+                color: AppColors.green,
+              ),
+              onPressed: () {
+                int _isRadioSelected = 1;
+
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return StatefulBuilder(builder: (context, setState) {
+                        return ListTileTheme(
+                          iconColor: AppColors.green,
+                          textColor: AppColors.green,
+                          child: Theme(
+                              data: Theme.of(context).copyWith(
+                                  toggleableActiveColor: AppColors.green),
+                              child: BackdropFilter(
+                                filter:
+                                    ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                                child: SimpleDialog(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  title: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          "Add On List",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline5,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                      IconButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          icon: Icon(Icons.close))
+                                    ],
+                                  ),
+                                  titlePadding: EdgeInsets.only(top: 15),
+                                  children: [
+                                    Divider(),
+                                    getAddonList(model.addOn, context)
+                                  ],
+                                  // children:  [
+
+                                  // ],
+                                ),
+                              )),
+                        );
+                      });
+                    });
+              },
+            ),
+            FlatButton.icon(
+              textColor: AppColors.green,
+              label: Text(
+                "View Note",
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+              icon: Icon(
+                Icons.description_rounded,
+                color: AppColors.green,
+              ),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return StatefulBuilder(builder: (context, setState) {
+                        return ListTileTheme(
+                          iconColor: AppColors.green,
+                          textColor: AppColors.green,
+                          child: Theme(
+                            data: Theme.of(context).copyWith(
+                                toggleableActiveColor: AppColors.green),
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                              child: SimpleDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                title: Text(
+                                  "Order Note",
+                                  style: Theme.of(context).textTheme.headline5,
+                                  textAlign: TextAlign.center,
+                                ),
+                                titlePadding: EdgeInsets.only(top: 15),
+                                contentPadding: EdgeInsets.all(15),
+                                children: [
+                                  Divider(),
+                                  Container(
+                                    height: getDeviceHeightSize(context) - 500,
+                                    width: getDeviceWidthSize(context),
+                                    child: ListView.builder(
+                                      itemCount: model.orderNote.length,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, i) {
+                                        return new Column(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                top: 10,
+                                                bottom: 5,
+                                              ),
+                                              child: new Text(
+                                                "${NumToTxt.numToOrdinal(i + 1)} dish",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .headline6,
+                                              ),
+                                            ),
+                                            Container(
+                                              width: double.infinity,
+                                              padding: EdgeInsets.all(10),
+                                              color: Colors.grey[100],
+                                              child: new Text(
+                                                model.orderNote[i] == ""
+                                                    ? "No Instruction"
+                                                    : model.orderNote[i],
+                                                style: new TextStyle(
+                                                    fontSize: 14.0),
+                                              ),
+                                            ),
+                                            Divider()
+                                          ],
+                                        );
+                                      },
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      });
+                    });
+              },
+            ),
+            Text("Qty : ${model.quantity}"),
+            SizedBox(
+              width: 20,
+            ),
+            Text("Price : ${model.price}"),
+          ],
+        ),
+      ),
+    );
+  }
 }
+
+// class DishItem extends StatelessWidget {
+//   DishModel model;
+
+//   DishItem({Key key, this.model}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       height: 40,
+//       child: SingleChildScrollView(
+//         scrollDirection: Axis.horizontal,
+//         child: Row(
+//           children: [
+//             Text("${model.foodName}"),
+//             FlatButton.icon(
+//               textColor: AppColors.green,
+//               label: Text(
+//                 "View Add On",
+//                 style: TextStyle(
+//                   fontSize: 14,
+//                   fontWeight: FontWeight.normal,
+//                 ),
+//               ),
+//               icon: Icon(
+//                 Icons.description_rounded,
+//                 color: AppColors.green,
+//               ),
+//               onPressed: () {
+//                 int _isRadioSelected = 1;
+//                 showDialog(
+//                     context: context,
+//                     builder: (context) {
+//                       return BackdropFilter(
+//                         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+//                         child: StatefulBuilder(builder: (context, setState) {
+//                           return ListTileTheme(
+//                             iconColor: AppColors.green,
+//                             textColor: AppColors.green,
+//                             child: Theme(
+//                                 data: Theme.of(context).copyWith(
+//                                     toggleableActiveColor: AppColors.green),
+//                                 child: SimpleDialog(
+//                                   shape: RoundedRectangleBorder(
+//                                     borderRadius: BorderRadius.circular(10),
+//                                   ),
+//                                   title: Row(
+//                                     children: [
+//                                       Expanded(
+//                                         child: Text(
+//                                           "Add On List",
+//                                           style: Theme.of(context)
+//                                               .textTheme
+//                                               .headline5,
+//                                           textAlign: TextAlign.center,
+//                                         ),
+//                                       ),
+//                                       IconButton(
+//                                           onPressed: () {
+//                                             Navigator.pop(context);
+//                                           },
+//                                           icon: Icon(Icons.close))
+//                                     ],
+//                                   ),
+//                                   titlePadding: EdgeInsets.only(top: 15),
+//                                   children: [
+//                                     Divider(),
+//                                     getAddonList(model.addOn, context)
+//                                   ],
+//                                   // children: Column(
+//                                   //   children: [],
+//                                   // ),
+//                                 )),
+//                           );
+//                         }),
+//                       );
+//                     });
+//               },
+//             ),
+//             FlatButton.icon(
+//               textColor: AppColors.green,
+//               label: Text(
+//                 "View Note",
+//                 style: TextStyle(
+//                   fontSize: 14,
+//                   fontWeight: FontWeight.normal,
+//                 ),
+//               ),
+//               icon: Icon(
+//                 Icons.description_rounded,
+//                 color: AppColors.green,
+//               ),
+//               onPressed: () {
+//                 showDialog(
+//                     context: context,
+//                     builder: (context) {
+//                       return BackdropFilter(
+//                         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+//                         child: StatefulBuilder(builder: (context, setState) {
+//                           return ListTileTheme(
+//                             iconColor: AppColors.green,
+//                             textColor: AppColors.green,
+//                             child: Theme(
+//                               data: Theme.of(context).copyWith(
+//                                   toggleableActiveColor: AppColors.green),
+//                               child: SimpleDialog(
+//                                 shape: RoundedRectangleBorder(
+//                                   borderRadius: BorderRadius.circular(10),
+//                                 ),
+//                                 title: Text(
+//                                   "Order Note",
+//                                   style: Theme.of(context).textTheme.headline5,
+//                                   textAlign: TextAlign.center,
+//                                 ),
+//                                 titlePadding: EdgeInsets.only(top: 15),
+//                                 contentPadding: EdgeInsets.all(15),
+//                                 children: [
+//                                   Divider(),
+//                                   Container(
+//                                     height: getHelfDeviceHeightSize(context),
+//                                     width: 200,
+//                                     child: ListView.builder(
+//                                       itemCount: model.orderNote.length,
+//                                       physics: NeverScrollableScrollPhysics(),
+//                                       shrinkWrap: true,
+//                                       itemBuilder: (context, i) {
+//                                         return new Column(
+//                                           children: [
+//                                             Padding(
+//                                               padding: const EdgeInsets.only(
+//                                                 top: 10,
+//                                                 bottom: 5,
+//                                               ),
+//                                               child: new Text(
+//                                                 "${NumberToWords.convert(i + 1, "en")} dish",
+//                                               ),
+//                                             ),
+//                                             Container(
+//                                               width: double.infinity,
+//                                               padding: EdgeInsets.all(10),
+//                                               color: Colors.grey[100],
+//                                               child: new Text(
+//                                                 model.orderNote[i] == ""
+//                                                     ? "No Instrucation"
+//                                                     : model.orderNote[i],
+//                                                 style: new TextStyle(
+//                                                     fontSize: 14.0),
+//                                               ),
+//                                             ),
+//                                             Divider()
+//                                           ],
+//                                         );
+//                                       },
+//                                     ),
+//                                   )
+//                                 ],
+//                               ),
+//                             ),
+//                           );
+//                         }),
+//                       );
+//                     });
+//               },
+//             ),
+//             Text("Qty : ${model.quantity}"),
+//             SizedBox(
+//               width: 20,
+//             ),
+//             Text("Price : ${model.price}"),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+
+//   Widget getAddonList(List<List<AddonItems>> addOn, context) {
+//     return Container(
+//       height: getDeviceHeightSize(context),
+//       width: getDeviceWidthSize(context),
+//       child: SingleChildScrollView(
+//         physics: ScrollPhysics(),
+//         child: Column(
+//           children: <Widget>[
+//             ListView.builder(
+//               itemCount: addOn.length,
+//               physics: NeverScrollableScrollPhysics(),
+//               shrinkWrap: true,
+//               itemBuilder: (context, i) {
+//                 return new ExpansionTile(
+//                   title: new Text("${NumberToWords.convert(i + 1, "en")} dish",
+//                       style: Theme.of(context).textTheme.headline6),
+//                   children: <Widget>[
+//                     addOn[i].length > 0
+//                         ? Container(
+//                             color: Colors.grey[100],
+//                             child: new Column(
+//                               children: _buildExpandableContent(addOn[i]),
+//                             ),
+//                           )
+//                         : Container(
+//                             width: double.infinity,
+//                             alignment: Alignment.center,
+//                             color: Colors.grey[100],
+//                             child: Padding(
+//                               padding: const EdgeInsets.all(8.0),
+//                               child: Text("no Addon"),
+//                             ),
+//                           ),
+//                   ],
+//                 );
+//               },
+//             )
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+
+//   _buildExpandableContent(List<AddonItems> addon) {
+//     List<Widget> columnContent = [];
+
+//     for (AddonItems content in addon)
+//       columnContent.add(
+//         new ListTile(
+//           title: new Text(
+//             content.name,
+//             style: new TextStyle(fontSize: 14.0),
+//           ),
+//           trailing: Text("${content.price}"),
+//         ),
+//       );
+
+//     return columnContent;
+//   }
+// }

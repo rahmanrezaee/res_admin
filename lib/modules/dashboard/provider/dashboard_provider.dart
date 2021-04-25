@@ -16,6 +16,15 @@ class DashboardProvider with ChangeNotifier {
   bool openForOrder;
   bool autoAcceptOrder;
 
+  setOpenForOrder(bool value) {
+    this.openForOrder = value;
+    notifyListeners();
+  }
+  setAutoAcceptOrder(bool value) {
+    this.autoAcceptOrder = value;
+    notifyListeners();
+  }
+
   bool isloading = false;
 
   fetchDashData() async {
