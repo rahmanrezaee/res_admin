@@ -35,7 +35,7 @@ class NotificationAppBarWidget extends StatelessWidget {
                       minHeight: 14,
                     ),
                     child: Text(
-                      '${data.countNotification}',
+                      '${data.onWriteNotification}',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 8,
