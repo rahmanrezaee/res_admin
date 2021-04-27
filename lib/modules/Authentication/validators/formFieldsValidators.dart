@@ -17,7 +17,4 @@ passwordValidator(String v) {
   if (v.isEmpty) {
     return "Please Enter Password";
   }
-  if (v.length <= 4) {
-    return "Entered Password is too short";
-  }
 }

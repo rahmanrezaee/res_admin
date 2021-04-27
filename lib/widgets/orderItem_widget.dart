@@ -166,7 +166,7 @@ class _OrderItemState extends State<OrderItem> {
             Visibility(
               child: Container(
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Visibility(
                       visible: item.status == "active",
@@ -226,45 +226,50 @@ class _OrderItemState extends State<OrderItem> {
                     ),
                     Visibility(
                       visible: item.status == "accepted",
-                      child: Row(children: [
-                        Text(
-                          "Pick Up at: ${item.timePicker ?? "00:00"} ",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.normal,
-                            color: AppColors.green,
-                          ),
-                        ),
-                        SizedBox(width: 15),
-                        SizedBox(
-                          width: 35,
-                          height: 35,
-                          child: RaisedButton(
-                            padding: EdgeInsets.all(0),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Pick Up at: ${item.timePicker ?? "00:00"} ",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.normal,
+                                color: AppColors.green,
+                              ),
                             ),
-                            elevation: 0,
-                            color: AppColors.green,
-                            child: Icon(Icons.edit, color: Colors.white),
-                            onPressed: () async {
-                              item.timePicker = await _selectTime(context);
+                            SizedBox(width: 15),
+                            SizedBox(
+                              width: 35,
+                              height: 35,
+                              child: RaisedButton(
+                                padding: EdgeInsets.all(0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                elevation: 0,
+                                color: AppColors.green,
+                                child: Icon(Icons.edit, color: Colors.white),
+                                onPressed: () async {
+                                  item.timePicker = await _selectTime(context);
 
-                              OrderServices()
-                                  .updatepickupDate(
-                                      item.id, item.timePicker, auth)
-                                  .then((value) {
-                                getOrderData();
-                                widget.scaffoldKey.currentState
-                                    .showSnackBar(SnackBar(
-                                  content: Text("Succecfully Done"),
-                                  duration: Duration(seconds: 2),
-                                ));
-                              });
-                            },
-                          ),
-                        ),
-                      ]),
+                                  OrderServices()
+                                      .updatepickupDate(
+                                          item.id, item.timePicker, auth)
+                                      .then((value) {
+                                    getOrderData();
+                                    widget.scaffoldKey.currentState
+                                        .showSnackBar(SnackBar(
+                                      content: Text("Succecfully Done"),
+                                      duration: Duration(seconds: 2),
+                                    ));
+                                  });
+                                },
+                              ),
+                            ),
+                          ]),
+                    ),
+                    SizedBox(
+                      width: 150,
                     ),
                     Visibility(
                       visible: item.status == "accepted",
