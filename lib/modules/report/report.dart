@@ -226,6 +226,7 @@ class _ReportPageState extends State<ReportPage> {
                                 ),
                                 Expanded(
                                   child: ButtonRaiseResturant(
+                                    
                                     color: Theme.of(context).primaryColor,
                                     label: Text(
                                       "View Report",
