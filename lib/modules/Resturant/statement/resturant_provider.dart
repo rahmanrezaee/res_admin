@@ -9,8 +9,9 @@ import 'dart:convert';
 
 class ResturantProvider with ChangeNotifier {
   List<ResturantModel> listResturant;
-  AuthProvider auth;
+
   ResturantProvider(this.auth);
+  AuthProvider auth;
 
   Future<bool> deleteResturant(resturantId) async {
     try {

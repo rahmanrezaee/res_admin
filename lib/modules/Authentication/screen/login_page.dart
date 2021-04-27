@@ -33,6 +33,8 @@ class _LoginPageState extends State<LoginPage> {
   AuthProvider authProvider;
   StreamSubscription iosSubscription;
 
+  Function get autovalidat => null;
+
   @override
   void dispose() {
     if (iosSubscription != null) iosSubscription.cancel();
@@ -93,6 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                                 style: Theme.of(context).textTheme.headline4),
                             SizedBox(height: 15),
                             _loginFieldBuilder(
+                              autovalidat,
                               "Email Address",
                               emailValidator,
                               TextInputType.emailAddress,
@@ -100,12 +103,67 @@ class _LoginPageState extends State<LoginPage> {
                               false,
                             ),
                             SizedBox(height: 15),
-                            _loginFieldBuilder(
-                              "Password",
-                              passwordValidator,
-                              null,
-                              _passwordController,
-                              true,
+                            Container(
+                              width: getHelfIpadAndFullMobWidth(context),
+                              child: TextFormField(
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                obscureText: obscureText,
+                                controller: _passwordController,
+                                validator: (v) {
+                                  return passwordValidator(v);
+                                },
+                                decoration: InputDecoration(
+                                  hintText: "Password",
+                                  errorStyle: TextStyle(color: Colors.red),
+                                  suffix: InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        obscureText = !obscureText;
+                                      });
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: obscureText
+                                          ? Icon(Icons.visibility_off)
+                                          : Icon(Icons.visibility),
+                                    ),
+                                  ),
+                                  hintStyle: TextStyle(color: Colors.grey),
+                                  contentPadding: EdgeInsets.only(left: 10),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                    borderSide: BorderSide(color: Colors.grey),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                    borderSide:
+                                        BorderSide(color: AppColors.redText),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                    borderSide: BorderSide(color: Colors.grey),
+                                  ),
+                                  disabledBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                    borderSide: BorderSide(color: Colors.grey),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                    borderSide: BorderSide(color: Colors.grey),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10.0)),
+                                    borderSide: BorderSide(color: Colors.grey),
+                                  ),
+                                ),
+                              ),
                             ),
                             SizedBox(height: 15),
                             Row(
@@ -241,13 +299,14 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-_loginFieldBuilder(String hintText, Function validator, textInputType,
-    TextEditingController controller, bool secure) {
+_loginFieldBuilder(Function autovalidat, String hintText, Function validator,
+    textInputType, TextEditingController controller, bool secure) {
   return TextFormField(
     controller: controller,
     validator: (v) {
       return validator(v);
     },
+    autovalidateMode: AutovalidateMode.onUserInteraction,
     obscureText: secure,
     keyboardType: textInputType ?? TextInputType.text,
     decoration: InputDecoration(

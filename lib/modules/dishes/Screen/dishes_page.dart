@@ -1,4 +1,5 @@
 //core
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant/modules/Authentication/providers/auth_provider.dart';
 import 'package:restaurant/modules/dishes/DishServics/dishServices.dart';
@@ -63,84 +64,86 @@ class _DishHomeState extends State<DishPage> {
             : null,
         actions: [NotificationAppBarWidget()],
       ),
-      body: Column(
-        children: [
-          SizedBox(height: 15),
-          Card(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("Dish of Category",
-                      style: Theme.of(context).textTheme.headline4),
-                  SizedBox(
-                    width: 35,
-                    height: 35,
-                    child: RaisedButton(
-                      padding: EdgeInsets.all(0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      elevation: 0,
-                      onPressed: () {
-                        Navigator.of(context)
-                            .pushNamed(AddNewDish.routeName, arguments: {
-                          "dishId": null,
-                          "catId": catId,
-                        }).then((value) {
-                          print("Done Adding");
-                          getFootListWithoutPro(catId, authProvider)
-                              .then((value) {
-                            setState(() {
-                              dishList = value;
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(height: 15),
+            Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Dish of Category",
+                        style: Theme.of(context).textTheme.headline4),
+                    SizedBox(
+                      width: 35,
+                      height: 35,
+                      child: RaisedButton(
+                        padding: EdgeInsets.all(0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        elevation: 0,
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pushNamed(AddNewDish.routeName, arguments: {
+                            "dishId": null,
+                            "catId": catId,
+                          }).then((value) {
+                            print("Done Adding");
+                            getFootListWithoutPro(catId, authProvider)
+                                .then((value) {
+                              setState(() {
+                                dishList = value;
+                              });
                             });
                           });
-                        });
-                      },
-                      color: Theme.of(context).primaryColor,
-                      child: Icon(Icons.add, color: Colors.white),
+                        },
+                        color: Theme.of(context).primaryColor,
+                        child: Icon(Icons.add, color: Colors.white),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          FutureBuilder(
-              future: getDish,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (snapshot.connectionState == ConnectionState.done) {
-                  if (snapshot.hasError) {
+            FutureBuilder(
+                future: getDish,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Text("error in Fetch orders"),
+                      );
+                    } else {
+                      return dishList.isEmpty
+                          ? Center(
+                              child: Text("No Dish"),
+                            )
+                          : SingleChildScrollView(
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: ResponsiveGridRow(
+                                  children: getColumnDish(dishList),
+                                ),
+                              ),
+                            );
+                    }
+                  } else {
                     return Center(
                       child: Text("error in Fetch orders"),
                     );
-                  } else {
-                    return dishList.isEmpty
-                        ? Center(
-                            child: Text("No Dish"),
-                          )
-                        : SingleChildScrollView(
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: ResponsiveGridRow(
-                                children: getColumnDish(dishList),
-                              ),
-                            ),
-                          );
                   }
-                } else {
-                  return Center(
-                    child: Text("error in Fetch orders"),
-                  );
-                }
-              }),
-        ],
+                }),
+          ],
+        ),
       ),
     );
   }
@@ -279,8 +282,8 @@ class _DishItemState extends State<DishItem> {
                       });
                     },
                     child: Icon(
-                      widget.dishItem.visibility
-                          ? Icons.remove_red_eye_outlined
+                      widget.dishItem.visibility == false
+                          ? FontAwesomeIcons.eyeSlash
                           : Icons.remove_red_eye,
                       color: Colors.white,
                     ),
