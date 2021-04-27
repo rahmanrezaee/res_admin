@@ -130,8 +130,8 @@ Future deleteDish(id, AuthProvider auth) async {
 
 Future<bool> changeVisiablity(foodId, vis, AuthProvider auth) async {
   try {
+    vis ? vis = false : vis = true;
     String url = "$baseUrl/admin/food/changevisibility/$foodId";
-
     final result = await APIRequest().post(
         myUrl: url,
         myHeaders: {"token": auth.token},
