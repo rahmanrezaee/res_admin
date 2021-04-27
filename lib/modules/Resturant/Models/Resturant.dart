@@ -7,6 +7,7 @@ class ResturantModel {
   String resturantName;
   String avatar;
   String id;
+  String address;
   bool openForOrder;
   bool autoAcceptOrder;
   LocationModel location;
@@ -27,6 +28,7 @@ class ResturantModel {
     this.resturantName = tableData['restaurant']['username'];
     this.id = tableData['restaurant']['_id'];
     this.activeOrder = tableData['activeOrder'];
+    this.address = tableData['address'];
   }
 
   Map sendMap() {
@@ -83,6 +85,7 @@ class ResturantModel {
     this.email = tableData['email'];
     this.avatar = tableData['avatar'];
     this.avatar = tableData['avatar'];
+    this.address = tableData['address'];
     this.autoAcceptOrder = tableData['autoAcceptOrder'];
     this.openForOrder = tableData['openForOrder'];
   }

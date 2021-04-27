@@ -92,11 +92,11 @@ class _ResturantFormState extends State<ResturantForm> {
             "lat ${resturantModel.location.lat} ${resturantModel.location.log}");
         final coordinates = new Coordinates(
             resturantModel.location.lat, resturantModel.location.log);
+
         Geocoder.google("AIzaSyBY1nLDcGY1NNgV89rnDR8jg_eBsQBJ39E")
             .findAddressesFromCoordinates(coordinates)
             .then((value) {
           List<Address> addresses = value;
-
           print("address ${value[0].addressLine}");
 
           setState(() {
@@ -214,12 +214,6 @@ class _ResturantFormState extends State<ResturantForm> {
                                 ],
                               ),
                               SizedBox(height: 5),
-                              Row(
-                                children: [
-                                  Expanded(
-                                      child: Text("${resturantModel.email}")),
-                                ],
-                              ),
                             ],
                           ),
                         ),
