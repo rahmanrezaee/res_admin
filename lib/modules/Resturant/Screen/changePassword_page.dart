@@ -24,6 +24,11 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
   bool _isLoading = false;
 
+  bool obscureText = true;
+
+  bool obscureTextNewPass = true;
+  bool obscureTextConfirmPass = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,8 +62,22 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   }
                   return null;
                 },
-                obscureText: true,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                obscureText: obscureText,
                 decoration: InputDecoration(
+                  suffix: InkWell(
+                    onTap: () {
+                      setState(() {
+                        obscureText = !obscureText;
+                      });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: obscureText
+                          ? Icon(Icons.visibility_off)
+                          : Icon(Icons.visibility),
+                    ),
+                  ),
                   hintText: "Enter Old Password",
                   hintStyle: TextStyle(color: Colors.grey),
                   contentPadding: EdgeInsets.only(left: 10),
@@ -87,15 +106,30 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 validator: (String value) {
                   if (value.isEmpty) {
                     return "Please Enter your New Password.";
-                  }
-                  if (_oldPass.text == value) {
+                  } else if (_oldPass.text == value) {
                     return "New Password Is Same Old Password.";
+                  } else if (_newPass.text.length < 6) {
+                    return "New Password is Too Short";
                   }
 
                   return null;
                 },
-                obscureText: true,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                obscureText: obscureTextNewPass,
                 decoration: InputDecoration(
+                  suffix: InkWell(
+                    onTap: () {
+                      setState(() {
+                        obscureTextNewPass = !obscureTextNewPass;
+                      });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: obscureTextNewPass
+                          ? Icon(Icons.visibility_off)
+                          : Icon(Icons.visibility),
+                    ),
+                  ),
                   hintText: "Enter New Password",
                   errorStyle: TextStyle(color: Colors.red),
                   hintStyle: TextStyle(color: Colors.grey),
@@ -124,25 +158,28 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 validator: (value) {
                   if (value.isEmpty) {
                     return "Please Enter Confirm New Password.";
-                  }
-
-                  if (_newPass.text != _confirmPass.text) {
-                    return "Password does not match";
-                  }
-                  bool isPasswordCompliant(String _newPass,
-                      [int minLength = 4]) {
-                    if (_newPass == null || _newPass.isEmpty) {
-                      return false;
-                    }
-                    bool hasMinLength = _newPass.length > minLength;
-
-                    return hasMinLength;
+                  } else if (_newPass.text != _confirmPass.text) {
+                    return "The Passwords Don't Match";
                   }
 
                   return null;
                 },
-                obscureText: true,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                obscureText: obscureTextConfirmPass,
                 decoration: InputDecoration(
+                  suffix: InkWell(
+                    onTap: () {
+                      setState(() {
+                        obscureTextConfirmPass = !obscureTextConfirmPass;
+                      });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: obscureTextConfirmPass
+                          ? Icon(Icons.visibility_off)
+                          : Icon(Icons.visibility),
+                    ),
+                  ),
                   hintText: "Confirm New Password",
                   hintStyle: TextStyle(color: Colors.grey),
                   errorStyle: TextStyle(color: Colors.red),

@@ -23,51 +23,57 @@ class NotificationPage extends StatelessWidget {
           ? AppBar(
               title: Text("Notifications"),
               centerTitle: true,
+              actions: [
+                IconButton(
+                    icon: Icon(Icons.delete_outline_outlined), onPressed: null)
+              ],
             )
           : PreferredSize(
               preferredSize: Size(10, 20),
               child: SizedBox(
                 height: 60,
               )),
-      body: Consumer<NotificationProvider>(
-        builder: (BuildContext context, value, Widget child) {
-          return value.notificatins == null
-              ? FutureBuilder(
-                  future: value.fetchNotifications(),
-                  builder: (context, snapshot) {
-                    return Center(child: CircularProgressIndicator());
-                  })
-              : value.notificatins.isEmpty
-                  ? Center(child: Text("No Notification"))
-                  : IncrementallyLoadingListView(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      hasMore: () => value.hasMoreItems,
-                      itemCount: () => value.notificatins.length,
-                      loadMore: () async {
-                        await value.fetchNotifications();
-                      },
-                      onLoadMore: () {
-                        value.showLoadingBottom(true);
-                      },
-                      onLoadMoreFinished: () {
-                        value.showLoadingBottom(false);
-                      },
-                      loadMoreOffsetFromBottom: 0,
-                      itemBuilder: (context, index) {
-                        if ((value.loadingMore ?? false) &&
-                            index == value.notificatins.length - 1) {
-                          return Column(
-                            children: <Widget>[
-                              NotificationItem(value.notificatins[index]),
-                              PlaceholderItemCard()
-                            ],
-                          );
-                        }
-                        return NotificationItem(value.notificatins[index]);
-                      },
-                    );
-        },
+      body: SingleChildScrollView(
+        child: Consumer<NotificationProvider>(
+          builder: (BuildContext context, value, Widget child) {
+            return value.notificatins == null
+                ? FutureBuilder(
+                    future: value.fetchNotifications(),
+                    builder: (context, snapshot) {
+                      return Center(child: CircularProgressIndicator());
+                    })
+                : value.notificatins.isEmpty
+                    ? Center(child: Text("No Notification"))
+                    : IncrementallyLoadingListView(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        hasMore: () => value.hasMoreItems,
+                        itemCount: () => value.notificatins.length,
+                        loadMore: () async {
+                          await value.fetchNotifications();
+                        },
+                        onLoadMore: () {
+                          value.showLoadingBottom(true);
+                        },
+                        onLoadMoreFinished: () {
+                          value.showLoadingBottom(false);
+                        },
+                        loadMoreOffsetFromBottom: 0,
+                        itemBuilder: (context, index) {
+                          if ((value.loadingMore ?? false) &&
+                              index == value.notificatins.length - 1) {
+                            return Column(
+                              children: <Widget>[
+                                NotificationItem(value.notificatins[index]),
+                                PlaceholderItemCard()
+                              ],
+                            );
+                          }
+                          return NotificationItem(value.notificatins[index]);
+                        },
+                      );
+          },
+        ),
       ),
     );
   }

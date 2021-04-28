@@ -5,6 +5,7 @@ class NotificationModel {
   String image;
   String body;
   String createdAt;
+  String onWrite;
   NotificationModel({
     this.status,
     this.id,
@@ -12,6 +13,7 @@ class NotificationModel {
     this.image,
     this.body,
     this.createdAt,
+    this.onWrite,
   });
 
   factory NotificationModel.fromJson(json) {
@@ -22,6 +24,7 @@ class NotificationModel {
       image: json['image'],
       body: json['body'],
       createdAt: json['createdAt'],
+      onWrite: json['onWrite'],
     );
   }
 }

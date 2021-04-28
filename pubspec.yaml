@@ -55,6 +55,8 @@ dependencies:
   flutter_rating_bar: ^3.0.0
   geocoder: ^0.2.1
   num_to_txt: ^0.0.3
+  
+
   # responsive_scaffold:
   #   git:
   #     url: https://github.com/AzadCoder/responsive_scaffold

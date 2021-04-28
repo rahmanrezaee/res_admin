@@ -24,6 +24,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
   AuthProvider authProvider;
 
+  Function get autovalidate => null;
+
   @override
   Widget build(BuildContext context) {
     authProvider = Provider.of<AuthProvider>(context);
@@ -84,7 +86,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             key: _formKey,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
-                            child: _loginFieldBuilder(
+                            child: _loginFieldBuilder(autovalidate,
                                 "Forgot Password", _emailController, (value) {
                               if (value == null) {
                                 return "Please fill Your email";
@@ -187,7 +189,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                               ),
                               onPressed: () {
                                 Navigator.of(context).pop();
-                                        Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
+                                Navigator.of(context)
+                                    .pushReplacementNamed(LoginPage.routeName);
                               },
                             ),
                           ),
@@ -211,13 +214,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   }
 }
 
-_loginFieldBuilder(
-    String hintText, TextEditingController controller, Function validator) {
+_loginFieldBuilder(Function autovalidate, String hintText,
+    TextEditingController controller, Function validator) {
   return TextFormField(
     controller: controller,
     validator: (e) {
       return validator(e);
     },
+    autovalidateMode: AutovalidateMode.onUserInteraction,
     keyboardType: TextInputType.emailAddress,
     decoration: InputDecoration(
       hintText: hintText,

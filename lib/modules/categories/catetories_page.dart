@@ -25,16 +25,20 @@ class CatetoriesPage extends StatefulWidget {
 class _CatetoriesPageState extends State<CatetoriesPage> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(routes: {
-      CatetoriesListPage.routeName: (context) => CatetoriesListPage(),
-      DishPage.routeName: (context) => DishPage(
-            ModalRoute.of(context).settings.arguments,
-          ),
-      NotificationPage.routeName: (context) => NotificationPage(),
-      AddNewDish.routeName: (context) => AddNewDish(
-            ModalRoute.of(context).settings.arguments,
-          ),
-    }, theme: restaurantTheme, home: CatetoriesListPage());
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        routes: {
+          CatetoriesListPage.routeName: (context) => CatetoriesListPage(),
+          DishPage.routeName: (context) => DishPage(
+                ModalRoute.of(context).settings.arguments,
+              ),
+          NotificationPage.routeName: (context) => NotificationPage(),
+          AddNewDish.routeName: (context) => AddNewDish(
+                ModalRoute.of(context).settings.arguments,
+              ),
+        },
+        theme: restaurantTheme,
+        home: CatetoriesListPage());
   }
 }
 
@@ -311,9 +315,9 @@ class _CatetoriesListPageState extends State<CatetoriesListPage> {
                       context: context,
                       builder: (context) {
                         editCatController.text = category.categoryName;
-                        return  BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                                                  child: SimpleDialog(
+                        return BackdropFilter(
+                          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                          child: SimpleDialog(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -367,8 +371,8 @@ class _CatetoriesListPageState extends State<CatetoriesListPage> {
                                         1) {
                                       print("Editing the category");
                                       catProvider
-                                          .editCategory(
-                                              category.id, editCatController.text)
+                                          .editCategory(category.id,
+                                              editCatController.text)
                                           .then((re) {
                                         Navigator.of(context).pop();
                                         if (re['status'] == true) {

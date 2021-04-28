@@ -11,6 +11,7 @@ class NotificationProvider with ChangeNotifier {
   int maxItems;
   int page = 1;
   int lastPage;
+  int onWriteNotification;
 
   int countNotification = 0;
   AuthProvider auth;
@@ -34,6 +35,7 @@ class NotificationProvider with ChangeNotifier {
     hasMoreItems = null;
     loadingMore = null;
     maxItems = null;
+
     page = 1;
     notifyListeners();
   }
@@ -47,6 +49,7 @@ class NotificationProvider with ChangeNotifier {
 
       maxItems = result.data['data']['notification']['totalDocs'];
       page = result.data['data']['notification']['page'];
+      onWriteNotification = result.data['data']['onWrite'];
       lastPage = result.data['data']['notification']['totalPages'];
       print("result $lastPage");
 
