@@ -8,6 +8,7 @@ class OrderModels {
   String restaurantId;
   List<DishModel> items = [];
   int totalItems;
+  int orderNumber;
   Map user;
   double totalPrice;
   double grandTotal;
@@ -24,6 +25,7 @@ class OrderModels {
       this.restaurantId = tableData['restaurantId'] ?? "";
       this.totalItems = tableData['totalItems'] ?? 0;
       this.date = tableData['createdAt'] ?? "";
+      this.orderNumber = tableData['orderId'] ?? "";
       this.totalPrice = double.parse("${tableData['totalPrice']}") ?? 0;
       this.user = tableData['userId'] ?? {"_id": "", "username": ""};
       this.restaurantCharges =

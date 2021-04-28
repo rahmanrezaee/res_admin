@@ -114,6 +114,7 @@ flutter:
     - assets/images/delete.png
     - assets/images/trash-white.png
     - assets/images/purchase_order.png
+    - assets/images/desk-bell.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

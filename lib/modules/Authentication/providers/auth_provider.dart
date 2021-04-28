@@ -9,6 +9,24 @@ import 'package:flutter/material.dart';
 class AuthProvider with ChangeNotifier {
   String _token;
 
+  Future<String> get userId async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('user') == null) {
+      return '';
+    } else {
+      return json.decode(prefs.getString('user'))['userId'];
+    }
+  }
+
+  Future<String> get fcmToken async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('user') == null) {
+      return '';
+    } else {
+      return json.decode(prefs.getString('user'))['fcmToken'];
+    }
+  }
+
   Future login(String username, String password, String fcm) async {
     try {
       print("Loging in");
@@ -24,6 +42,7 @@ class AuthProvider with ChangeNotifier {
         'token': res.data['data']['token'],
         'expierDate': DateTime.now().add(Duration(days: 1)).toString(),
         'userId': res.data['data']['user']['_id'],
+        "fcmToken": fcm,
       };
       //saving user data to sharedpreferences
       SharedPreferences prefs = await SharedPreferences.getInstance();

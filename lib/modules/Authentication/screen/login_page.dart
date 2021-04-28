@@ -248,6 +248,8 @@ class _LoginPageState extends State<LoginPage> {
                             ],
                           ),
                           onPressed: () {
+                            FocusScope.of(context)
+                                .requestFocus(new FocusNode());
                             login();
                             // Navigator.pushReplacementNamed(
                             //     context, LayoutExample.routeName);

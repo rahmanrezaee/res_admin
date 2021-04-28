@@ -294,21 +294,23 @@ class _DishItemState extends State<DishItem> {
                   bottom: 10,
                   child: RatingBar.builder(
                     initialRating: widget.dishItem.averageRating != null
-                        ? widget.dishItem.averageRating.toDouble()
+                        ? widget.dishItem.averageRating
                         : 0,
                     itemSize: 25,
                     minRating: 1,
+                    updateOnDrag: false,
+                    ignoreGestures: true,
                     direction: Axis.horizontal,
                     allowHalfRating: true,
                     itemCount: 5,
+                    glowColor: Colors.white,
+                    unratedColor: Colors.white,
                     itemPadding: EdgeInsets.symmetric(horizontal: 0),
                     itemBuilder: (context, _) => Icon(
                       Icons.star,
                       color: Colors.amber,
                     ),
-                    onRatingUpdate: (rating) {
-                      print(rating);
-                    },
+                    onRatingUpdate: (double value) {},
                   ),
                 ),
               ],

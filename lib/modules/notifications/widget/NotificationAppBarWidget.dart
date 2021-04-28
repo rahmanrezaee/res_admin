@@ -17,7 +17,7 @@ class NotificationAppBarWidget extends StatelessWidget {
               }),
           data.notificatins == null
               ? FutureBuilder(
-                  future: data.fetchNotifications(),
+                  future: data.fetchNotifications(pageParams: 1),
                   builder: (context, snapshot) {
                     return Container();
                   })

@@ -8,7 +8,7 @@ class DishModel {
   String foodId;
   String foodName;
   int quantity;
-  int averageRating;
+  double averageRating;
   String restaurantId;
   String categoryId;
   double price;
@@ -50,28 +50,28 @@ class DishModel {
   // }
   //
   DishModel.toJson(element) {
-    try {
-      this.foodId = element['_id'];
-      this.foodName = element['name'];
-      this.quantity = element['quantity'];
-      this.price = double.parse("${element['price']}");
+    // try {
+    this.foodId = element['_id'];
+    this.foodName = element['name'];
+    this.quantity = element['quantity'];
+    this.price = double.parse("${element['price']}");
 
-      List addonLi = element['addOn'];
-      orderNote = element['orderNote'];
+    List addonLi = element['addOn'];
+    orderNote = element['orderNote'];
 
-      if (addonLi != null && addonLi.isNotEmpty) {
-        addonLi.forEach((element) {
-          List<AddonItems> temp = [];
+    if (addonLi != null && addonLi.isNotEmpty) {
+      addonLi.forEach((element) {
+        List<AddonItems> temp = [];
 
-          element.forEach((elementItem) {
-            temp.add(AddonItems.toJson(elementItem));
-          });
-          addOn.add(temp);
+        element.forEach((elementItem) {
+          temp.add(AddonItems.toJson(elementItem));
         });
-      }
-    } catch (e) {
-      print("Error In dish one $e");
+        addOn.add(temp);
+      });
     }
+    // } catch (e) {
+    //   print("Error In dish one $e");
+    // }
   }
   DishModel.toCatJson(element) {
     try {
@@ -80,6 +80,7 @@ class DishModel {
       this.visibility = element['visibility'];
       this.price = double.parse("${element['price']}");
       this.tax = double.parse("${element['tax']}");
+      this.averageRating = double.parse("${element['averageRating'] ?? 0}");
 
       List photosRest = element['photos'];
 
@@ -114,34 +115,35 @@ class DishModel {
   }
 
   DishModel.toComplateJson(extractedData) {
-    try {
-      this.foodId = extractedData['food']['_id'];
-      this.foodName = extractedData['food']['name'];
-      this.visibility = extractedData['food']['visibility'];
-      this.averageRating = extractedData['food']['averageRating'];
-      this.restaurantId = extractedData['food']['restaurantId'];
-      this.categoryId = extractedData['food']['categoryId'];
-      this.description = extractedData['food']['description'];
-      this.preparationTime = extractedData['food']['preparationTime'];
-      this.price = double.parse("${extractedData['food']['price']}");
-      this.tax = double.parse("${extractedData['food']['tax']}");
+    // try {
+    this.foodId = extractedData['food']['_id'];
+    this.foodName = extractedData['food']['name'];
+    this.visibility = extractedData['food']['visibility'];
+    this.averageRating =
+        double.parse("${extractedData['food']['averageRating']}");
+    this.restaurantId = extractedData['food']['restaurantId'];
+    this.categoryId = extractedData['food']['categoryId'];
+    this.description = extractedData['food']['description'];
+    this.preparationTime = extractedData['food']['preparationTime'];
+    this.price = double.parse("${extractedData['food']['price']}");
+    this.tax = double.parse("${extractedData['food']['tax']}");
 
-      List photosRest = extractedData['food']['photos'];
+    List photosRest = extractedData['food']['photos'];
 
-      if (photosRest != null && photosRest.isNotEmpty) {
-        photosRest.forEach((element) {
-          images.add(ImageModel.toJson(element));
-        });
-      }
-      List addOnList = extractedData['food']['addOn'];
-
-      if (addOnList != null && addOnList.isNotEmpty) {
-        addOnList.forEach((element) {
-          addOnDishAdmin.add(AddonItems.toJson(element));
-        });
-      }
-    } catch (e) {
-      print("Error In dish $e");
+    if (photosRest != null && photosRest.isNotEmpty) {
+      photosRest.forEach((element) {
+        images.add(ImageModel.toJson(element));
+      });
     }
+    List addOnList = extractedData['food']['addOn'];
+
+    if (addOnList != null && addOnList.isNotEmpty) {
+      addOnList.forEach((element) {
+        addOnDishAdmin.add(AddonItems.toJson(element));
+      });
+    }
+    // } catch (e) {
+    //   print("Error In dish $e");
+    // }
   }
 }

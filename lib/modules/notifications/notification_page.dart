@@ -25,7 +25,11 @@ class NotificationPage extends StatelessWidget {
               centerTitle: true,
               actions: [
                 IconButton(
-                    icon: Icon(Icons.delete_outline_outlined), onPressed: null)
+                    icon: Icon(Icons.delete_outline_outlined),
+                    onPressed: () {
+                      Provider.of<NotificationProvider>(context, listen: false)
+                          .clearAll();
+                    })
               ],
             )
           : PreferredSize(
@@ -33,47 +37,48 @@ class NotificationPage extends StatelessWidget {
               child: SizedBox(
                 height: 60,
               )),
-      body: SingleChildScrollView(
-        child: Consumer<NotificationProvider>(
-          builder: (BuildContext context, value, Widget child) {
-            return value.notificatins == null
-                ? FutureBuilder(
-                    future: value.fetchNotifications(),
-                    builder: (context, snapshot) {
-                      return Center(child: CircularProgressIndicator());
-                    })
-                : value.notificatins.isEmpty
-                    ? Center(child: Text("No Notification"))
-                    : IncrementallyLoadingListView(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        hasMore: () => value.hasMoreItems,
-                        itemCount: () => value.notificatins.length,
-                        loadMore: () async {
-                          await value.fetchNotifications();
-                        },
-                        onLoadMore: () {
-                          value.showLoadingBottom(true);
-                        },
-                        onLoadMoreFinished: () {
-                          value.showLoadingBottom(false);
-                        },
-                        loadMoreOffsetFromBottom: 0,
-                        itemBuilder: (context, index) {
-                          if ((value.loadingMore ?? false) &&
-                              index == value.notificatins.length - 1) {
-                            return Column(
-                              children: <Widget>[
-                                NotificationItem(value.notificatins[index]),
-                                PlaceholderItemCard()
-                              ],
-                            );
-                          }
-                          return NotificationItem(value.notificatins[index]);
-                        },
-                      );
-          },
-        ),
+      body: Consumer<NotificationProvider>(
+        builder: (BuildContext context, value, Widget child) {
+          return value.notificatins == null
+              ? FutureBuilder(
+                 
+                  builder: (context, snapshot) {
+                    return Center(child: CircularProgressIndicator());
+                  })
+              : RefreshIndicator(
+                  onRefresh: () async {
+                    return value.fetchNotifications(pageParams: 1);
+                  },
+                  child: value.notificatins.isEmpty
+                      ? Center(child: Text("No Notification"))
+                      : IncrementallyLoadingListView(
+                          hasMore: () => value.hasMoreItems,
+                          itemCount: () => value.notificatins.length,
+                          loadMore: () async {
+                            await value.fetchNotifications();
+                          },
+                          onLoadMore: () {
+                            value.showLoadingBottom(true);
+                          },
+                          onLoadMoreFinished: () {
+                            value.showLoadingBottom(false);
+                          },
+                          loadMoreOffsetFromBottom: 0,
+                          itemBuilder: (context, index) {
+                            if ((value.loadingMore ?? false) &&
+                                index == value.notificatins.length - 1) {
+                              return Column(
+                                children: <Widget>[
+                                  NotificationItem(value.notificatins[index]),
+                                  PlaceholderItemCard()
+                                ],
+                              );
+                            }
+                            return NotificationItem(value.notificatins[index]);
+                          },
+                        ),
+                );
+        },
       ),
     );
   }
@@ -108,12 +113,13 @@ class _NotificationItemState extends State<NotificationItem> {
           : Colors.white,
       child: InkWell(
         onTap: () {
-          setState(() {
-            widget.notification.status = "write";
-          });
-
-          Provider.of<NotificationProvider>(context, listen: false)
-              .notificationChangeState(widget.notification.id);
+          if (widget.notification.status == "onWrite") {
+            setState(() {
+              widget.notification.status = "write";
+            });
+            Provider.of<NotificationProvider>(context, listen: false)
+                .notificationChangeState(widget.notification.id);
+          }
 
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => OrdersPageNotification()));
@@ -129,7 +135,7 @@ class _NotificationItemState extends State<NotificationItem> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Image.asset(
-                    "assets/images/purchase_order.png",
+                    "assets/images/desk-bell.png",
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -153,7 +159,7 @@ class _NotificationItemState extends State<NotificationItem> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: Text(
-                        '${Jiffy(widget.notification.createdAt).fromNow()}',
+                        '${Jiffy(widget.notification.createdAt).format("h:mm a / MM.dd.yyyy")}',
                         style: TextStyle(fontWeight: FontWeight.w300)),
                   ),
                 ],
