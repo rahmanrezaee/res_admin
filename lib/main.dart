@@ -186,10 +186,7 @@ class _Application extends State<Application> {
       RemoteNotification notification = message.notification;
       AndroidNotification android = message.notification?.android;
 
-      // print("found"); /// Create an Android Notification Channel.
-      ///
-      /// We use this channel in the `AndroidManifest.xml` file to override the
-      /// default FCM channel to enable heads up notifications.
+     
       await flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>()
