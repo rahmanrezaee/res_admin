@@ -61,108 +61,125 @@ class _DashboardPageState extends State<DashboardPage> {
                   builder: (context, snapshot) {
                     return Center(child: CircularProgressIndicator());
                   })
-              : Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("Open for Orders",
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w700)),
-                            CupertinoSwitch(
-                              value: dashProvider.openForOrder,
-                              onChanged: (value) {
-                                setState(() {
-                                  isLoading = true;
-                                });
-                                dashProvider
-                                    .resturantChangeStateOpenForOrder(
-                                        dashProvider.getDashData['restaurant']
-                                            ['_id'],
-                                        value)
-                                    .then((value) => {
-                                          setState(() {
-                                            isLoading = false;
-                                          })
-                                        });
-                              },
-                              // trackColor: AppColors.green,
-                            ),
-                          ],
-                        ),
-                        Divider(),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text("Auto Accept Orders",
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w700)),
-                            CupertinoSwitch(
-                              value: dashProvider.autoAcceptOrder,
-                              onChanged: (value) {
-                                setState(() {
-                                  isLoading = true;
-                                });
-                                dashProvider
-                                    .resturantChangeStateAutoAcceptOrder(
-                                        dashProvider.getDashData['restaurant']
-                                            ['_id'],
-                                        value)
-                                    .then((value) => {
-                                          setState(() {
-                                            isLoading = false;
-                                          })
-                                        });
-                                ;
-                              },
-                              // trackColor: AppColors.green,
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: SizedBox(
-                            width: getHelfIpadAndFullMobWidth(context),
-                            height: 50,
-                            child: RaisedButton(
-                              padding: EdgeInsets.symmetric(vertical: 10),
-                              color: Theme.of(context).primaryColor,
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
+              : RefreshIndicator(
+                  onRefresh: () async {
+                    return dashProvider.fetchDashData();
+                  },
+                  child: ListView(
+                    children: [
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: 20,
                               ),
-                              child: Text(
-                                "${dashProvider.getDashData['activeOrders']} Active Orders",
-                                style: Theme.of(context).textTheme.button,
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("Open for Orders",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w700)),
+                                  CupertinoSwitch(
+                                    value: dashProvider.openForOrder,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        isLoading = true;
+                                      });
+                                      dashProvider
+                                          .resturantChangeStateOpenForOrder(
+                                              dashProvider
+                                                      .getDashData['restaurant']
+                                                  ['_id'],
+                                              value)
+                                          .then((value) => {
+                                                setState(() {
+                                                  isLoading = false;
+                                                })
+                                              });
+                                    },
+                                    // trackColor: AppColors.green,
+                                  ),
+                                ],
                               ),
-                              onPressed: () {},
-                            ),
+                              Divider(),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("Auto Accept Orders",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w700)),
+                                  CupertinoSwitch(
+                                    value: dashProvider.autoAcceptOrder,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        isLoading = true;
+                                      });
+                                      dashProvider
+                                          .resturantChangeStateAutoAcceptOrder(
+                                              dashProvider
+                                                      .getDashData['restaurant']
+                                                  ['_id'],
+                                              value)
+                                          .then((value) => {
+                                                setState(() {
+                                                  isLoading = false;
+                                                })
+                                              });
+                                      ;
+                                    },
+                                    // trackColor: AppColors.green,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: SizedBox(
+                                  width: getHelfIpadAndFullMobWidth(context),
+                                  height: 50,
+                                  child: RaisedButton(
+                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                    color: Theme.of(context).primaryColor,
+                                    elevation: 0,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Text(
+                                      "${dashProvider.getDashData['activeOrders']} Active Orders",
+                                      style: Theme.of(context).textTheme.button,
+                                    ),
+                                    onPressed: () {},
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Container(
+                                  width: getQurIpadAndFullMobWidth(context),
+                                  child: LabelDashBoard(
+                                    color: Colors.white,
+                                    title:
+                                        "Total earning Today: \$${double.parse((dashProvider.getDashData['totalEarningToday']).toString()).toStringAsFixed(2)}",
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Container(
-                            width: getQurIpadAndFullMobWidth(context),
-                            child: LabelDashBoard(
-                              color: Colors.white,
-                              title:
-                                  "Total earning Today: \$${double.parse((dashProvider.getDashData['totalEarningToday']).toString()).toStringAsFixed(2)}",
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 );
         },

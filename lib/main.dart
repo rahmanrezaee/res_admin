@@ -129,7 +129,6 @@ class _MyAppState extends State<MyApp> {
               message: "Connecting...",
               child: snapshot.token != null
                   ? Application()
-                  
                   : FutureBuilder(
                       future: snapshot.autoLogin(),
                       builder: (context, snapshot) {
@@ -160,13 +159,13 @@ class _Application extends State<Application> {
   Future selectNotification(String payload) async {
     print("payload $payload");
     if (payload != null) {
-      debugPrint('notification payload: $payload');
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => OrdersPageNotification()));
     }
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => OrdersPageNotification()));
   }
 
   getPrefs() async {
+    print("this place run");
     await FirebaseMessaging.instance.requestPermission(
       announcement: true,
       carPlay: true,
@@ -179,13 +178,28 @@ class _Application extends State<Application> {
     super.initState();
     getPrefs();
 
-    print("firebase message is setuping...");
+    log("firebase message is setuping...");
 
+    FirebaseMessaging.instance
+        .getInitialMessage()
+        .then((RemoteMessage message) {
+      log('message recived');
+    });
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      log("firebase message is onMessage ${message}");
+      NotificationProvider notificationProvider =
+          Provider.of<NotificationProvider>(context, listen: false);
+      DashboardProvider homeProvider =
+          Provider.of<DashboardProvider>(context, listen: false);
+      await homeProvider.fetchDashData();
+
+      await notificationProvider.fetchNotifications(pageParams: 1);
+
+      print("load Home and notification");
+
       RemoteNotification notification = message.notification;
       AndroidNotification android = message.notification?.android;
 
-     
       await flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>()
@@ -196,6 +210,7 @@ class _Application extends State<Application> {
           AndroidInitializationSettings('app_icon');
       final InitializationSettings initializationSettings =
           InitializationSettings(android: initializationSettingsAndroid);
+
       await flutterLocalNotificationsPlugin.initialize(initializationSettings,
           onSelectNotification: selectNotification);
 
@@ -213,22 +228,13 @@ class _Application extends State<Application> {
               ),
             ));
       }
-
-      if (notification != null) {
-        NotificationProvider notificationProvider =
-            Provider.of<NotificationProvider>(context, listen: false);
-
-        if (notificationProvider.notificatins == null)
-          await notificationProvider.fetchNotifications();
-
-        notificationProvider
-            .setCountNotification(notificationProvider.maxItems + 1);
-      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    print("Load Home page");
+
     return LayoutExample();
   }
 }

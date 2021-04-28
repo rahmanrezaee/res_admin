@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:restaurant/GlobleService/APIRequest.dart';
@@ -18,32 +20,25 @@ class NotificationProvider with ChangeNotifier {
 
   NotificationProvider(this.auth);
 
-  void setCountNotification(int mount) {
-    countNotification = mount;
-    clearToNullList();
-    notifyListeners();
-  }
-
   List<NotificationModel> notificatins;
+
   void setPage(int t) {
     this.page = t;
     notifyListeners();
   }
 
-  void clearToNullList() {
-    notificatins = null;
-    hasMoreItems = null;
-    loadingMore = null;
-    maxItems = null;
-
-    page = 1;
-    notifyListeners();
-  }
-
-  fetchNotifications() async {
+  Future fetchNotifications({pageParams}) async {
     try {
-      final result = await APIRequest()
-          .get(myUrl: "$baseUrl/public/notification", token: auth.token);
+      if (pageParams != null) {
+        page = pageParams;
+        notificatins = null;
+        hasMoreItems = null;
+        loadingMore = null;
+        maxItems = null;
+      }
+      print("pageParams ${pageParams}");
+      final result = await APIRequest().get(
+          myUrl: "$baseUrl/public/notification?page=$page", token: auth.token);
 
       print("result $result");
 
@@ -94,6 +89,11 @@ class NotificationProvider with ChangeNotifier {
         },
         myUrl: url.toString(),
       );
+
+      if (onWriteNotification > 0) {
+        onWriteNotification--;
+      }
+      // fetchNotifications(pageParams: 1);
       notifyListeners();
       return true;
     } on DioError catch (e) {
@@ -111,7 +111,24 @@ class NotificationProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void incrementQuentity() {
-    fetchNotifications();
+  Future<bool> clearAll() async {
+    try {
+      final result = await APIRequest().delete(
+          myUrl: "$baseUrl/public/notification",
+          myBody: null,
+          myHeaders: {'token': auth.token});
+
+      log("notification $result");
+      fetchNotifications(pageParams: 1);
+      notifyListeners();
+      return true;
+    } on DioError catch (e) {
+      print("error In Response");
+      print(e.response);
+      print(e.error);
+      print(e.request);
+      print(e.type);
+      return false;
+    }
   }
 }

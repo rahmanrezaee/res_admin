@@ -123,7 +123,7 @@ class _OrderItemState extends State<OrderItem> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Order ID: ${item.cardName} ",
+                  "Order ID: ${item.orderNumber} ",
                   style: TextStyle(color: AppColors.redText),
                 ),
                 Text(
@@ -268,8 +268,8 @@ class _OrderItemState extends State<OrderItem> {
                             ),
                           ]),
                     ),
-                    SizedBox(
-                      width: 150,
+                    Expanded(
+                      child: SizedBox(),
                     ),
                     Visibility(
                       visible: item.status == "accepted",
