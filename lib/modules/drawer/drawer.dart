@@ -112,7 +112,7 @@ class _LayoutExampleState extends State<LayoutExample> {
 
   @override
   void initState() {
-    initUniLinks(context);
+    // initUniLinks(context);
     super.initState();
   }
 

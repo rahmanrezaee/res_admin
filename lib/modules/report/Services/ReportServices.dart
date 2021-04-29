@@ -24,27 +24,28 @@ Future getReport(
 }
 
 Future getSendReportEmil(
-    {fromDate, toDate, coupenCode, @required AuthProvider auth}) async {
+    {fromDate,
+    toDate,
+    coupenCode,
+    @required AuthProvider auth,
+    String totalUser}) async {
   try {
-    String url =
-        "$baseUrl/restaurant/report/email-report-orders?${coupenCode != null && coupenCode != "" ? "&couponCode=" + coupenCode : ""}${fromDate != null ? "&fromDate=" + fromDate : ""}${toDate != null ? "&toDate=" + toDate : ""}";
+    String url = "$baseUrl/restaurant/report/email-report-orders";
     print("url $url");
     Map data = {};
+    if (coupenCode != null) {
+      data['Coupon Code'] = coupenCode;
+    }
 
     if (fromDate != null) {
-      data = {
-        "fromDate": fromDate,
-      };
+      data['From Date'] = fromDate;
     }
     if (toDate != null) {
-      data = {
-        "toDate": toDate,
-      };
+      data['To Date'] = toDate;
     }
-    if (coupenCode != null) {
-      data = {
-        "couponCode": coupenCode,
-      };
+
+    if (totalUser != null) {
+      data['Total Coupon Used'] = totalUser;
     }
 
     print(data);
@@ -65,25 +66,23 @@ Future getSendReportEmil(
 }
 
 Future getSendReportEmailEarnings(
-    {fromDate, toDate, @required AuthProvider auth}) async {
+    {fromDate, toDate, @required AuthProvider auth, String earning}) async {
   try {
-    String url =
-        "$baseUrl/restaurant/report/email-report-earnings?${fromDate != null ? "&fromDate=" + fromDate : ""}${toDate != null ? "&toDate=" + toDate : ""}";
+    String url = "$baseUrl/restaurant/report/email-report-earnings";
     print("url $url");
     Map data = {};
 
     if (fromDate != null) {
-      data = {
-        "fromDate": fromDate,
-      };
-    }
-    if (toDate != null) {
-      data = {
-        "toDate": toDate,
-      };
+      data['From Date'] = fromDate;
     }
 
-    print(data);
+    if (toDate != null) {
+      data['To Date'] = toDate;
+    }
+    if (earning != null) {
+      data['Total Earning'] = earning;
+    }
+
     final result = await APIRequest()
         .post(myUrl: url, myHeaders: {"token": auth.token}, myBody: data);
 
