@@ -16,6 +16,10 @@ import '../../../constants/assest_path.dart';
 import '../../drawer/drawer.dart';
 import './forgotPassword.dart';
 import '../providers/linkListener.dart';
+import 'package:uni_links/uni_links.dart';
+import '../../authentication/screen/forgotPasswordWithKey.dart';
+
+bool first = true;
 
 class LoginPage extends StatefulWidget {
   static String routeName = "loginpage";
@@ -31,19 +35,69 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _passwordController = new TextEditingController();
 
   AuthProvider authProvider;
-  StreamSubscription iosSubscription;
+  StreamSubscription _sub;
 
   Function get autovalidat => null;
+  String _latestLink = 'Unknown';
+  Uri _latestUri;
+
+  /// An implementation using a [String] link
+  initPlatformStateForStringUniLinks() async {
+    // Attach a listener to the links stream
+    _sub = getLinksStream().listen((String link) {
+      if (!mounted) return;
+      _latestLink = link ?? 'Unknown';
+      _latestUri = null;
+      try {
+        if (link != null) {
+          String token = link.toString().substring(
+              link.toString().indexOf("token=") + 6, link.toString().length);
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            return ForgotPasswordWithKey(token);
+          }));
+        }
+      } on FormatException {}
+    }, onError: (err) {
+      if (!mounted) return;
+      setState(() {
+        _latestLink = 'Failed to get latest link: $err.';
+        _latestUri = null;
+      });
+    });
+
+    // Get the latest link
+    String initialLink;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      initialLink = await getInitialLink();
+      //   print('initial link: $initialLink');
+      if (initialLink != null && first == true) {
+        first = false;
+        String token = initialLink.toString().substring(
+            initialLink.toString().indexOf("token=") + 6,
+            initialLink.toString().length);
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+          return ForgotPasswordWithKey(token);
+        }));
+      }
+    } on FormatException {}
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+  }
 
   @override
   void dispose() {
-    if (iosSubscription != null) iosSubscription.cancel();
+    if (_sub != null) _sub.cancel();
+    if (_sub != null) _sub.cancel();
+
     super.dispose();
   }
 
   @override
   void initState() {
-    initUniLinks(context);
+    initPlatformStateForStringUniLinks();
     getFcmToken();
     super.initState();
   }
@@ -308,7 +362,6 @@ _loginFieldBuilder(Function autovalidat, String hintText, Function validator,
     validator: (v) {
       return validator(v);
     },
-    autovalidateMode: AutovalidateMode.onUserInteraction,
     obscureText: secure,
     keyboardType: textInputType ?? TextInputType.text,
     decoration: InputDecoration(

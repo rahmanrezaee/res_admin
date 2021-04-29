@@ -53,6 +53,8 @@ class _ReportPageState extends State<ReportPage> {
 
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool isLoading = false;
+  bool enabletoOrdersReport = false;
+  bool enabletoEarningReport = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,6 +113,14 @@ class _ReportPageState extends State<ReportPage> {
                             TextFormFieldResturant(
                               hintText: "By Coupen",
                               controller: couponController,
+                              onChange: (value) {
+                                setState(() {});
+                                if (value == "") {
+                                  setState(() {
+                                    enabletoOrdersReport = false;
+                                  });
+                                }
+                              },
                             ),
                             SizedBox(
                               height: 10,
@@ -182,7 +192,7 @@ class _ReportPageState extends State<ReportPage> {
                             Visibility(
                               visible: earning != "",
                               child: ListTile(
-                                title: Text("Total Orders"),
+                                title: Text("Total Used"),
                                 trailing: Text("$earning"),
                               ),
                             ),
@@ -197,28 +207,33 @@ class _ReportPageState extends State<ReportPage> {
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 15),
                                     ),
-                                    onPress: () {
-                                      setState(() {
-                                        isLoading = true;
-                                      });
-                                      getSendReportEmil(
-                                              fromDate: startDateOrder,
-                                              toDate: endDateOrder,
-                                              coupenCode: couponController.text,
-                                              auth: auth)
-                                          .then((value) {
-                                        setState(() {
-                                          isLoading = false;
-                                        });
-                                        _scaffoldKey.currentState
-                                            .showSnackBar(SnackBar(
-                                          backgroundColor: Colors.greenAccent,
-                                          content: Text(
-                                              "Successfuly Send To Email."),
-                                          duration: Duration(seconds: 3),
-                                        ));
-                                      });
-                                    },
+                                    onPress: !enabletoOrdersReport
+                                        ? null
+                                        : () {
+                                            setState(() {
+                                              isLoading = true;
+                                            });
+                                            getSendReportEmil(
+                                                    fromDate: startDateOrder,
+                                                    toDate: endDateOrder,
+                                                    coupenCode:
+                                                        couponController.text,
+                                                    totalUser: earning,
+                                                    auth: auth)
+                                                .then((value) {
+                                              setState(() {
+                                                isLoading = false;
+                                              });
+                                              _scaffoldKey.currentState
+                                                  .showSnackBar(SnackBar(
+                                                backgroundColor:
+                                                    Colors.greenAccent,
+                                                content: Text(
+                                                    "Successfuly Send To Email."),
+                                                duration: Duration(seconds: 3),
+                                              ));
+                                            });
+                                          },
                                   ),
                                 ),
                                 SizedBox(
@@ -226,32 +241,35 @@ class _ReportPageState extends State<ReportPage> {
                                 ),
                                 Expanded(
                                   child: ButtonRaiseResturant(
-                                    
                                     color: Theme.of(context).primaryColor,
                                     label: Text(
                                       "View Report",
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 15),
                                     ),
-                                    onPress: () {
-                                      setState(() {
-                                        isLoading = true;
-                                        earning = "";
-                                      });
-                                      getReport(
-                                        type: "orders",
-                                        fromDate: startDateOrder,
-                                        toDate: endDateOrder,
-                                        coupenCode: couponController.text,
-                                        auth: auth
-                                      ).then((value) {
-                                        setState(() {
-                                          earning = "${value}";
+                                    onPress: couponController.text == ""
+                                        ? null
+                                        : () {
+                                            setState(() {
+                                              isLoading = true;
+                                              earning = "";
+                                              enabletoOrdersReport = true;
+                                            });
+                                            getReport(
+                                                    type: "orders",
+                                                    fromDate: startDateOrder,
+                                                    toDate: endDateOrder,
+                                                    coupenCode:
+                                                        couponController.text,
+                                                    auth: auth)
+                                                .then((value) {
+                                              setState(() {
+                                                earning = "${value}";
 
-                                          isLoading = false;
-                                        });
-                                      });
-                                    },
+                                                isLoading = false;
+                                              });
+                                            });
+                                          },
                                   ),
                                 ),
                               ],
@@ -374,26 +392,31 @@ class _ReportPageState extends State<ReportPage> {
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 15),
                                     ),
-                                    onPress: () {
-                                      setState(() {
-                                        isLoading = true;
-                                      });
-                                      getSendReportEmailEarnings(
-                                        fromDate: startDateEarn,
-                                        toDate: endDateEarn,  auth: auth
-                                      ).then((value) {
-                                        setState(() {
-                                          isLoading = false;
-                                        });
-                                        _scaffoldKey.currentState
-                                            .showSnackBar(SnackBar(
-                                          backgroundColor: Colors.greenAccent,
-                                          content: Text(
-                                              "Successfuly Send To Email."),
-                                          duration: Duration(seconds: 3),
-                                        ));
-                                      });
-                                    },
+                                    onPress: !enabletoEarningReport
+                                        ? null
+                                        : () {
+                                            setState(() {
+                                              isLoading = true;
+                                            });
+                                            getSendReportEmailEarnings(
+                                                    fromDate: startDateEarn,
+                                                    toDate: endDateEarn,
+                                                    earning: income,
+                                                    auth: auth)
+                                                .then((value) {
+                                              setState(() {
+                                                isLoading = false;
+                                              });
+                                              _scaffoldKey.currentState
+                                                  .showSnackBar(SnackBar(
+                                                backgroundColor:
+                                                    Colors.greenAccent,
+                                                content: Text(
+                                                    "Successfuly Send To Email."),
+                                                duration: Duration(seconds: 3),
+                                              ));
+                                            });
+                                          },
                                   ),
                                 ),
                                 SizedBox(
@@ -410,14 +433,15 @@ class _ReportPageState extends State<ReportPage> {
                                     onPress: () {
                                       setState(() {
                                         isLoading = true;
-
+                                        enabletoEarningReport = true;
                                         income = "";
                                       });
                                       getReport(
-                                        type: "earnings",
-                                        fromDate: startDateEarn,
-                                        toDate: endDateEarn,  auth: auth
-                                      ).then((value) {
+                                              type: "earnings",
+                                              fromDate: startDateEarn,
+                                              toDate: endDateEarn,
+                                              auth: auth)
+                                          .then((value) {
                                         setState(() {
                                           income = "${value}";
 

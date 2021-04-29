@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant/modules/Authentication/providers/auth_provider.dart';
+import 'package:restaurant/modules/Authentication/screen/login_page.dart';
 import 'package:restaurant/themes/colors.dart';
 
 class ForgotPasswordWithKey extends StatefulWidget {
@@ -169,7 +170,7 @@ class _ForgotPasswordWithKeyState extends State<ForgotPasswordWithKey> {
             duration: Duration(seconds: 3),
           ));
           Timer(Duration(seconds: 3), () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
           });
         } else {
           setState(() {
