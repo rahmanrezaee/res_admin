@@ -72,9 +72,11 @@ class _ResturantFormState extends State<ResturantForm> {
   }
 
   DashboardProvider dashboardProvider;
+  AuthProvider auth;
   @override
   void initState() {
     dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
+    auth = Provider.of<AuthProvider>(context, listen: false);
     getRestuantData();
     super.initState();
   }
@@ -155,11 +157,30 @@ class _ResturantFormState extends State<ResturantForm> {
                     children: [
                       Row(children: [
                         Container(
-                            height: 100,
-                            width: 100,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 10),
-                            child: ClipRRect(
+                          height: 100,
+                          width: 100,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                          child: ClipRRect(
+                            child: GestureDetector(
+                              onTap: () {
+                                openImagePickerModal(context)
+                                    .then((value) async {
+                                  if (value != null) {
+                                    setState(() {
+                                      _isUploadingImage = true;
+                                    });
+                                    await uploadFile(
+                                            value, "profile-photo", auth.token)
+                                        .then((value) => resturantModel.avatar =
+                                            value['uriPath']);
+
+                                    setState(() {
+                                      _isUploadingImage = false;
+                                    });
+                                  }
+                                });
+                              },
                               child: new Container(
                                 width: 70,
                                 height: 70,
@@ -189,7 +210,10 @@ class _ResturantFormState extends State<ResturantForm> {
                                             ))
                                         : Icon(Icons.add_a_photo),
                               ),
-                            )),
+                            ),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
                         SizedBox(width: 10),
                         Expanded(
                           child: Column(
