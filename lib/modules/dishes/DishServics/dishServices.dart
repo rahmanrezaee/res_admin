@@ -3,8 +3,9 @@ import 'package:restaurant/constants/UrlConstants.dart';
 import 'package:restaurant/modules/Authentication/providers/auth_provider.dart';
 import 'package:restaurant/modules/dishes/Models/dishModels.dart';
 import 'package:dio/dio.dart';
+import 'package:restaurant/modules/dishes/Models/review_model.dart';
 
-Future<DishModel> getSingleDish(id, AuthProvider auth) async {
+Future<Map> getSingleDish(id, AuthProvider auth) async {
   try {
     String url = "$baseUrl/admin/food/view/$id";
 
@@ -18,7 +19,16 @@ Future<DishModel> getSingleDish(id, AuthProvider auth) async {
       return null;
     }
 
-    return Future.value(DishModel.toComplateJson(extractedData));
+    //getting user review
+    List<ReviewModel> _reviewsCustomer = [];
+    (extractedData['review'] as List).forEach((review) {
+      _reviewsCustomer.add(new ReviewModel.fromJson(review));
+    });
+
+    return Future.value({
+      "dish": DishModel.toComplateJson(extractedData),
+      "review": _reviewsCustomer
+    });
   } on DioError catch (e) {
     print("error In Response");
     print(e.response);

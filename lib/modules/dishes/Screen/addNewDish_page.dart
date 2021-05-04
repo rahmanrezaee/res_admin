@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:jiffy/jiffy.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant/Services/UploadFile.dart';
 import 'package:restaurant/constants/UrlConstants.dart';
@@ -10,6 +11,7 @@ import 'package:restaurant/modules/dishes/DishServics/dishServices.dart';
 import 'package:restaurant/modules/dishes/Models/AddonModel.dart';
 import 'package:restaurant/modules/dishes/Models/ImageModel.dart';
 import 'package:restaurant/modules/dishes/Models/dishModels.dart';
+import 'package:restaurant/modules/dishes/Models/review_model.dart';
 import 'package:restaurant/modules/dishes/Screen/dishes_page.dart';
 import 'package:restaurant/modules/report/widget/TextfieldResturant.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:restaurant/themes/colors.dart';
 import 'package:responsive_grid/responsive_grid.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 //widgets
 
 class AddNewDish extends StatefulWidget {
@@ -50,6 +53,7 @@ class _AddNewDishState extends State<AddNewDish> {
   // List<AddonModel> list = [];
   String dishId;
   String catId;
+  List<ReviewModel> getReview = [];
   AuthProvider authProvider;
   @override
   void initState() {
@@ -71,7 +75,8 @@ class _AddNewDishState extends State<AddNewDish> {
 
       getSingleDish(dishId, authProvider).then((value) {
         setState(() {
-          dishModel = value;
+          dishModel = value['dish'];
+          getReview = value['review'];
           imgList = dishModel.images;
           _isUpdateDish = false;
         });
@@ -709,25 +714,44 @@ class _AddNewDishState extends State<AddNewDish> {
                           ],
                         ),
                       ),
-                      ResponsiveGridRow(
-                        children: [
-                          ...List.generate(2, (i) {
-                            return ResponsiveGridCol(
-                              xs: 12,
-                              sm: 12,
-                              md: 12,
-                              lg: 6,
-                              xl: 6,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                // child: Visibility(
-                                //     visible: dishId != null,
-                                //     child: CommentItem(new ReviewModel())),
-                              ),
-                            );
-                          }),
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Reviews",
+                                style: Theme.of(context).textTheme.headline3),
+                          ],
+                        ),
                       ),
+                      getReview.length == 0
+                          ? Card(
+                              child: SizedBox(
+                                height: 100,
+                                child: Center(
+                                  child: Text("No Review"),
+                                ),
+                              ),
+                            )
+                          : ResponsiveGridRow(
+                              children: [
+                                ...List.generate(getReview.length, (i) {
+                                  return ResponsiveGridCol(
+                                    xs: 12,
+                                    sm: 12,
+                                    md: 12,
+                                    lg: 6,
+                                    xl: 6,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: CommentItemDish(
+                                        getReview[i],
+                                      ),
+                                    ),
+                                  );
+                                }),
+                              ],
+                            ),
                     ],
                   ),
                 ),
@@ -873,6 +897,71 @@ class _AddNewDishState extends State<AddNewDish> {
     });
 
     return item;
+  }
+}
+
+class CommentItemDish extends StatelessWidget {
+  final ReviewModel review;
+
+  CommentItemDish(
+    this.review,
+  );
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(14),
+          child: Column(
+            children: [
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: ClipRRect(
+                  borderRadius: BorderRadius.circular(100),
+                  child: FadeInImage.assetNetwork(
+                    image: "${review.userId.avatar}",
+                    placeholder: "",
+                  ),
+                ),
+                title: Text(
+                  "${review.userId.username}",
+                ),
+                trailing: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("${Jiffy(review.date).yMEd}"),
+                    SizedBox(height: 5),
+                    SmoothStarRating(
+                      allowHalfRating: false,
+                      onRated: (v) {},
+                      starCount: review.rate.toInt(),
+                      rating: 4,
+                      size: 20.0,
+                      isReadOnly: true,
+                      color: Theme.of(context).primaryColor,
+                      borderColor: Theme.of(context).primaryColor,
+                      spacing: 0.0,
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      "${review.message}",
+                      style: TextStyle(height: 1.3),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ));
   }
 }
 
