@@ -280,6 +280,11 @@ class _DishItemState extends State<DishItem> {
                           });
                         }
                       });
+
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                          content: widget.dishItem.visibility == false
+                              ? Text("visibility off")
+                              : Text("visibility on")));
                     },
                     child: Icon(
                       widget.dishItem.visibility == false
