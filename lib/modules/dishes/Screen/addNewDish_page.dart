@@ -193,13 +193,14 @@ class _AddNewDishState extends State<AddNewDish> {
                                   ),
                                   child: IconButton(
                                       icon:
-                                          Icon(Icons.add, color: Colors.white),
+                                          Icon(Icons.add, color: Colors.black),
                                       onPressed: () {
                                         openImagePickerModal(context)
                                             .then((value) async {
                                           if (value != null) {
                                             setState(() {
                                               _isUploadingImage = true;
+                                              _isLoading = true;
                                             });
                                             await uploadFile(
                                                     value,
@@ -210,6 +211,7 @@ class _AddNewDishState extends State<AddNewDish> {
 
                                             setState(() {
                                               _isUploadingImage = false;
+                                              _isLoading = false;
                                             });
                                           }
                                         });
@@ -301,6 +303,7 @@ class _AddNewDishState extends State<AddNewDish> {
                               typetext: TextInputType.numberWithOptions(
                                   decimal: true),
                               hintText: "Price",
+                              perfixText: "\$",
                               onChange: (value) {
                                 setState(() {
                                   dishModel.price = double.parse(value);
@@ -567,6 +570,8 @@ class _AddNewDishState extends State<AddNewDish> {
                                                                   TextFormFieldResturant(
                                                                 hintText:
                                                                     "Add On Price",
+                                                                perfixText:
+                                                                    "\$",
                                                                 typetext: TextInputType
                                                                     .numberWithOptions(
                                                                         decimal:
@@ -882,13 +887,21 @@ class _AddNewDishState extends State<AddNewDish> {
               Positioned(
                 right: 10,
                 top: 10,
-                child: IconButton(
-                    icon: Icon(Icons.close, color: Colors.white),
-                    onPressed: () {
-                      setState(() {
-                        imgList.remove(element);
-                      });
-                    }),
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white60,
+                  ),
+                  child: IconButton(
+                      icon: Icon(Icons.close, color: Colors.black),
+                      onPressed: () {
+                        setState(() {
+                          imgList.remove(element);
+                        });
+                      }),
+                ),
               ),
             ],
           );

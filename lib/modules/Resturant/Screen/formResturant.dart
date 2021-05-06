@@ -68,7 +68,7 @@ class _ResturantFormState extends State<ResturantForm> {
               ));
         });
 
-    if (picked_s != null) return "${picked_s.hour}:${picked_s.minute}";
+    return picked_s != null ? "${picked_s.hour}:${picked_s.minute}" : null;
   }
 
   DashboardProvider dashboardProvider;
@@ -148,273 +148,283 @@ class _ResturantFormState extends State<ResturantForm> {
               : null,
         ),
         body: _loadUpdate
-            ? SingleChildScrollView(
-                child: Form(
-                  autovalidate: _autoValidate,
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(children: [
-                        Container(
-                          height: 100,
-                          width: 100,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
-                          child: ClipRRect(
-                            child: GestureDetector(
-                              onTap: () {
-                                openImagePickerModal(context)
-                                    .then((value) async {
-                                  if (value != null) {
-                                    setState(() {
-                                      _isUploadingImage = true;
-                                    });
-                                    await uploadFile(
-                                            value, "profile-photo", auth.token)
-                                        .then((value) => resturantModel.avatar =
-                                            value['uriPath']);
+            ? RefreshIndicator(
+                onRefresh: () {
+                  getRestuantData();
+                  return Future.delayed(Duration(seconds: 2));
+                },
+                child: SingleChildScrollView(
+                  child: Form(
+                    autovalidate: _autoValidate,
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(children: [
+                          Container(
+                            height: 100,
+                            width: 100,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            child: ClipRRect(
+                              child: GestureDetector(
+                                onTap: () {
+                                  openImagePickerModal(context)
+                                      .then((value) async {
+                                    if (value != null) {
+                                      setState(() {
+                                        _isUploadingImage = true;
+                                      });
+                                      await uploadFile(value, "profile-photo",
+                                              auth.token)
+                                          .then((value) => resturantModel
+                                              .avatar = value['uriPath']);
 
-                                    setState(() {
-                                      _isUploadingImage = false;
-                                    });
-                                  }
-                                });
-                              },
-                              child: new Container(
-                                width: 70,
-                                height: 70,
-                                decoration: new BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: new BorderRadius.all(
-                                      new Radius.circular(70.0)),
-                                  border: new Border.all(
-                                    color: Theme.of(context).primaryColor,
-                                    width: 4.0,
+                                      setState(() {
+                                        _isUploadingImage = false;
+                                      });
+                                    }
+                                  });
+                                },
+                                child: new Container(
+                                  width: 70,
+                                  height: 70,
+                                  decoration: new BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: new BorderRadius.all(
+                                        new Radius.circular(70.0)),
+                                    border: new Border.all(
+                                      color: Theme.of(context).primaryColor,
+                                      width: 4.0,
+                                    ),
                                   ),
+                                  child: _isUploadingImage
+                                      ? SizedBox(
+                                          height: 40,
+                                          width: 40,
+                                          child: CircularProgressIndicator())
+                                      : resturantModel.avatar != null
+                                          ? ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(70.0),
+                                              child: Stack(
+                                                children: [
+                                                  Image.network(
+                                                      resturantModel.avatar),
+                                                ],
+                                              ))
+                                          : Icon(Icons.add_a_photo),
                                 ),
-                                child: _isUploadingImage
-                                    ? SizedBox(
-                                        height: 40,
-                                        width: 40,
-                                        child: CircularProgressIndicator())
-                                    : resturantModel.avatar != null
-                                        ? ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(70.0),
-                                            child: Stack(
-                                              children: [
-                                                Image.network(
-                                                    resturantModel.avatar),
-                                              ],
-                                            ))
-                                        : Icon(Icons.add_a_photo),
                               ),
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
-                            borderRadius: BorderRadius.circular(10.0),
                           ),
-                        ),
-                        SizedBox(width: 10),
-                        Expanded(
+                          SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        child: Text(
+                                      "${resturantModel.resturantName}",
+                                      style:
+                                          Theme.of(context).textTheme.headline6,
+                                    )),
+                                  ],
+                                ),
+                                SizedBox(height: 5),
+                                Row(
+                                  children: [
+                                    Expanded(child: Text("$addressLine")),
+                                  ],
+                                ),
+                                SizedBox(height: 5),
+                              ],
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                        ]),
+                        Container(
+                          padding: EdgeInsets.all(10),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Expanded(
-                                      child: Text(
-                                    "${resturantModel.resturantName}",
-                                    style:
-                                        Theme.of(context).textTheme.headline6,
-                                  )),
+                                  Text("Open for Orders",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w700)),
+                                  CupertinoSwitch(
+                                    value: resturantModel.openForOrder,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _isLoadingTop = true;
+                                      });
+                                      dashboardProvider
+                                          .resturantChangeStateOpenForOrder(
+                                              resturantModel.id, value)
+                                          .then((done) {
+                                        setState(() {
+                                          resturantModel.openForOrder = value;
+                                          _isLoadingTop = false;
+                                        });
+                                      });
+                                    },
+                                    // trackColor: AppColors.green,
+                                  ),
                                 ],
                               ),
-                              SizedBox(height: 5),
+                              Divider(),
                               Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Expanded(child: Text("$addressLine")),
+                                  Text("Auto Accept Orders",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w700)),
+                                  CupertinoSwitch(
+                                    value: resturantModel.autoAcceptOrder,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _isLoadingTop = true;
+                                      });
+                                      dashboardProvider
+                                          .resturantChangeStateAutoAcceptOrder(
+                                              resturantModel.id, value)
+                                          .then((done) {
+                                        setState(() {
+                                          resturantModel.autoAcceptOrder =
+                                              value;
+                                          _isLoadingTop = false;
+                                        });
+                                      });
+                                    },
+                                    // trackColor: AppColors.green,
+                                  ),
                                 ],
                               ),
-                              SizedBox(height: 5),
                             ],
                           ),
                         ),
-                        SizedBox(width: 10),
-                      ]),
-                      Container(
-                        padding: EdgeInsets.all(10),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("Open for Orders",
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w700)),
-                                CupertinoSwitch(
-                                  value: resturantModel.openForOrder,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _isLoadingTop = true;
-                                    });
-                                    dashboardProvider
-                                        .resturantChangeStateOpenForOrder(
-                                            resturantModel.id, value)
-                                        .then((done) {
-                                      setState(() {
-                                        resturantModel.openForOrder = value;
-                                        _isLoadingTop = false;
-                                      });
-                                    });
-                                  },
-                                  // trackColor: AppColors.green,
-                                ),
-                              ],
-                            ),
-                            Divider(),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("Auto Accept Orders",
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w700)),
-                                CupertinoSwitch(
-                                  value: resturantModel.autoAcceptOrder,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _isLoadingTop = true;
-                                    });
-                                    dashboardProvider
-                                        .resturantChangeStateAutoAcceptOrder(
-                                            resturantModel.id, value)
-                                        .then((done) {
-                                      setState(() {
-                                        resturantModel.autoAcceptOrder = value;
-                                        _isLoadingTop = false;
-                                      });
-                                    });
-                                  },
-                                  // trackColor: AppColors.green,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: Column(
-                          children: [
-                            Row(children: [
-                              Visibility(
-                                child: Expanded(
-                                  child: RaisedButton(
-                                    padding: EdgeInsets.symmetric(vertical: 10),
-                                    color: Theme.of(context).primaryColor,
-                                    elevation: 0,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    child: Text(
-                                      "Change Password",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
+                        Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: Column(
+                            children: [
+                              Row(children: [
+                                Visibility(
+                                  child: Expanded(
+                                    child: RaisedButton(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 10),
+                                      color: Theme.of(context).primaryColor,
+                                      elevation: 0,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
                                       ),
+                                      child: Text(
+                                        "Change Password",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ChangePasswordPage()),
+                                        );
+                                      },
                                     ),
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ChangePasswordPage()),
-                                      );
-                                    },
                                   ),
                                 ),
-                              ),
-                            ]),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: RaisedButton(
-                                padding: EdgeInsets.symmetric(vertical: 10),
-                                color: Theme.of(context).primaryColor,
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "Log Out",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
+                              ]),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: RaisedButton(
+                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  color: Theme.of(context).primaryColor,
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Log Out",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(width: 10),
-                                    Icon(
-                                      Icons.exit_to_app,
-                                      color: Colors.white,
-                                      size: 25,
-                                    )
-                                  ],
+                                      SizedBox(width: 10),
+                                      Icon(
+                                        Icons.exit_to_app,
+                                        color: Colors.white,
+                                        size: 25,
+                                      )
+                                    ],
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                      CupertinoPageRoute(
+                                          builder: (context) => LoginPage()),
+                                      (_) => false,
+                                    );
+                                  },
                                 ),
-                                onPressed: () {
-                                  Navigator.of(context).pushAndRemoveUntil(
-                                    CupertinoPageRoute(
-                                        builder: (context) => LoginPage()),
-                                    (_) => false,
-                                  );
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          child: Card(
+                            child: Padding(
+                                padding: const EdgeInsets.all(15),
+                                child: Row(
+                                  children: [
+                                    Expanded(child: _dataBody()),
+                                  ],
+                                )),
+                          ),
+                        ),
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              height: 50,
+                              width: getQurIpadAndFullMobWidth(context),
+                              child: ButtonRaiseResturant(
+                                color: Theme.of(context).primaryColor,
+                                label: _isLoading == true
+                                    ? SizedBox(
+                                        height: 30,
+                                        width: 30,
+                                        child: CircularProgressIndicator())
+                                    : Text(
+                                        "Update",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                onPress: () {
+                                  addResturant();
                                 },
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        child: Card(
-                          child: Padding(
-                              padding: const EdgeInsets.all(15),
-                              child: Row(
-                                children: [
-                                  Expanded(child: _dataBody()),
-                                ],
-                              )),
-                        ),
-                      ),
-                      Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            height: 50,
-                            width: getQurIpadAndFullMobWidth(context),
-                            child: ButtonRaiseResturant(
-                              color: Theme.of(context).primaryColor,
-                              label: _isLoading == true
-                                  ? SizedBox(
-                                      height: 30,
-                                      width: 30,
-                                      child: CircularProgressIndicator())
-                                  : Text(
-                                      "Update",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                              onPress: () {
-                                addResturant();
-                              },
-                            ),
                           ),
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               )
@@ -505,9 +515,13 @@ class _ResturantFormState extends State<ResturantForm> {
                     IconButton(
                       icon: Image.asset("assets/images/edit.png"),
                       onPressed: () {
-                        _selectTime(context).then((value) => setState(() {
+                        _selectTime(context).then((value) {
+                          if (value != null) {
+                            setState(() {
                               resturantModel.sunday.startTime = value;
-                            }));
+                            });
+                          }
+                        });
                       },
                     ),
                   ],
@@ -521,9 +535,13 @@ class _ResturantFormState extends State<ResturantForm> {
                     IconButton(
                       icon: Image.asset("assets/images/edit.png"),
                       onPressed: () {
-                        _selectTime(context).then((value) => setState(() {
+                        _selectTime(context).then((value) {
+                          if (value != null) {
+                            setState(() {
                               resturantModel.sunday.endTime = value;
-                            }));
+                            });
+                          }
+                        });
                       },
                     ),
                   ],
@@ -542,9 +560,13 @@ class _ResturantFormState extends State<ResturantForm> {
                     IconButton(
                       icon: Image.asset("assets/images/edit.png"),
                       onPressed: () {
-                        _selectTime(context).then((value) => setState(() {
+                        _selectTime(context).then((value) {
+                          if (value != null) {
+                            setState(() {
                               resturantModel.monday.startTime = value;
-                            }));
+                            });
+                          }
+                        });
                       },
                     ),
                   ],
@@ -558,9 +580,13 @@ class _ResturantFormState extends State<ResturantForm> {
                     IconButton(
                       icon: Image.asset("assets/images/edit.png"),
                       onPressed: () {
-                        _selectTime(context).then((value) => setState(() {
+                        _selectTime(context).then((value) {
+                          if (value != null) {
+                            setState(() {
                               resturantModel.monday.endTime = value;
-                            }));
+                            });
+                          }
+                        });
                       },
                     ),
                   ],
@@ -579,9 +605,13 @@ class _ResturantFormState extends State<ResturantForm> {
                     IconButton(
                       icon: Image.asset("assets/images/edit.png"),
                       onPressed: () {
-                        _selectTime(context).then((value) => setState(() {
+                        _selectTime(context).then((value) {
+                          if (value != null) {
+                            setState(() {
                               resturantModel.tuesday.startTime = value;
-                            }));
+                            });
+                          }
+                        });
                       },
                     ),
                   ],
@@ -595,9 +625,13 @@ class _ResturantFormState extends State<ResturantForm> {
                     IconButton(
                       icon: Image.asset("assets/images/edit.png"),
                       onPressed: () {
-                        _selectTime(context).then((value) => setState(() {
+                        _selectTime(context).then((value) {
+                          if (value != null) {
+                            setState(() {
                               resturantModel.tuesday.endTime = value;
-                            }));
+                            });
+                          }
+                        });
                       },
                     ),
                   ],
@@ -616,9 +650,13 @@ class _ResturantFormState extends State<ResturantForm> {
                     IconButton(
                       icon: Image.asset("assets/images/edit.png"),
                       onPressed: () {
-                        _selectTime(context).then((value) => setState(() {
+                        _selectTime(context).then((value) {
+                          if (value != null) {
+                            setState(() {
                               resturantModel.wednesday.startTime = value;
-                            }));
+                            });
+                          }
+                        });
                       },
                     ),
                   ],
@@ -632,9 +670,13 @@ class _ResturantFormState extends State<ResturantForm> {
                     IconButton(
                       icon: Image.asset("assets/images/edit.png"),
                       onPressed: () {
-                        _selectTime(context).then((value) => setState(() {
+                        _selectTime(context).then((value) {
+                          if (value != null) {
+                            setState(() {
                               resturantModel.wednesday.endTime = value;
-                            }));
+                            });
+                          }
+                        });
                       },
                     ),
                   ],
@@ -653,9 +695,13 @@ class _ResturantFormState extends State<ResturantForm> {
                     IconButton(
                       icon: Image.asset("assets/images/edit.png"),
                       onPressed: () {
-                        _selectTime(context).then((value) => setState(() {
+                        _selectTime(context).then((value) {
+                          if (value != null) {
+                            setState(() {
                               resturantModel.thursday.startTime = value;
-                            }));
+                            });
+                          }
+                        });
                       },
                     ),
                   ],
@@ -669,9 +715,13 @@ class _ResturantFormState extends State<ResturantForm> {
                     IconButton(
                       icon: Image.asset("assets/images/edit.png"),
                       onPressed: () {
-                        _selectTime(context).then((value) => setState(() {
+                        _selectTime(context).then((value) {
+                          if (value != null) {
+                            setState(() {
                               resturantModel.thursday.endTime = value;
-                            }));
+                            });
+                          }
+                        });
                       },
                     ),
                   ],
@@ -690,9 +740,13 @@ class _ResturantFormState extends State<ResturantForm> {
                     IconButton(
                       icon: Image.asset("assets/images/edit.png"),
                       onPressed: () {
-                        _selectTime(context).then((value) => setState(() {
+                        _selectTime(context).then((value) {
+                          if (value != null) {
+                            setState(() {
                               resturantModel.friday.startTime = value;
-                            }));
+                            });
+                          }
+                        });
                       },
                     ),
                   ],
@@ -706,9 +760,13 @@ class _ResturantFormState extends State<ResturantForm> {
                     IconButton(
                       icon: Image.asset("assets/images/edit.png"),
                       onPressed: () {
-                        _selectTime(context).then((value) => setState(() {
+                        _selectTime(context).then((value) {
+                          if (value != null) {
+                            setState(() {
                               resturantModel.friday.endTime = value;
-                            }));
+                            });
+                          }
+                        });
                       },
                     ),
                   ],
@@ -727,9 +785,13 @@ class _ResturantFormState extends State<ResturantForm> {
                     IconButton(
                       icon: Image.asset("assets/images/edit.png"),
                       onPressed: () {
-                        _selectTime(context).then((value) => setState(() {
+                        _selectTime(context).then((value) {
+                          if (value != null) {
+                            setState(() {
                               resturantModel.saturday.startTime = value;
-                            }));
+                            });
+                          }
+                        });
                       },
                     ),
                   ],
@@ -743,9 +805,13 @@ class _ResturantFormState extends State<ResturantForm> {
                     IconButton(
                       icon: Image.asset("assets/images/edit.png"),
                       onPressed: () {
-                        _selectTime(context).then((value) => setState(() {
+                        _selectTime(context).then((value) {
+                          if (value != null) {
+                            setState(() {
                               resturantModel.saturday.endTime = value;
-                            }));
+                            });
+                          }
+                        });
                       },
                     ),
                   ],

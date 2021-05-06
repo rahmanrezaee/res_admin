@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:restaurant/GlobleService/APIRequest.dart';
@@ -9,6 +11,7 @@ import 'package:flutter/material.dart';
 class AuthProvider with ChangeNotifier {
   String _token;
 
+  DateTime _expiryDate;
   Future<String> get userId async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getString('user') == null) {
@@ -108,21 +111,31 @@ class AuthProvider with ChangeNotifier {
   refreshToken() {}
 
   Future<bool> autoLogin() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getString('user') == null) {
-      _token = null;
-    } else {
-      //Checking expiery date
-      DateTime expireDate =
-          DateTime.parse(json.decode(prefs.getString('user'))['expierDate']);
-      if (DateTime.now().isAfter(expireDate.add(Duration(days: 1)))) {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      log("data user:  ${prefs.getString('user')}");
+      if (prefs.getString('user') == null) {
         _token = null;
       } else {
-        _token = json.decode(prefs.getString('user'))['token'];
+        DateTime expireDate =
+            DateTime.parse(json.decode(prefs.getString('user'))['expierDate']);
+
+        if (expireDate != null && expireDate.isAfter(DateTime.now())) {
+          log("data user: User Valided} ${json.decode(prefs.getString('user'))['token']}");
+          _token = json.decode(prefs.getString('user'))['token'];
+          _expiryDate = expireDate;
+
+          log("data user: User Valided}$_token $_expiryDate");
+          log("data user: User Valieded done");
+        }
       }
+      notifyListeners();
+      return true;
+    } catch (e) {
+      print(e);
+
+      return true;
     }
-    notifyListeners();
-    return true;
   }
 
   Future<String> resturantId() async {
