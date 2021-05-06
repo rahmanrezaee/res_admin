@@ -6,19 +6,20 @@ import 'package:restaurant/modules/orders/Models/OrderModels.dart';
 import 'package:dio/dio.dart';
 
 class OrderServices {
-  Future<List<OrderModels>> getSingleOrder(
-      {state, @required AuthProvider auth}) async {
+  Future<Map> getSingleOrder(
+      {state, @required AuthProvider auth, int page}) async {
     List<OrderModels> listOrder;
     try {
       String url = "$baseUrl/restaurant/order?status=$state";
 
-        final result = await APIRequest().get(myUrl: url, token: auth.token);
+      final result = await APIRequest().get(myUrl: url, token: auth.token);
 
       final extractedData = result.data["data"]['docs'];
 
       if (extractedData == null) {
         listOrder = [];
-        return listOrder;
+
+        throw Exception("error in Fetch Data");
       }
 
       final List<OrderModels> loadedOrder = [];
@@ -33,7 +34,7 @@ class OrderServices {
 
       listOrder = loadedOrder;
 
-      return loadedOrder;
+      return {"orders": listOrder, "total": result.data["data"]['totalDocs']};
     } on DioError catch (e) {
       print("error In Response");
       print(e.response);
@@ -63,7 +64,7 @@ class OrderServices {
     }
   }
 
-  Future<bool> updatepickupDate(orderId, pickUpTime,AuthProvider auth) async {
+  Future<bool> updatepickupDate(orderId, pickUpTime, AuthProvider auth) async {
     try {
       String url = "$baseUrl/admin/order/pickuptime/$orderId";
 

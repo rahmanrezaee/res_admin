@@ -95,11 +95,11 @@ class _LayoutExampleState extends State<LayoutExample> {
     //   icon: Icon(Icons.notifications_outlined, color: Colors.yellow),
     //   page: NotificationPage(),
     // ),
-    PageModel(
-      title: "Report",
-      icon: Icon(Icons.report, color: Colors.yellow),
-      page: ReportPage(),
-    ),
+    // PageModel(
+    //   title: "Report",
+    //   icon: Icon(Icons.report, color: Colors.yellow),
+    //   page: ReportPage(),
+    // ),
 
     PageModel(
       title: "Notifications",
