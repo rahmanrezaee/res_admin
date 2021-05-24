@@ -362,7 +362,7 @@ class DishItem extends StatelessWidget {
                             color: Colors.grey[100],
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Text("no Addon"),
+                              child: Text("No Add on"),
                             ),
                           ),
                   ],
