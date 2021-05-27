@@ -246,39 +246,6 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       SizedBox(height: 20),
-                      RichText(
-                        text: TextSpan(
-                            style: TextStyle(color: Colors.black),
-                            text: "By using this app you are accepting our ",
-                            children: [
-                              TextSpan(
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    Navigator.of(context)
-                                        .pushNamed(TermCondition.routeName);
-                                  },
-                                text: "Terms and Conditions",
-                                style: TextStyle(color: AppColors.green),
-                              ),
-                              TextSpan(
-                                text: " and ",
-                              ),
-                              TextSpan(
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    print('privacy policy');
-                                    Navigator.of(context).pushNamed(
-                                        PrivacyPolicy.routeName,
-                                        arguments: "login");
-                                  },
-                                text: "Privacy Policy",
-                                style: TextStyle(color: AppColors.green),
-                              ),
-                            ]),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
                       Container(
                         width: getHelfIpadAndFullMobWidth(context),
                         child: RaisedButton(

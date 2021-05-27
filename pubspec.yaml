@@ -48,7 +48,6 @@ dependencies:
   intl: ^0.16.0
   firebase_messaging: "^8.0.0-dev.15" 
   flutter_local_notifications: ^3.0.2
-  numbers_to_words: ^0.1.2
   scroll_to_index: 
   incrementally_loading_listview: ^0.3.0
   cached_network_image: ^2.5.1

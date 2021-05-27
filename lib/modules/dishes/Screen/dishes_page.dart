@@ -192,7 +192,7 @@ class _DishHomeState extends State<DishPage> {
                     cancelFun: () {},
                     descreption: "Are You Sure To Delete Dish?",
                   ));
-        }),
+        }, keySc),
       ));
     });
 
@@ -204,7 +204,8 @@ class DishItem extends StatefulWidget {
   DishModel dishItem;
   String catId;
   Function onDelete;
-  DishItem(this.dishItem, this.catId, this.onDelete);
+  final keySc;
+  DishItem(this.dishItem, this.catId, this.onDelete, this.keySc);
 
   @override
   _DishItemState createState() => _DishItemState();
@@ -273,11 +274,18 @@ class _DishItemState extends State<DishItem> {
                       changeVisiablity(widget.dishItem.foodId,
                               !widget.dishItem.visibility, authProvider)
                           .then((value) {
+                        print("widget.dishItem.foodId visible");
+
                         if (!value) {
                           setState(() {
                             widget.dishItem.visibility =
                                 !widget.dishItem.visibility;
                           });
+                        } else {
+                          widget.keySc.currentState.showSnackBar(SnackBar(
+                            content: Text(
+                                "The Dish ${widget.dishItem.visibility ? "Visiable" : "Invisiable"} "),
+                          ));
                         }
                       });
 
