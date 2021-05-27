@@ -386,6 +386,15 @@ class _ResturantFormState extends State<ResturantForm> {
                             ],
                           ),
                         ),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Restuarant Timing",
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w700),
+                              ),
+                            ]),
                         Container(
                           child: Card(
                             child: Padding(
