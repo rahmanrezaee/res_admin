@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>274215876693-3equae17rj48jidhec4ps24reoke3r9m.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.274215876693-3equae17rj48jidhec4ps24reoke3r9m</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>274215876693-2051qvs3tp15tu2te7j3kocgoklolmo0.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBj695pbVYgF_mUy8h7Wr5fWG86royq5PM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>274215876693</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.DulcesAntojitos.admin</string>
+	<key>PROJECT_ID</key>
+	<string>dulces-antojitos-8e274</string>
+	<key>STORAGE_BUCKET</key>
+	<string>dulces-antojitos-8e274.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:274215876693:ios:526ed1a3849cca1d02bcdc</string>
+</dict>
+</plist>
