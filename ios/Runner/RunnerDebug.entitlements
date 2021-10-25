@@ -6,7 +6,7 @@
 	<string>development</string>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:restaurant.webfumeprojects.online</string>
+		<string>applinks:resturant-api-lb-1142963833.us-east-2.elb.amazonaws.com</string>
 	</array>
 </dict>
 </plist>

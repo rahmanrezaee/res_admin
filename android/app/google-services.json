@@ -1,49 +1,42 @@
 {
   "project_info": {
-    "project_number": "274215876693",
-    "project_id": "dulces-antojitos-8e274",
-    "storage_bucket": "dulces-antojitos-8e274.appspot.com"
+    "project_number": "723102209979",
+    "project_id": "resturant-webfume",
+    "storage_bucket": "resturant-webfume.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:274215876693:android:7514f3820980063602bcdc",
+        "mobilesdk_app_id": "1:723102209979:android:37be4fad0fb862d414d69e",
         "android_client_info": {
-          "package_name": "com.DulcesAntojitos.Admin"
+          "package_name": "com.example.admin"
         }
       },
       "oauth_client": [
         {
-          "client_id": "274215876693-hpjvjij26g6mkd3fjk04d3b9ni8lbfie.apps.googleusercontent.com",
+          "client_id": "723102209979-fmiq5rdh6oihcfrov5s5nde7gqrop727.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.DulcesAntojitos.Admin",
-            "certificate_hash": "359e1f76c7f177f4f25061a8c7ff379228bffef6"
+            "package_name": "com.example.admin",
+            "certificate_hash": "7136bbaca7454f1429d51a1965f97c20a8c491b0"
           }
         },
         {
-          "client_id": "274215876693-kkb3ukv6k7tklj2avnfopn66k0ghm61q.apps.googleusercontent.com",
+          "client_id": "723102209979-qi249oao5bphl8icvo12snbh6aqccabp.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCNHwaJ1TrB0-QqgYxdooQPFMEGG7PS0zQ"
+          "current_key": "AIzaSyCPt5L0TKpQQDXzCJvCaQVod1FYzLhfN80"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "274215876693-kkb3ukv6k7tklj2avnfopn66k0ghm61q.apps.googleusercontent.com",
+              "client_id": "723102209979-qi249oao5bphl8icvo12snbh6aqccabp.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "274215876693-3equae17rj48jidhec4ps24reoke3r9m.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.DulcesAntojitos.admin"
-              }
             }
           ]
         }
@@ -51,87 +44,36 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:274215876693:android:c823e7c3b7bb67fe02bcdc",
+        "mobilesdk_app_id": "1:723102209979:android:5f188f9f737a361414d69e",
         "android_client_info": {
-          "package_name": "com.DulcesAntojitos.DulcesAntojitos"
+          "package_name": "com.example.restaurant"
         }
       },
       "oauth_client": [
         {
-          "client_id": "274215876693-d6pkf2ldafd8tah2ach9680t49rvg70h.apps.googleusercontent.com",
+          "client_id": "723102209979-vgaa6o0g4gce5k9ksrh2cshrpuank5eu.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.DulcesAntojitos.DulcesAntojitos",
-            "certificate_hash": "359e1f76c7f177f4f25061a8c7ff379228bffef6"
+            "package_name": "com.example.restaurant",
+            "certificate_hash": "7136bbaca7454f1429d51a1965f97c20a8c491b0"
           }
         },
         {
-          "client_id": "274215876693-kkb3ukv6k7tklj2avnfopn66k0ghm61q.apps.googleusercontent.com",
+          "client_id": "723102209979-qi249oao5bphl8icvo12snbh6aqccabp.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCNHwaJ1TrB0-QqgYxdooQPFMEGG7PS0zQ"
+          "current_key": "AIzaSyCPt5L0TKpQQDXzCJvCaQVod1FYzLhfN80"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "274215876693-kkb3ukv6k7tklj2avnfopn66k0ghm61q.apps.googleusercontent.com",
+              "client_id": "723102209979-qi249oao5bphl8icvo12snbh6aqccabp.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "274215876693-3equae17rj48jidhec4ps24reoke3r9m.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.DulcesAntojitos.admin"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:274215876693:android:bb9f5579fec1aa2d02bcdc",
-        "android_client_info": {
-          "package_name": "com.DulcesAntojitos.Manager"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "274215876693-2051qvs3tp15tu2te7j3kocgoklolmo0.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.DulcesAntojitos.Manager",
-            "certificate_hash": "359e1f76c7f177f4f25061a8c7ff379228bffef6"
-          }
-        },
-        {
-          "client_id": "274215876693-kkb3ukv6k7tklj2avnfopn66k0ghm61q.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCNHwaJ1TrB0-QqgYxdooQPFMEGG7PS0zQ"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "274215876693-kkb3ukv6k7tklj2avnfopn66k0ghm61q.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "274215876693-3equae17rj48jidhec4ps24reoke3r9m.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.DulcesAntojitos.admin"
-              }
             }
           ]
         }
