@@ -3,23 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>723102209979-sdokmu853c28oisvseeoop5se1gs41oq.apps.googleusercontent.com</string>
+	<string>274215876693-3equae17rj48jidhec4ps24reoke3r9m.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.723102209979-sdokmu853c28oisvseeoop5se1gs41oq</string>
+	<string>com.googleusercontent.apps.274215876693-3equae17rj48jidhec4ps24reoke3r9m</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>723102209979-fmiq5rdh6oihcfrov5s5nde7gqrop727.apps.googleusercontent.com</string>
+	<string>274215876693-2051qvs3tp15tu2te7j3kocgoklolmo0.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCZTboZMI7SgKQ5qJjOHfx3LQFV5sxsOPI</string>
+	<string>AIzaSyBj695pbVYgF_mUy8h7Wr5fWG86royq5PM</string>
 	<key>GCM_SENDER_ID</key>
-	<string>723102209979</string>
+	<string>274215876693</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>webfume.restaurant.manager</string>
+	<string>com.DulcesAntojitos.admin</string>
 	<key>PROJECT_ID</key>
-	<string>resturant-webfume</string>
+	<string>dulces-antojitos-8e274</string>
 	<key>STORAGE_BUCKET</key>
-	<string>resturant-webfume.appspot.com</string>
+	<string>dulces-antojitos-8e274.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:723102209979:ios:3b9f601269fa4f1014d69e</string>
+	<string>1:274215876693:ios:526ed1a3849cca1d02bcdc</string>
 </dict>
 </plist>
