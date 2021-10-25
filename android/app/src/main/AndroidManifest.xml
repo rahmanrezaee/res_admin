@@ -49,8 +49,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- Accepts URIs that begin with https://YOUR_HOST -->
                 <data
-                    android:scheme="https"
-                    android:host="restaurant.webfumeprojects.online"
+                    android:scheme="http"
+                    android:host="resturant-api-lb-1142963833.us-east-2.elb.amazonaws.com"
                     android:pathPrefix="/api/forgotpassword" 
            />
             </intent-filter>
