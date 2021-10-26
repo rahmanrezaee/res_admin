@@ -119,7 +119,7 @@ class _ResturantFormState extends State<ResturantForm> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        resizeToAvoidBottomPadding: false,
+        // resizeToAvoidBottomPadding: false,
         key: _scaffoldKey,
         appBar: AppBar(
           elevation: .2,

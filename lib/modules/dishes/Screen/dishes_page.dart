@@ -48,7 +48,7 @@ class _DishHomeState extends State<DishPage> {
     return Scaffold(
       key: keySc,
       resizeToAvoidBottomInset: false,
-      resizeToAvoidBottomPadding: false,
+      // resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         elevation: .2,
         shape: RoundedRectangleBorder(
