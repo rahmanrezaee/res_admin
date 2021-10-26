@@ -113,7 +113,7 @@ class _AddNewDishState extends State<AddNewDish> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      // resizeToAvoidBottomPadding: false,
       resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
       appBar: AppBar(

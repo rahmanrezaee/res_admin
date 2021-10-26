@@ -61,7 +61,7 @@ class _CatetoriesListPageState extends State<CatetoriesListPage> {
     return Consumer<CategoryProvider>(builder: (context, catProvider, child) {
       return Scaffold(
         key: keyScaffold,
-        resizeToAvoidBottomPadding: false,
+        // resizeToAvoidBottomPadding: false,
         resizeToAvoidBottomInset: false,
         appBar: showAppBarNodepad(context)
             ? AppBar(
