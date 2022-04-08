@@ -1,8 +1,7 @@
 class RestaurantModel {
-  int activeOrder;
-  Map restaurant = {
-    "_id": '603f313fd0c6141040de8c89',
-    "username": "Resraurant name"
+  int ?activeOrder;
+  Map ?restaurant = {
+   
   };
   RestaurantModel({
     this.activeOrder,

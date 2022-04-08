@@ -3,19 +3,19 @@ import 'dart:developer';
 import 'package:restaurant/modules/dishes/Models/dishModels.dart';
 
 class OrderModels {
-  String status;
-  String id;
-  String restaurantId;
+  String? status;
+  String? id;
+  String? restaurantId;
   List<DishModel> items = [];
-  int totalItems;
-  int orderNumber;
-  Map user;
-  double totalPrice;
-  double grandTotal;
-  double restaurantCharges;
-  String cardName;
-  String date;
-  String timePicker;
+  int? totalItems;
+  int? orderNumber;
+  Map? user;
+  double? totalPrice;
+  double? grandTotal;
+  double? restaurantCharges;
+  String? cardName;
+  String? date;
+  String? timePicker;
 
   OrderModels.toJson(Map tableData) {
     try {
@@ -26,11 +26,11 @@ class OrderModels {
       this.totalItems = tableData['totalItems'] ?? 0;
       this.date = tableData['createdAt'] ?? "";
       this.orderNumber = tableData['orderId'] ?? "";
-      this.totalPrice = double.parse("${tableData['totalPrice']}") ?? 0;
+      this.totalPrice = double.parse("${tableData['totalPrice'] ?? 0}");
       this.user = tableData['userId'] ?? {"_id": "", "username": ""};
       this.restaurantCharges =
-          double.parse("${tableData['restaurantCharges']}") ?? 0;
-      this.grandTotal = double.parse("${tableData['grandTotal']}") ?? 0;
+          double.parse("${tableData['restaurantCharges'] ?? 0}");
+      this.grandTotal = double.parse("${tableData['grandTotal'] ?? 0}");
       this.cardName = tableData['cardName'] ?? "";
       this.timePicker = tableData['pickUpTime'] ?? "00:00";
 

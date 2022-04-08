@@ -5,7 +5,7 @@ import 'package:restaurant/modules/dishes/Models/dishModels.dart';
 import 'package:dio/dio.dart';
 import 'package:restaurant/modules/dishes/Models/review_model.dart';
 
-Future<Map> getSingleDish(id, AuthProvider auth) async {
+Future<Map?> getSingleDish(id, AuthProvider auth) async {
   try {
     String url = "$baseUrl/admin/food/view/$id";
 
@@ -38,7 +38,7 @@ Future<Map> getSingleDish(id, AuthProvider auth) async {
   }
 }
 
-Future<List<DishModel>> getFootListWithoutPro(catId, AuthProvider auth) async {
+Future<List<DishModel>?> getFootListWithoutPro(catId, AuthProvider auth) async {
   try {
     String url = "$baseUrl/restaurant/category/$catId";
 
@@ -138,7 +138,7 @@ Future deleteDish(id, AuthProvider auth) async {
   }
 }
 
-Future<bool> changeVisiablity(foodId, vis, AuthProvider auth) async {
+Future<bool?> changeVisiablity(foodId, vis, AuthProvider auth) async {
   try {
     vis ? vis = false : vis = true;
     String url = "$baseUrl/admin/food/changevisibility/$foodId";

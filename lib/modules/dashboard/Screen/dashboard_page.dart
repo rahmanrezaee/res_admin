@@ -85,7 +85,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                           fontSize: 18,
                                           fontWeight: FontWeight.w700)),
                                   CupertinoSwitch(
-                                    value: dashProvider.openForOrder,
+                                    value: dashProvider.openForOrder!,
                                     onChanged: (value) {
                                       setState(() {
                                         isLoading = true;
@@ -116,7 +116,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                           fontSize: 18,
                                           fontWeight: FontWeight.w700)),
                                   CupertinoSwitch(
-                                    value: dashProvider.autoAcceptOrder,
+                                    value: dashProvider.autoAcceptOrder!,
                                     onChanged: (value) {
                                       setState(() {
                                         isLoading = true;

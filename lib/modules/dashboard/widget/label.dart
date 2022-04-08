@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class LabelDashBoard extends StatelessWidget {
-  String title;
-  double fontSize;
-  Color color;
-  Color textColor;
+  String? title;
+  double? fontSize;
+  Color ?color;
+  Color? textColor;
 
   LabelDashBoard({this.color, this.fontSize, this.title, this.textColor});
 

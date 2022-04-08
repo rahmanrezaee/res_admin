@@ -1,11 +1,5 @@
 import 'package:flutter/material.dart';
 
-class AdaptiveAppBar extends StatelessWidget {
-  AdaptiveAppBar(this.appBar);
-  final Widget appBar;
-  @override
-  Widget build(BuildContext context) {}
-}
 
 adaptiveAppBarBuilder(BuildContext context, Widget appBar) {
   double screenSize = MediaQuery.of(context).size.width;

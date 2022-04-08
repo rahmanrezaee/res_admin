@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+2
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -27,40 +27,35 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.0
-  google_maps_flutter: ^1.0.6
-  google_maps_place_picker: ^1.0.1
-  responsive_grid: ^1.2.1+1
-  smooth_star_rating: ^1.1.1
-  carousel_slider: ^3.0.0
-  provider: ^4.3.2
-  dio: ^3.0.10
-  font_awesome_flutter: ^8.11.0
-  image_picker: ^0.6.7+12
-  connectivity_wrapper: ^1.0.0
-  multi_image_picker: ^4.6.5
-  image_cropper: ^1.3.1
-  jiffy: ^3.0.1
-  string_validator: ^0.1.4
-  shared_preferences: ^0.5.12+4
-  json_annotation: ^3.0.0
-  firebase_core: "^0.7.0"
-  intl: ^0.16.0
-  firebase_messaging: "^8.0.0-dev.15" 
-  flutter_local_notifications: ^3.0.2
+  cupertino_icons: 
+  google_maps_flutter: 
+  google_maps_place_picker: 
+  responsive_grid: 
+  smooth_star_rating: 
+  carousel_slider:
+  provider: 
+  dio: 
+  font_awesome_flutter: 
+  multi_image_picker:
+  connectivity_wrapper: 
+  image_cropper: 
+  jiffy: 
+  string_validator: 
+  image_picker:
+  shared_preferences: 
+  json_annotation: 
+  firebase_core: ^1.14.0
+  intl: 
+  firebase_messaging: ^11.2.12
+  flutter_local_notifications: ^8.2.0
   scroll_to_index: 
-  incrementally_loading_listview: ^0.3.0
-  cached_network_image: ^2.5.1
-  flutter_rating_bar: ^3.0.0
-  geocoder: ^0.2.1
-  num_to_txt: ^0.0.3
-  
-
-  # responsive_scaffold:
-  #   git:
-  #     url: https://github.com/AzadCoder/responsive_scaffold
-  #     ref: master
-  uni_links: ^0.4.0
+  incrementally_loading_listview: 
+  cached_network_image: 
+  flutter_rating_bar: 
+  geocoder: 
+  num_to_txt: 
+  uni_links: 
+  badges: ^2.0.2
 
 dev_dependencies:
   flutter_test:
@@ -92,28 +87,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/logo.png
-    - assets/images/facebookLogo.png
-    - assets/images/gmailLogo.png
-    - assets/images/logoText.png
-    - assets/images/add-to-list.png
-    - assets/images/comment-add.png
-    - assets/images/editIcon.png
-    - assets/images/favoriteDishesIcon.png
-    - assets/images/my_order.png
-    - assets/images/dashboard_icon.png
-    - assets/images/categoriesIcon.png
-    - assets/images/dishesIcon.png
-    - assets/images/resturantIcons.png
-    - assets/images/customerIcon.png
-    - assets/images/couponIcon.png
-    - assets/images/notification.png
-    - assets/images/edit.png
-    - assets/images/editIcon.png
-    - assets/images/delete.png
-    - assets/images/trash-white.png
-    - assets/images/purchase_order.png
-    - assets/images/desk-bell.png
+    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -127,16 +101,20 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+  fonts:
+    - family: Montserrat
+      fonts:
+        - asset: assets/fonts/Montserrat-Regular.ttf
+        - asset: assets/fonts/Montserrat-Italic.ttf
+          style: italic
+        - asset: assets/fonts/Montserrat-Medium.ttf
+          weight: 600
+        - asset: assets/fonts/Montserrat-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Montserrat-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Montserrat-Thin.ttf
+          weight: 200
   
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

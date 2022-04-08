@@ -16,6 +16,6 @@ var routes = <String, WidgetBuilder>{
   LoginPage.routeName: (context) => LoginPage(),
   NotificationPage.routeName: (context) => NotificationPage(),
   ForgotPasswordWithKey.routeName: (context) =>
-      ForgotPasswordWithKey(ModalRoute.of(context).settings.arguments),
+      ForgotPasswordWithKey(ModalRoute.of(context)!.settings.arguments as String),
   // AddNewDish.routeName: (context) => AddNewDish(),
 };

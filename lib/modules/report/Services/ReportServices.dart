@@ -5,7 +5,7 @@ import 'package:restaurant/constants/UrlConstants.dart';
 import 'package:restaurant/modules/Authentication/providers/auth_provider.dart';
 
 Future getReport(
-    {fromDate, toDate, type, coupenCode, @required AuthProvider auth}) async {
+    {fromDate, toDate, type, coupenCode, required AuthProvider auth}) async {
   try {
     String url =
         "$baseUrl/restaurant/report?type=$type${coupenCode != null && coupenCode != "" ? "&couponCode=" + coupenCode : ""}${fromDate != null ? "&fromDate=" + fromDate : ""}${toDate != null ? "&toDate=" + toDate : ""}";
@@ -27,8 +27,8 @@ Future getSendReportEmil(
     {fromDate,
     toDate,
     coupenCode,
-    @required AuthProvider auth,
-    String totalUser}) async {
+    required AuthProvider auth,
+    String ? totalUser}) async {
   try {
     String url = "$baseUrl/restaurant/report/email-report-orders";
     print("url $url");
@@ -66,7 +66,7 @@ Future getSendReportEmil(
 }
 
 Future getSendReportEmailEarnings(
-    {fromDate, toDate, @required AuthProvider auth, String earning}) async {
+    {fromDate, toDate, required AuthProvider auth, String ?earning}) async {
   try {
     String url = "$baseUrl/restaurant/report/email-report-earnings";
     print("url $url");

@@ -1,6 +1,6 @@
 class TimeModel {
-  String startTime;
-  String endTime;
+  String ?startTime;
+  String ?endTime;
   TimeModel();
 
   TimeModel.toJson(data) {

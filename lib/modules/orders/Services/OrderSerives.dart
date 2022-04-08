@@ -6,9 +6,9 @@ import 'package:restaurant/modules/orders/Models/OrderModels.dart';
 import 'package:dio/dio.dart';
 
 class OrderServices {
-  Future<Map> getSingleOrder(
-      {state, @required AuthProvider auth, int page}) async {
-    List<OrderModels> listOrder;
+  Future<Map?> getSingleOrder(
+      {state, required AuthProvider auth, int?  page}) async {
+    List<OrderModels> ?listOrder;
     try {
       String url = "$baseUrl/restaurant/order?status=$state";
 
@@ -44,7 +44,7 @@ class OrderServices {
     }
   }
 
-  Future<bool> pickup(orderId, statue, AuthProvider auth) async {
+  Future<bool?> pickup(orderId, statue, AuthProvider auth) async {
     try {
       String url = "$baseUrl/admin/order/$orderId";
 
@@ -64,7 +64,7 @@ class OrderServices {
     }
   }
 
-  Future<bool> updatepickupDate(orderId, pickUpTime, AuthProvider auth) async {
+  Future<bool?> updatepickupDate(orderId, pickUpTime, AuthProvider auth) async {
     try {
       String url = "$baseUrl/admin/order/pickuptime/$orderId";
 

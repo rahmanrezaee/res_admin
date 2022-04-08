@@ -8,9 +8,9 @@ const testKeys = [Key("fancyButtons"), Key("flatButtons")];
 
 class FancyDialog extends StatefulWidget {
   const FancyDialog(
-      {Key key,
-      @required this.title,
-      @required this.descreption,
+      {Key? key,
+      required this.title,
+      required this.descreption,
       this.okFun,
       this.cancelFun,
       this.animationType = 1,
@@ -25,8 +25,8 @@ class FancyDialog extends StatefulWidget {
 
   final String title;
   final String descreption;
-  final Function okFun;
-  final Function cancelFun;
+  final Function ?okFun;
+  final Function ?cancelFun;
   final int animationType;
   final String gifPath;
   final Color okColor;
@@ -41,22 +41,22 @@ class FancyDialog extends StatefulWidget {
 }
 
 class GifDialogState extends State<FancyDialog> with TickerProviderStateMixin {
-  AnimationController ac;
-  Animation animation;
-  double width;
-  double height;
+  AnimationController? ac;
+  Animation? animation;
+  double ?width;
+  double ?height;
   int animationAxis = 0; // 0 for x 1 for y
 
-  String title;
-  String descreption;
-  Function okFun;
-  Function cancelFun;
-  String gifPath;
-  Color okColor;
-  Color cancelColor;
-  String ok;
-  String cancel;
-  int theme;
+  String ?title;
+  String ?descreption;
+  Function? okFun;
+  Function? cancelFun;
+  String ?gifPath;
+  Color? okColor;
+  Color ?cancelColor;
+  String ?ok;
+  String ?cancel;
+  int? theme;
   int package = 0; //0 user assets ,1 package assets
   @override
   void initState() {
@@ -71,7 +71,7 @@ class GifDialogState extends State<FancyDialog> with TickerProviderStateMixin {
     cancel = widget.cancel;
     theme = widget.theme;
 
-    double start;
+    double ?start;
     int animationType = widget.animationType;
     switch (animationType) {
       case 1:
@@ -99,12 +99,12 @@ class GifDialogState extends State<FancyDialog> with TickerProviderStateMixin {
     ac =
         AnimationController(vsync: this, duration: Duration(milliseconds: 400));
     animation = Tween(begin: start, end: 0.0)
-        .animate(CurvedAnimation(parent: ac, curve: Curves.easeIn));
-    animation.addListener(() {
+        .animate(CurvedAnimation(parent: ac!, curve: Curves.easeIn));
+    animation!.addListener(() {
       setState(() {});
     });
 
-    ac.forward();
+    ac!.forward();
     super.initState();
   }
 
@@ -112,7 +112,7 @@ class GifDialogState extends State<FancyDialog> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
-    var dialogWidth = 0.36 * height;
+    var dialogWidth = 0.36 * height!;
 
     assert(MediaQuery.of(context) != null,
         '\n****context does not contain media query object***\n');
@@ -121,7 +121,7 @@ class GifDialogState extends State<FancyDialog> with TickerProviderStateMixin {
 
     var image = ClipRRect(
       child: Image.asset(
-        gifPath,
+        gifPath!,
         fit: BoxFit.fill,
         width: dialogWidth * 1.1, // dialogWidth will get left/right margin?
         height: dialogWidth * 0.6,
@@ -145,8 +145,8 @@ class GifDialogState extends State<FancyDialog> with TickerProviderStateMixin {
         child: Container(
           width: dialogWidth,
           transform: Matrix4.translationValues(
-              animationAxis == 0 ? animation.value * width : 0,
-              animationAxis == 1 ? animation.value * width : 0,
+              animationAxis == 0 ? animation!.value! * width : 0,
+              animationAxis == 1 ? animation!.value * width : 0,
               0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(theme == 0 ? 15 : 0),
@@ -161,7 +161,7 @@ class GifDialogState extends State<FancyDialog> with TickerProviderStateMixin {
                 Padding(
                   padding: const EdgeInsets.all(5),
                   child: Text(
-                    title,
+                    title!,
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 20,
@@ -173,7 +173,7 @@ class GifDialogState extends State<FancyDialog> with TickerProviderStateMixin {
                     padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
                     child: Container(
                       child: Text(
-                        descreption,
+                        descreption!,
                         style: TextStyle(color: Colors.grey[600], fontSize: 15),
                         textAlign: TextAlign.center,
                         maxLines: 5,
@@ -187,14 +187,14 @@ class GifDialogState extends State<FancyDialog> with TickerProviderStateMixin {
                         : MainAxisAlignment.center,
                     children: <Widget>[
                       theme == 0
-                          ? customButton(cancel, cancelColor, cancelFun)
-                          : flatButton(cancel, cancelColor, cancelFun),
+                          ? customButton(cancel!, cancelColor!, cancelFun!)
+                          : flatButton(cancel!, cancelColor!, cancelFun!),
                       SizedBox(
                         width: 10,
                       ),
                       theme == 0
-                          ? customButton(ok, okColor, okFun)
-                          : flatButton(ok, okColor, okFun)
+                          ? customButton(ok!, okColor!, okFun!)
+                          : flatButton(ok!, okColor!, okFun!)
                     ],
                   ),
                 )

@@ -4,20 +4,20 @@ class DropDownFormField extends FormField<dynamic> {
   final String titleText;
   final String hintText;
   final bool required;
-  final String errorText;
+  final String ?errorText;
   final dynamic value;
   final padding;
-  final List dataSource;
-  final String textField;
-  final String valueField;
+  final List ?dataSource;
+  final String? textField;
+  final String ?valueField;
 
-  final Function onChanged;
+  final Function? onChanged;
   final bool filled;
   final bool enable;
 
   DropDownFormField(
-      {FormFieldSetter<dynamic> onSaved,
-      FormFieldValidator<dynamic> validator,
+      {FormFieldSetter<dynamic> ?onSaved,
+      FormFieldValidator<dynamic>? validator,
       bool autovalidate = false,
       this.titleText = 'Title',
       this.hintText = 'Select one option',
@@ -34,49 +34,65 @@ class DropDownFormField extends FormField<dynamic> {
       : super(
           onSaved: onSaved,
           validator: validator,
-          autovalidate: autovalidate,
           initialValue: value == '' ? null : value,
           builder: (FormFieldState<dynamic> state) {
-            return InputDecorator(
-              decoration: InputDecoration(
-                errorText: errorText,
-                contentPadding: padding != null
-                    ? padding
-                    : const EdgeInsets.symmetric(
-                        vertical: 0,
-                        horizontal: 10,
-                      ),
-                // disabledBorder: InputBorder.none,
-                // border: ,
-                // focusedBorder: InputBorder.none,
-                // enabledBorder: InputBorder.none,
-                // errorBorder: InputBorder.none,
-              ),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<dynamic>(
-                  isDense: false,
-                  itemHeight: 50,
-                  isExpanded: true,
-                  hint: Text(
-                    "$hintText",
-                    style: TextStyle(color: Colors.grey),
+            return Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10.0),
+                boxShadow: [
+                  BoxShadow(
+                    offset: Offset(0, 2),
+                    blurRadius: 3,
+                    color: Colors.black.withOpacity(0.1),
                   ),
-                  value: value,
-                  onChanged: enable
-                      ? (dynamic newValue) {
-                          state.didChange(newValue);
+                ],
+              ),
+              child: InputDecorator(
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.fromLTRB(15.0, 0, 15.0, 0),
+                  hintText: hintText,
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white, width: 32.0),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white, width: 32.0),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    DropdownButtonHideUnderline(
+                      child: DropdownButton<dynamic>(
+                        isDense: false,
+                        itemHeight: 50,
+                        isExpanded: true,
+                        hint: Text(
+                          "$hintText",
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                        value: value,
+                        onChanged: enable
+                            ? (dynamic newValue) {
+                                state.didChange(newValue);
 
-                          onChanged(newValue);
-                        }
-                      : null,
-                  items: dataSource.map((item) {
-                    return DropdownMenuItem<dynamic>(
-                      value: item[valueField],
-                      child: Text(
-                        item[textField],
+                                onChanged!(newValue);
+                              }
+                            : null,
+                        items: dataSource!.map((item) {
+                          return DropdownMenuItem<dynamic>(
+                            value: item[valueField],
+                            child: Text(
+                              item[textField],
+                            ),
+                          );
+                        }).toList(),
                       ),
-                    );
-                  }).toList(),
+                    ),
+                   
+                  ],
                 ),
               ),
             );

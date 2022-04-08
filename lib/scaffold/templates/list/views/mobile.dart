@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
-import '../../../responsive_scaffold.dart';
+import '../../../data/classes/details.dart';
 import '../responsive_list.dart';
 
 class MobileView extends StatelessWidget {
   MobileView({
-    Key key,
-    @required this.slivers,
-    @required this.detailBuilder,
-    @required List<Widget> children,
-    @required this.detailScaffoldKey,
-    @required this.useRootNavigator,
-    @required this.navigator,
-    @required this.nullItems,
-    @required this.emptyItems,
+    Key ?key,
+    required this.slivers,
+    required this.detailBuilder,
+    required List<Widget> children,
+    required this.detailScaffoldKey,
+    required this.useRootNavigator,
+    required this.navigator,
+    required this.nullItems,
+    required this.emptyItems,
   })  : childDelagate = SliverChildListDelegate(
           children,
           addAutomaticKeepAlives: false,
@@ -23,16 +23,16 @@ class MobileView extends StatelessWidget {
         super(key: key);
 
   MobileView.builder({
-    Key key,
-    @required this.slivers,
-    @required this.detailBuilder,
-    @required int itemCount,
-    @required IndexedWidgetBuilder itemBuilder,
-    @required this.detailScaffoldKey,
-    @required this.useRootNavigator,
-    @required this.navigator,
-    @required this.nullItems,
-    @required this.emptyItems,
+    Key? key,
+    required this.slivers,
+    required this.detailBuilder,
+    required int itemCount,
+    required IndexedWidgetBuilder itemBuilder,
+    required this.detailScaffoldKey,
+    required this.useRootNavigator,
+    required this.navigator,
+    required this.nullItems,
+    required this.emptyItems,
   })  : childDelagate = SliverChildBuilderDelegate(
           itemBuilder,
           childCount: itemCount,
@@ -43,24 +43,24 @@ class MobileView extends StatelessWidget {
         super(key: key);
 
   MobileView.custom({
-    Key key,
-    @required this.slivers,
-    @required this.detailBuilder,
-    @required this.childDelagate,
-    @required this.detailScaffoldKey,
-    @required this.useRootNavigator,
-    @required this.navigator,
-    @required this.nullItems,
-    @required this.emptyItems,
+    Key? key,
+    required this.slivers,
+    required this.detailBuilder,
+    required this.childDelagate,
+    required this.detailScaffoldKey,
+    required this.useRootNavigator,
+    required this.navigator,
+    required this.nullItems,
+    required this.emptyItems,
   }) : super(key: key);
 
-  final List<Widget> slivers;
+  final List<Widget> ? slivers;
   final DetailWidgetBuilder detailBuilder;
   final Key detailScaffoldKey;
   final bool useRootNavigator;
-  final NavigatorState navigator;
+  final NavigatorState ?navigator;
   final Widget nullItems, emptyItems;
-  final SliverChildDelegate childDelagate;
+  final SliverChildDelegate ?childDelagate;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +72,7 @@ class MobileView extends StatelessWidget {
             if (childDelagate?.estimatedChildCount == null && nullItems != null)
               return SliverFillRemaining(child: nullItems);
             if (childDelagate?.estimatedChildCount != null &&
-                childDelagate.estimatedChildCount == 0 &&
+                childDelagate!.estimatedChildCount == 0 &&
                 emptyItems != null)
               return SliverFillRemaining(child: emptyItems);
             return SliverList(
@@ -89,13 +89,13 @@ class MobileView extends StatelessWidget {
                           final _details = detailBuilder(context, index, false);
                           return new DetailView(
                               detailScaffoldKey: detailScaffoldKey,
-                              itemCount: childDelagate.estimatedChildCount,
+                              itemCount: childDelagate!.estimatedChildCount!,
                               details: _details);
                         }));
                       },
                       child: new Container(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: childDelagate.build(context, index),
+                        child: childDelagate!.build(context, index),
                       ),
                     ),
                   ),
@@ -114,10 +114,10 @@ class MobileView extends StatelessWidget {
 
 class DetailView extends StatelessWidget {
   const DetailView({
-    Key key,
-    @required this.itemCount,
-    @required DetailsScreen details,
-    @required this.detailScaffoldKey,
+    Key? key,
+    required this.itemCount,
+    required DetailsScreen details,
+    required this.detailScaffoldKey,
   })  : _details = details,
         super(key: key);
 
@@ -129,7 +129,7 @@ class DetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       key: detailScaffoldKey,
-      appBar: _details?.appBar,
+      appBar: _details.appBar,
       body: _details.body,
     );
   }

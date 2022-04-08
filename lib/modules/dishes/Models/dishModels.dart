@@ -5,22 +5,22 @@ import 'package:restaurant/modules/dishes/Models/AddonModel.dart';
 import 'ImageModel.dart';
 
 class DishModel {
-  String foodId;
-  String foodName;
-  int quantity;
-  double averageRating;
-  String restaurantId;
-  String categoryId;
-  double price;
-  double tax;
+  String? foodId;
+  String? foodName;
+  int? quantity;
+  double ?averageRating;
+  String ?restaurantId;
+  String? categoryId;
+  double ?price;
+  double ?tax;
   List<List<AddonItems>> addOn = [];
   List<AddonItems> addOnDishAdmin = [];
   List orderNote = [];
-  String description;
+  String ?description;
   List<ImageModel> images = [];
 
-  bool visibility;
-  String preparationTime;
+  bool? visibility;
+  String ?preparationTime;
 
   DishModel();
 

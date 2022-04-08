@@ -1,7 +1,7 @@
 class AddonItems {
-  String name;
+  String ?name;
   int quantity = 1;
-  double price;
+  double ?price;
 
   AddonItems();
   AddonItems.toJson(element) {

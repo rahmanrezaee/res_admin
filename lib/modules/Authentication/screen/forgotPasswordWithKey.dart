@@ -22,7 +22,7 @@ class _ForgotPasswordWithKeyState extends State<ForgotPasswordWithKey> {
   TextEditingController _passwordController = new TextEditingController();
 
   final _scaffoldKey = new GlobalKey<ScaffoldState>();
-  AuthProvider authProvider;
+  AuthProvider ?authProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +134,7 @@ class _ForgotPasswordWithKeyState extends State<ForgotPasswordWithKey> {
                     ),
                     error != null
                         ? Text(
-                            error,
+                            error!,
                             style: TextStyle(color: AppColors.redText),
                           )
                         : Container(),
@@ -149,23 +149,23 @@ class _ForgotPasswordWithKeyState extends State<ForgotPasswordWithKey> {
   }
 
   bool loading = false;
-  String error;
+  String ?error;
   forgotPasswordWithKey() {
     print("Forgoting password with key");
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState!.validate()) {
       setState(() {
         loading = true;
       });
       FocusScope.of(context).requestFocus(new FocusNode());
       String password = _passwordController.text;
-      authProvider
+      authProvider!
           .forgotPasswordWithKey(password, widget.forgotPasswordToken)
           .then((res) {
         setState(() {
           loading = false;
         });
         if (res['status'] == true) {
-          _scaffoldKey.currentState.showSnackBar(SnackBar(
+          _scaffoldKey.currentState!.showSnackBar(SnackBar(
             content: Text("Successfuly Password Changed."),
             duration: Duration(seconds: 3),
           ));

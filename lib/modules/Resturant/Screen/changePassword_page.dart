@@ -56,8 +56,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               SizedBox(height: 15),
               TextFormField(
                 controller: _oldPass,
-                validator: (String value) {
-                  if (value.isEmpty) {
+                validator: (String ?value) {
+                  if (value!.isEmpty) {
                     return "Please Enter your Old Password.";
                   }
                   return null;
@@ -103,8 +103,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               SizedBox(height: 10),
               TextFormField(
                 controller: _newPass,
-                validator: (String value) {
-                  if (value.isEmpty) {
+                validator: (String ?value) {
+                  if (value!.isEmpty) {
                     return "Please Enter your New Password.";
                   } else if (_oldPass.text == value) {
                     return "New Password Is Same Old Password.";
@@ -156,7 +156,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               TextFormField(
                 controller: _confirmPass,
                 validator: (value) {
-                  if (value.isEmpty) {
+                  if (value!.isEmpty) {
                     return "Please Enter Confirm New Password.";
                   } else if (_newPass.text != _confirmPass.text) {
                     return "The Passwords Don't Match";
@@ -219,7 +219,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                           style: Theme.of(context).textTheme.button,
                         ),
                   onPressed: () {
-                    if (formKey.currentState.validate()) {
+                    if (formKey.currentState!.validate()) {
                       setState(() {
                         _isLoading = true;
                       });
@@ -233,7 +233,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                           _isLoading = false;
                         });
                         if (value['status']) {
-                          scoffeldKey.currentState.showSnackBar(SnackBar(
+                          scoffeldKey.currentState!.showSnackBar(SnackBar(
                             content: Text(value['message']),
                             backgroundColor: Colors.green,
                             duration: new Duration(milliseconds: 2000),
@@ -243,7 +243,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                             Navigator.pop(context);
                           });
                         } else {
-                          scoffeldKey.currentState.showSnackBar(SnackBar(
+                          scoffeldKey.currentState!.showSnackBar(SnackBar(
                             content: Text(value['message']),
                             backgroundColor: Colors.red,
                             duration: new Duration(milliseconds: 3000),

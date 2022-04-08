@@ -20,9 +20,9 @@ import '../term/term&condition_page.dart';
 import '../Authentication/providers/linkListener.dart';
 
 class PageModel {
-  String title;
-  Widget icon;
-  Widget page;
+  String ?title;
+  Widget ?icon;
+  Widget ?page;
   PageModel({this.title, this.icon, this.page});
 }
 
@@ -122,8 +122,8 @@ class _LayoutExampleState extends State<LayoutExample> {
         Provider.of<AuthProvider>(context, listen: false);
     return ResponsiveScaffold(
       kDesktopBreakpoint: 768,
-      body: pages[pageIndex].page,
-      drawerWidth: 200.0,
+      body: pages[pageIndex].page!,
+    
       drawer: SizedBox(
         width: 100,
         child: Column(
@@ -161,8 +161,8 @@ class _LayoutExampleState extends State<LayoutExample> {
                           }
 
                           return drawerListItemBuilder(
-                            icon: page.icon,
-                            title: page.title,
+                            icon: page.icon!,
+                            title: page.title!,
                             isActive: pageIndex == index,
                             onClick: () {
                               setState(() {
@@ -214,10 +214,10 @@ class _LayoutExampleState extends State<LayoutExample> {
 }
 
 drawerListItemBuilder({
-  @required Widget icon,
-  @required String title,
-  bool isActive,
-  @required Function onClick,
+  required Widget icon,
+  required String title,
+  bool ?isActive,
+required Function onClick,
 }) {
   return InkWell(
     onTap: () {

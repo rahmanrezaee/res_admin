@@ -30,11 +30,11 @@ class _CatetoriesPageState extends State<CatetoriesPage> {
         routes: {
           CatetoriesListPage.routeName: (context) => CatetoriesListPage(),
           DishPage.routeName: (context) => DishPage(
-                ModalRoute.of(context).settings.arguments,
+                ModalRoute.of(context)!.settings.arguments as Map,
               ),
           NotificationPage.routeName: (context) => NotificationPage(),
           AddNewDish.routeName: (context) => AddNewDish(
-                ModalRoute.of(context).settings.arguments,
+                ModalRoute.of(context)!.settings.arguments as Map,
               ),
         },
         theme: restaurantTheme,
@@ -51,7 +51,7 @@ class CatetoriesListPage extends StatefulWidget {
 class _CatetoriesListPageState extends State<CatetoriesListPage> {
   TextEditingController newCategoryController = new TextEditingController();
 
-  String error;
+  String? error;
   bool first = true;
   final keyScaffold = GlobalKey<ScaffoldState>();
 
@@ -189,7 +189,7 @@ class _CatetoriesListPageState extends State<CatetoriesListPage> {
                                                   .textTheme
                                                   .button),
                                           onPressed: () async {
-                                            if (categoryForm.currentState
+                                            if (categoryForm.currentState!
                                                 .validate()) {
                                               setState(() {
                                                 addingCat = true;
@@ -284,7 +284,7 @@ class _CatetoriesListPageState extends State<CatetoriesListPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(category.categoryName,
+            Text(category.categoryName!,
                 style: Theme.of(context).textTheme.headline6),
             Text("${category.foodNumber} Dishes",
                 style: TextStyle(color: Colors.grey)),
@@ -314,7 +314,7 @@ class _CatetoriesListPageState extends State<CatetoriesListPage> {
                     showDialog(
                       context: context,
                       builder: (context) {
-                        editCatController.text = category.categoryName;
+                        editCatController.text = category.categoryName!;
                         return BackdropFilter(
                           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                           child: SimpleDialog(
@@ -411,13 +411,13 @@ class _CatetoriesListPageState extends State<CatetoriesListPage> {
                                     .deleteCategoy(category.id)
                                     .then((res) {
                                   if (res['status']) {
-                                    keyScaffold.currentState
+                                    keyScaffold.currentState!
                                         .showSnackBar(SnackBar(
                                       content: Text(
                                           "The Category Deleted Successfully"),
                                     ));
                                   } else {
-                                    keyScaffold.currentState
+                                    keyScaffold.currentState!
                                         .showSnackBar(SnackBar(
                                       content: Text(res['message']),
                                     ));

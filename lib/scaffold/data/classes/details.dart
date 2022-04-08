@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
 class DetailsScreen {
-  const DetailsScreen({
+  Widget body;
+  PreferredSizeWidget?  appBar;
+  DetailsScreen({
     this.appBar,
-    @required this.body,
+    required this.body,
   });
-
-  final Widget body;
-  final PreferredSizeWidget appBar;
 }

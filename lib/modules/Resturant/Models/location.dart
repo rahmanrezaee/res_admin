@@ -1,7 +1,7 @@
 class LocationModel {
-  String type;
-  double lat;
-  double log;
+  String? type;
+  double ?lat;
+  double? log;
 
   LocationModel();
   LocationModel.toJson(data) {

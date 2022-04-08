@@ -5,11 +5,11 @@ import '../three_column_navigation.dart';
 
 class SectionList extends StatelessWidget {
   const SectionList({
-    Key key,
-    @required this.controller,
-    @required MainSection section,
-    @required int listIndex,
-    @required this.listTap,
+    Key? key,
+    required this.controller,
+    required MainSection section,
+    required int listIndex,
+    required this.listTap,
   })  : _section = section,
         _listIndex = listIndex,
         super(key: key);

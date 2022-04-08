@@ -4,13 +4,13 @@ import 'package:restaurant/modules/Resturant/Models/TimeModel.dart';
 import 'package:restaurant/modules/Resturant/Models/location.dart';
 
 class ResturantModel {
-  String resturantName;
-  String avatar;
-  String id;
-  String address;
-  bool openForOrder;
-  bool autoAcceptOrder;
-  LocationModel location;
+  String ?resturantName;
+  String? avatar;
+  String ?id;
+  String? address;
+  bool ?openForOrder;
+  bool ?autoAcceptOrder;
+  LocationModel ?location;
   TimeModel sunday = TimeModel();
   TimeModel monday = TimeModel();
   TimeModel tuesday = TimeModel();
@@ -18,9 +18,9 @@ class ResturantModel {
   TimeModel thursday = TimeModel();
   TimeModel friday = TimeModel();
   TimeModel saturday = TimeModel();
-  String email;
-  String password;
-  int activeOrder;
+  String ?email;
+  String ?password;
+  int? activeOrder;
 
   ResturantModel();
 

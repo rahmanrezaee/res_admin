@@ -1,11 +1,11 @@
 class NotificationModel {
-  String status;
-  String id;
-  String title;
-  String image;
-  String body;
-  String createdAt;
-  String onWrite;
+  String ?status;
+  String ?id;
+  String ?title;
+  String ?image;
+  String ?body;
+  String ?createdAt;
+  String ?onWrite;
   NotificationModel({
     this.status,
     this.id,

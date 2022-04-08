@@ -2,12 +2,12 @@ import 'dart:developer';
 
 // @JsonSerializable(explicitToJson: true)
 class Customer {
-  String id;
-  int activeOrders;
-  String username;
-  dynamic avatar;
-  String email;
-  int totalOrder;
+  String ?id;
+  int ?activeOrders;
+  String ?username;
+  dynamic? avatar;
+  String? email;
+  int? totalOrder;
   Customer({
     this.id,
     this.username,
@@ -16,17 +16,17 @@ class Customer {
     this.email,
     this.totalOrder,
   });
-  factory Customer.fromJson(json) {
-    log("ID: ${json}");
+   Customer.fromJson(json) {
+   
     try {
-      return Customer(
-        id: json["user"]['_id'],
-        username: json["user"]['username'],
-        activeOrders: json['activeOrders'],
+     
+        id =  json["user"]['_id'];
+        username=  json["user"]['username'];
+        activeOrders=  json['activeOrders'];
         // avatar: json['avatar'],
         // email: json['email'],
-        totalOrder: json['totalOrder'],
-      );
+        totalOrder=  json['totalOrder'];
+      
     } catch (e) {
       log("error $e");
     }

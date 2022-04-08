@@ -1,20 +1,19 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+import '../../data/classes/details.dart';
 import 'responsive_list.dart';
 import 'views/index.dart';
-
-export 'package:restaurant/scaffold/data/classes/details.dart';
 
 class ResponsiveListScaffold extends StatelessWidget {
   ResponsiveListScaffold({
     this.tabletBreakpoint = 720.0,
-    @required this.detailBuilder,
+    required this.detailBuilder,
     this.appBar,
     this.drawer,
     this.slivers,
     this.endDrawer,
-    @required List<Widget> children,
+    required List<Widget> children,
     this.primary = true,
     // this.extendBody = false,
     this.drawerDragStartBehavior = DragStartBehavior.start,
@@ -51,8 +50,8 @@ class ResponsiveListScaffold extends StatelessWidget {
     this.drawer,
     this.slivers,
     this.endDrawer,
-    @required int itemCount,
-    @required IndexedWidgetBuilder itemBuilder,
+    required int itemCount,
+    required IndexedWidgetBuilder itemBuilder,
     this.primary = true,
     // this.extendBody = false,
     this.drawerDragStartBehavior = DragStartBehavior.start,
@@ -115,92 +114,92 @@ class ResponsiveListScaffold extends StatelessWidget {
     this.mobileNavigator,
   });
 
-  final double tabletBreakpoint;
+  final double? tabletBreakpoint;
 
-  final DetailWidgetBuilder detailBuilder;
+  final DetailWidgetBuilder ?detailBuilder;
 
-  final PreferredSizeWidget appBar;
+  final PreferredSizeWidget ?appBar;
 
-  final Widget drawer, endDrawer;
+  final Widget? drawer, endDrawer;
 
-  final List<Widget> slivers;
+  final List<Widget>? slivers;
 
-  final Widget floatingActionButton;
+  final Widget ?floatingActionButton;
 
-  final FloatingActionButtonLocation floatingActionButtonLocation;
+  final FloatingActionButtonLocation? floatingActionButtonLocation;
 
-  final Widget bottomNavigationBar;
+  final Widget? bottomNavigationBar;
 
-  final Widget bottomSheet;
+  final Widget? bottomSheet;
 
-  final List<Widget> persistentFooterButtons;
+  final List<Widget>? persistentFooterButtons;
 
-  final FloatingActionButtonAnimator floatingActionButtonAnimator;
+  final FloatingActionButtonAnimator ?floatingActionButtonAnimator;
 
-  final bool resizeToAvoidBottomPadding;
+  final bool ?resizeToAvoidBottomPadding;
 
-  final bool resizeToAvoidBottomInset;
+  final bool ?resizeToAvoidBottomInset;
 
-  final bool primary;
+  final bool ?primary;
 
   // final bool extendBody;
 
-  final DragStartBehavior drawerDragStartBehavior;
+  final DragStartBehavior? drawerDragStartBehavior;
 
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
-  final Key scaffoldKey, detailScaffoldKey;
+  final Key? scaffoldKey, detailScaffoldKey;
 
-  final Widget tabletItemNotSelected;
+  final Widget? tabletItemNotSelected;
 
-  final Flexible tabletSideMenu;
+  final Flexible ?tabletSideMenu;
 
-  final int tabletFlexListView;
+  final int ?tabletFlexListView;
 
-  final int tabletFlexDetailView;
+  final int? tabletFlexDetailView;
 
-  final bool mobileRootNavigator;
+  final bool ?mobileRootNavigator;
 
-  final NavigatorState mobileNavigator;
+  final NavigatorState ?mobileNavigator;
 
-  final Widget nullItems, emptyItems;
+  final Widget ?nullItems, emptyItems;
 
-  final SliverChildDelegate childDelagate;
+  final SliverChildDelegate? childDelagate;
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (_, constraints) {
-        if (constraints.maxWidth >= tabletBreakpoint) {
+        if (constraints.maxWidth >= tabletBreakpoint!) {
           // Tablet
           return TabletView.custom(
             key: key,
-            nullItems: nullItems,
-            emptyItems: emptyItems,
-            scaffoldkey: scaffoldKey,
-            detailScaffoldKey: detailScaffoldKey,
-            drawerDragStartBehavior: drawerDragStartBehavior,
-            floatingActionButton: floatingActionButton,
-            floatingActionButtonLocation: floatingActionButtonLocation,
-            bottomNavigationBar: bottomNavigationBar,
-            bottomSheet: bottomSheet,
-            persistentFooterButtons: persistentFooterButtons,
-            floatingActionButtonAnimator: floatingActionButtonAnimator,
-            resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-            resizeToAvoidBottomPadding: resizeToAvoidBottomPadding,
-            primary: primary,
+            nullItems: nullItems!,
+            emptyItems: emptyItems!,
+            scaffoldkey: scaffoldKey!,
+            detailScaffoldKey: detailScaffoldKey!,
+            drawerDragStartBehavior: drawerDragStartBehavior!,
+            floatingActionButton: floatingActionButton!,
+            floatingActionButtonLocation: floatingActionButtonLocation!,
+            bottomNavigationBar: bottomNavigationBar!,
+            bottomSheet: bottomSheet!,
+            persistentFooterButtons: persistentFooterButtons!,
+            floatingActionButtonAnimator: floatingActionButtonAnimator!,
+            resizeToAvoidBottomInset: resizeToAvoidBottomInset!,
+            resizeToAvoidBottomPadding: resizeToAvoidBottomPadding!,
+            primary: primary!,
             // extendBody: extendBody,
-            backgroundColor: backgroundColor,
-            drawer: drawer,
-            endDrawer: endDrawer,
-            appBar: appBar,
-            slivers: slivers,
-            detailBuilder: detailBuilder,
-            childDelagate: childDelagate,
-            flexDetailView: tabletFlexDetailView,
-            flexListView: tabletFlexListView,
-            sideMenu: tabletSideMenu,
-            itemNotSelected: tabletItemNotSelected,
+            backgroundColor: backgroundColor!,
+            drawer: drawer!,
+            endDrawer: endDrawer!,
+            appBar: appBar!,
+            slivers: slivers!,
+            detailBuilder: detailBuilder!,
+            childDelagate: childDelagate!,
+            flexDetailView: tabletFlexDetailView!,
+            flexListView: tabletFlexListView!,
+            sideMenu: tabletSideMenu!,
+            itemNotSelected: tabletItemNotSelected!,
           );
         }
 
@@ -215,19 +214,19 @@ class ResponsiveListScaffold extends StatelessWidget {
           floatingActionButtonAnimator: floatingActionButtonAnimator,
           resizeToAvoidBottomInset: resizeToAvoidBottomInset,
           // resizeToAvoidBottomPadding: resizeToAvoidBottomPadding,
-          primary: primary,
+          primary: primary!,
           // extendBody: extendBody,
           backgroundColor: backgroundColor,
           drawer: drawer,
           endDrawer: endDrawer,
           appBar: appBar,
           body: MobileView.custom(
-            useRootNavigator: mobileRootNavigator,
-            nullItems: nullItems,
-            emptyItems: emptyItems,
+            useRootNavigator: mobileRootNavigator!,
+            nullItems: nullItems!,
+            emptyItems: emptyItems!,
             slivers: slivers,
-            detailScaffoldKey: detailScaffoldKey,
-            detailBuilder: detailBuilder,
+            detailScaffoldKey: detailScaffoldKey!,
+            detailBuilder: detailBuilder!,
             childDelagate: childDelagate,
             navigator: mobileNavigator,
           ),

@@ -45,13 +45,13 @@ class _ResturantFormState extends State<ResturantForm> {
   LocationModel locationMo = new LocationModel();
   bool _loadUpdate = false;
 
-  Future<String> _selectTime(BuildContext context) async {
+  Future<String?> _selectTime(BuildContext context) async {
     FocusScope.of(context).requestFocus(new FocusNode());
 
-    final TimeOfDay picked_s = await showTimePicker(
+    final TimeOfDay? picked_s = await showTimePicker(
         context: context,
         initialTime: selectedTime,
-        builder: (BuildContext context, Widget child) {
+        builder: (BuildContext context, Widget ?child) {
           return Theme(
               data: ThemeData.light().copyWith(
                 primaryColor: const Color(0xFF504d4d),
@@ -64,15 +64,15 @@ class _ResturantFormState extends State<ResturantForm> {
               child: MediaQuery(
                 data: MediaQuery.of(context)
                     .copyWith(alwaysUse24HourFormat: true),
-                child: child,
+                child: child!,
               ));
         });
 
     return picked_s != null ? "${picked_s.hour}:${picked_s.minute}" : null;
   }
 
-  DashboardProvider dashboardProvider;
-  AuthProvider auth;
+  DashboardProvider ?dashboardProvider;
+  AuthProvider? auth;
   @override
   void initState() {
     dashboardProvider = Provider.of<DashboardProvider>(context, listen: false);
@@ -88,12 +88,12 @@ class _ResturantFormState extends State<ResturantForm> {
           .getSingleResturant(value)
           .then((value) {
         setState(() {
-          resturantModel = value;
+          resturantModel = value!;
         });
         print(
-            "lat ${resturantModel.location.lat} ${resturantModel.location.log}");
+            "lat ${resturantModel.location!.lat} ${resturantModel.location!.log}");
         final coordinates = new Coordinates(
-            resturantModel.location.lat, resturantModel.location.log);
+            resturantModel.location!.lat, resturantModel.location!.log);
 
         Geocoder.local.findAddressesFromCoordinates(coordinates).then((value) {
           List<Address> addresses = value;
@@ -155,7 +155,6 @@ class _ResturantFormState extends State<ResturantForm> {
                 },
                 child: SingleChildScrollView(
                   child: Form(
-                    autovalidate: _autoValidate,
                     key: _formKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -176,9 +175,9 @@ class _ResturantFormState extends State<ResturantForm> {
                                         _isUploadingImage = true;
                                       });
                                       await uploadFile(value, "profile-photo",
-                                              auth.token)
+                                              auth!.token)
                                           .then((value) => resturantModel
-                                              .avatar = value['uriPath']);
+                                              .avatar = value!['uriPath']);
 
                                       setState(() {
                                         _isUploadingImage = false;
@@ -210,7 +209,7 @@ class _ResturantFormState extends State<ResturantForm> {
                                               child: Stack(
                                                 children: [
                                                   Image.network(
-                                                      resturantModel.avatar),
+                                                      resturantModel.avatar!),
                                                 ],
                                               ))
                                           : Icon(Icons.add_a_photo),
@@ -259,12 +258,12 @@ class _ResturantFormState extends State<ResturantForm> {
                                           fontSize: 18,
                                           fontWeight: FontWeight.w700)),
                                   CupertinoSwitch(
-                                    value: resturantModel.openForOrder,
+                                    value: resturantModel.openForOrder!,
                                     onChanged: (value) {
                                       setState(() {
                                         _isLoadingTop = true;
                                       });
-                                      dashboardProvider
+                                      dashboardProvider!
                                           .resturantChangeStateOpenForOrder(
                                               resturantModel.id, value)
                                           .then((done) {
@@ -288,12 +287,12 @@ class _ResturantFormState extends State<ResturantForm> {
                                           fontSize: 18,
                                           fontWeight: FontWeight.w700)),
                                   CupertinoSwitch(
-                                    value: resturantModel.autoAcceptOrder,
+                                    value: resturantModel.autoAcceptOrder!,
                                     onChanged: (value) {
                                       setState(() {
                                         _isLoadingTop = true;
                                       });
-                                      dashboardProvider
+                                      dashboardProvider!
                                           .resturantChangeStateAutoAcceptOrder(
                                               resturantModel.id, value)
                                           .then((done) {
@@ -441,7 +440,7 @@ class _ResturantFormState extends State<ResturantForm> {
   }
 
   addResturant() async {
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
       });
@@ -458,14 +457,14 @@ class _ResturantFormState extends State<ResturantForm> {
 
         if (result == true) {
           print("Mahdi: Executed 2");
-          _scaffoldKey.currentState.showSnackBar(SnackBar(
+          _scaffoldKey.currentState!.showSnackBar(SnackBar(
             content: Text("Successfuly Updated."),
             duration: Duration(seconds: 3),
           ));
         } else {
           print("Mahdi: Executed 3");
 
-          _scaffoldKey.currentState.showSnackBar(SnackBar(
+          _scaffoldKey.currentState!.showSnackBar(SnackBar(
             content: Text("Something went wrong!! Please try again later."),
             duration: Duration(seconds: 4),
           ));
@@ -477,7 +476,7 @@ class _ResturantFormState extends State<ResturantForm> {
         setState(() {
           _isLoading = false;
         });
-        _scaffoldKey.currentState.showSnackBar(SnackBar(
+        _scaffoldKey.currentState!.showSnackBar(SnackBar(
           content: Text("Something went wrong!! Please try again later."),
           duration: Duration(seconds: 4),
         ));

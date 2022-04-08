@@ -10,7 +10,6 @@ class ResponsiveScaffold extends StatelessWidget {
     this.body,
     // this.trailing,
     this.floatingActionButton,
-    this.drawerWidth = 200.0,
     // this.menuIcon,
     // this.endIcon,
     this.kTabletBreakpoint = 720.0,
@@ -19,25 +18,25 @@ class ResponsiveScaffold extends StatelessWidget {
     this.appBar,
   });
 
-  final Widget drawer, endDrawer;
-  final Widget appBar;
+  final Widget? drawer, endDrawer;
+  final PreferredSizeWidget? appBar;
   // final Widget title;
 
-  final Widget body;
+  final Widget ?body;
 
   // final Widget trailing;
 
-  final Widget floatingActionButton;
+  final Widget? floatingActionButton;
 
   final kTabletBreakpoint;
   final kDesktopBreakpoint;
-  final drawerWidth;
+  final _drawerWidth = 200.0;
 
   // final IconData menuIcon, endIcon;
 
   // final double appBarElevation;
 
-  final Key scaffoldKey;
+  final Key? scaffoldKey;
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +50,10 @@ class ResponsiveScaffold extends StatelessWidget {
                   children: <Widget>[
                     if (drawer != null) ...[
                       SizedBox(
-                        width: drawerWidth,
+                        width: _drawerWidth,
                         child: Drawer(
                           child: SafeArea(
-                            child: drawer,
+                            child: drawer!,
                           ),
                         ),
                       ),
@@ -62,7 +61,7 @@ class ResponsiveScaffold extends StatelessWidget {
                     Expanded(
                       child: Scaffold(
                         key: scaffoldKey,
-                        appBar: appBar,
+                        appBar: appBar!,
                         body: Row(
                           children: <Widget>[
                             Expanded(
@@ -70,11 +69,11 @@ class ResponsiveScaffold extends StatelessWidget {
                             ),
                             if (endDrawer != null) ...[
                               Container(
-                                width: drawerWidth,
+                                width: _drawerWidth,
                                 child: Drawer(
                                   elevation: 3.0,
                                   child: SafeArea(
-                                    child: endDrawer,
+                                    child: endDrawer!,
                                   ),
                                 ),
                               ),
@@ -88,8 +87,8 @@ class ResponsiveScaffold extends StatelessWidget {
                 if (floatingActionButton != null) ...[
                   Positioned(
                     top: 100.0,
-                    left: drawerWidth - 30,
-                    child: floatingActionButton,
+                    left: _drawerWidth - 30,
+                    child: floatingActionButton!,
                   )
                 ],
               ],
@@ -103,7 +102,7 @@ class ResponsiveScaffold extends StatelessWidget {
                 ? null
                 : Drawer(
                     child: SafeArea(
-                      child: drawer,
+                      child: drawer!,
                     ),
                   ),
             appBar: appBar,
@@ -130,11 +129,11 @@ class ResponsiveScaffold extends StatelessWidget {
                       ),
                       if (endDrawer != null) ...[
                         Container(
-                          width: drawerWidth,
+                          width: _drawerWidth,
                           child: Drawer(
                             elevation: 3.0,
                             child: SafeArea(
-                              child: endDrawer,
+                              child: endDrawer!,
                             ),
                           ),
                         ),
@@ -145,7 +144,7 @@ class ResponsiveScaffold extends StatelessWidget {
                     Positioned(
                       top: 10.0,
                       left: 10.0,
-                      child: floatingActionButton,
+                      child: floatingActionButton!,
                     )
                   ],
                 ],
@@ -166,14 +165,14 @@ class ResponsiveScaffold extends StatelessWidget {
                 ? null
                 : Drawer(
                     child: SafeArea(
-                      child: drawer,
+                      child: drawer!,
                     ),
                   ),
             endDrawer: endDrawer == null
                 ? null
                 : Drawer(
                     child: SafeArea(
-                      child: endDrawer,
+                      child: endDrawer!,
                     ),
                   ),
             appBar: appBar,
@@ -192,7 +191,7 @@ class ResponsiveScaffold extends StatelessWidget {
             //   ],
             // ),
             body: AnnotatedRegion<SystemUiOverlayStyle>(
-                value: SystemUiOverlayStyle.light, child: body),
+                value: SystemUiOverlayStyle.light, child: body!),
             floatingActionButton: floatingActionButton,
             floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
           );
@@ -204,11 +203,11 @@ class ResponsiveScaffold extends StatelessWidget {
 
 class _OptionsButton extends StatelessWidget {
   const _OptionsButton({
-    Key key,
-    @required this.iconData,
+    Key? key,
+    required this.iconData,
   }) : super(key: key);
 
-  final IconData iconData;
+  final IconData ? iconData;
 
   @override
   Widget build(BuildContext context) {
@@ -223,11 +222,11 @@ class _OptionsButton extends StatelessWidget {
 
 class _MenuButton extends StatelessWidget {
   const _MenuButton({
-    Key key,
-    @required this.iconData,
+    Key? key,
+    required this.iconData,
   }) : super(key: key);
 
-  final IconData iconData;
+  final IconData? iconData;
 
   @override
   Widget build(BuildContext context) {

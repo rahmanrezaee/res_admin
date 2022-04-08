@@ -8,19 +8,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 class ContactProvider with ChangeNotifier {
-  List<ContactModel> contacts;
-  AuthProvider auth;
+  List<ContactModel>? contacts;
+  AuthProvider? auth;
 
   ContactProvider(this.auth);
-  List<ContactModel> get getContacts => this.contacts;
+  List<ContactModel>? get getContacts => this.contacts;
 
-  Future<bool> fetchContacts() async {
+  Future<bool?> fetchContacts() async {
     try {
       String url = "$baseUrl/admin/contact";
 
       print("URl $url");
 
-      final result = await APIRequest().get(myUrl: url, token: auth.token);
+      final result = await APIRequest().get(myUrl: url, token: auth!.token);
 
       print("result $result");
 

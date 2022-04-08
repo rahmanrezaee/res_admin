@@ -9,9 +9,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 class AuthProvider with ChangeNotifier {
-  String _token;
+  String? _token;
 
-  DateTime _expiryDate;
+  DateTime? _expiryDate;
   Future<String> get userId async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getString('user') == null) {

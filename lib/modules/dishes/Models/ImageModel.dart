@@ -1,6 +1,6 @@
 class ImageModel {
-  String url;
-  String id;
+  String ?url;
+  String? id;
 
   ImageModel.toJson(element) {
     this.id = element['_id'];

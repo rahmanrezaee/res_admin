@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 class ResturantProvider with ChangeNotifier {
-  List<ResturantModel> listResturant;
+  List<ResturantModel> ?listResturant;
 
   ResturantProvider(this.auth);
   AuthProvider auth;
@@ -36,7 +36,7 @@ class ResturantProvider with ChangeNotifier {
     }
   }
 
-  Future<ResturantModel> getSingleResturant(id) async {
+  Future<ResturantModel?> getSingleResturant(id) async {
     try {
       String url = "$baseUrl/admin/restaurant/profile/$id";
 
@@ -60,7 +60,7 @@ class ResturantProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> getResturantList() async {
+  Future<bool?> getResturantList() async {
     try {
       String url = "$baseUrl/admin/restaurant";
 
@@ -97,7 +97,7 @@ class ResturantProvider with ChangeNotifier {
     }
   }
 
-  Future<List<Map<String, String>>> getResturantListWithoutPro() async {
+  Future<List<Map<String, String>>?> getResturantListWithoutPro() async {
     try {
       String url = "$baseUrl/admin/restaurant";
 
@@ -128,7 +128,7 @@ class ResturantProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> addResturant(data) async {
+  Future<bool?> addResturant(data) async {
     print("da $data");
     try {
       final StringBuffer url = new StringBuffer("$baseUrl/admin/restaurant");
@@ -159,7 +159,7 @@ class ResturantProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> editResturant(data, id) async {
+  Future<bool?> editResturant(data, id) async {
     print("da $data");
     try {
       final StringBuffer url =

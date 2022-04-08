@@ -51,10 +51,10 @@ class _AddNewDishState extends State<AddNewDish> {
 
   DishModel dishModel = DishModel();
   // List<AddonModel> list = [];
-  String dishId;
-  String catId;
+  String? dishId;
+  String? catId;
   List<ReviewModel> getReview = [];
-  AuthProvider authProvider;
+  AuthProvider? authProvider;
   @override
   void initState() {
     authProvider = Provider.of<AuthProvider>(context, listen: false);
@@ -73,9 +73,9 @@ class _AddNewDishState extends State<AddNewDish> {
         _isUpdateDish = true;
       });
 
-      getSingleDish(dishId, authProvider).then((value) {
+      getSingleDish(dishId, authProvider!).then((value) {
         setState(() {
-          dishModel = value['dish'];
+          dishModel = value!['dish'];
           getReview = value['review'];
           imgList = dishModel.images;
           _isUpdateDish = false;
@@ -84,13 +84,13 @@ class _AddNewDishState extends State<AddNewDish> {
     }
   }
 
-  Future<String> _selectTime(BuildContext context) async {
+  Future<String?> _selectTime(BuildContext context) async {
     FocusScope.of(context).requestFocus(new FocusNode());
 
-    final TimeOfDay picked_s = await showTimePicker(
+    final TimeOfDay? picked_s = await showTimePicker(
         context: context,
         initialTime: selectedTime,
-        builder: (BuildContext context, Widget child) {
+        builder: (BuildContext context, Widget? child) {
           return Theme(
               data: ThemeData.light().copyWith(
                 primaryColor: const Color(0xFF504d4d),
@@ -103,7 +103,7 @@ class _AddNewDishState extends State<AddNewDish> {
               child: MediaQuery(
                 data: MediaQuery.of(context)
                     .copyWith(alwaysUse24HourFormat: true),
-                child: child,
+                child: child!,
               ));
         });
 
@@ -126,15 +126,8 @@ class _AddNewDishState extends State<AddNewDish> {
           Container(
             width: 100,
             child: IconButton(
-                icon: Row(
-                  children: [
-                    Text(dishId != null ? "Update" : "Save",
-                        style: TextStyle(fontSize: 18)),
-                    Icon(
-                      Icons.save,
-                    ),
-                  ],
-                ),
+                icon: Text(dishId != null ? "Update" : "Save",
+                    style: TextStyle(fontSize: 14, color: Colors.black)),
                 onPressed: () {
                   addDish();
                 }),
@@ -153,7 +146,6 @@ class _AddNewDishState extends State<AddNewDish> {
                 padding: const EdgeInsets.all(8.0),
                 child: Form(
                   key: _formKey,
-                  autovalidate: _autoValidate,
                   child: Column(
                     children: [
                       SizedBox(height: 15),
@@ -205,7 +197,7 @@ class _AddNewDishState extends State<AddNewDish> {
                                             await uploadFile(
                                                     value,
                                                     "profile-photo",
-                                                    authProvider.token)
+                                                    authProvider!.token)
                                                 .then((value) => imgList.add(
                                                     ImageModel.toJson(value)));
 
@@ -270,15 +262,15 @@ class _AddNewDishState extends State<AddNewDish> {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextFormFieldResturant(
-                              initValue: dishModel.foodName,
+                              initValue: dishModel.foodName!,
                               hintText: "Dish Name",
                               onChange: (value) {
                                 setState(() {
                                   dishModel.foodName = value;
                                 });
                               },
-                              valide: (String value) {
-                                if (value.isEmpty) {
+                              valide: (String? value) {
+                                if (value!.isEmpty) {
                                   return "Your Dish  Name is Empty";
                                 }
                               },
@@ -309,14 +301,14 @@ class _AddNewDishState extends State<AddNewDish> {
                                   dishModel.price = double.parse(value);
                                 });
                               },
-                              valide: (String value) {
-                                if (value.isEmpty) {
+                              valide: (String? value) {
+                                if (value!.isEmpty) {
                                   return "Your Price  is Empty";
                                 }
                               },
                               onSave: (value) {
                                 setState(() {
-                                  dishModel.price = double.parse(value);
+                                  dishModel.price = double.parse(value!);
                                 });
                               },
                             ),
@@ -336,14 +328,14 @@ class _AddNewDishState extends State<AddNewDish> {
                               dishModel.tax = double.parse(value);
                             });
                           },
-                          valide: (String value) {
-                            if (value.isEmpty) {
+                          valide: (String? value) {
+                            if (value!.isEmpty) {
                               return "Your tax  is Empty";
                             }
                           },
                           onSave: (value) {
                             setState(() {
-                              dishModel.tax = double.parse(value);
+                              dishModel.tax = double.parse(value!);
                             });
                           },
                         ),
@@ -385,8 +377,8 @@ class _AddNewDishState extends State<AddNewDish> {
                               dishModel.description = value;
                             });
                           },
-                          validator: (String value) {
-                            if (value.isEmpty) {
+                          validator: (String? value) {
+                            if (value!.isEmpty) {
                               return "Your description  is Empty";
                             }
                           },
@@ -538,9 +530,9 @@ class _AddNewDishState extends State<AddNewDish> {
                                                                         value;
                                                                   });
                                                                 },
-                                                                valide: (String
+                                                                valide: (String?
                                                                     value) {
-                                                                  if (value
+                                                                  if (value!
                                                                       .isEmpty) {
                                                                     return "Your Dish  Name is Empty";
                                                                   }
@@ -585,9 +577,9 @@ class _AddNewDishState extends State<AddNewDish> {
                                                                             value);
                                                                   });
                                                                 },
-                                                                valide: (String
+                                                                valide: (String?
                                                                     value) {
-                                                                  if (value
+                                                                  if (value!
                                                                       .isEmpty) {
                                                                     return "Your Add On Price is Empty";
                                                                   }
@@ -598,7 +590,7 @@ class _AddNewDishState extends State<AddNewDish> {
                                                                     addonModel
                                                                             .price =
                                                                         double.parse(
-                                                                            value);
+                                                                            value!);
                                                                   });
                                                                 },
                                                               ),
@@ -636,7 +628,7 @@ class _AddNewDishState extends State<AddNewDish> {
                                                           ),
                                                           onPressed: () {
                                                             if (addonForm
-                                                                .currentState
+                                                                .currentState!
                                                                 .validate()) {
                                                               setState(() {
                                                                 dishModel
@@ -773,7 +765,7 @@ class _AddNewDishState extends State<AddNewDish> {
     setState(() {
       isSubmiting = true;
     });
-    if (_formKey.currentState.validate() && imgList.isNotEmpty) {
+    if (_formKey.currentState!.validate() && imgList.isNotEmpty) {
       setState(() {
         _isLoading = true;
         _isSubmit = true;
@@ -781,7 +773,7 @@ class _AddNewDishState extends State<AddNewDish> {
       dishModel.images = imgList;
       dishModel.categoryId = catId;
       if (dishId != null) {
-        editDishService(dishModel.sendMap(), dishId, authProvider)
+        editDishService(dishModel.sendMap(), dishId, authProvider!)
             .then((result) {
           setState(() {
             _isLoading = false;
@@ -789,7 +781,7 @@ class _AddNewDishState extends State<AddNewDish> {
 
           if (result['status'] == true) {
             print("Mahdi: Executed 2");
-            _scaffoldKey.currentState.showSnackBar(SnackBar(
+            _scaffoldKey.currentState!.showSnackBar(SnackBar(
               content: Text("Successfuly Updated."),
               duration: Duration(seconds: 3),
             ));
@@ -804,7 +796,7 @@ class _AddNewDishState extends State<AddNewDish> {
               );
             });
           } else {
-            _scaffoldKey.currentState.showSnackBar(SnackBar(
+            _scaffoldKey.currentState!.showSnackBar(SnackBar(
               content: Text("${result['message']}"),
               duration: Duration(seconds: 4),
             ));
@@ -816,20 +808,20 @@ class _AddNewDishState extends State<AddNewDish> {
           setState(() {
             _isLoading = false;
           });
-          _scaffoldKey.currentState.showSnackBar(SnackBar(
+          _scaffoldKey.currentState!.showSnackBar(SnackBar(
             content: Text("Something went wrong!! Please try again later."),
             duration: Duration(seconds: 4),
           ));
         });
       } else {
-        addDishService(dishModel.sendMap(), authProvider).then((result) {
+        addDishService(dishModel.sendMap(), authProvider!).then((result) {
           setState(() {
             _isLoading = false;
           });
 
           if (result['status'] == true) {
             print("Mahdi: Executed 2");
-            _scaffoldKey.currentState.showSnackBar(SnackBar(
+            _scaffoldKey.currentState!.showSnackBar(SnackBar(
               content: Text("Successfuly added."),
               duration: Duration(seconds: 3),
             ));
@@ -839,7 +831,7 @@ class _AddNewDishState extends State<AddNewDish> {
           } else {
             print("Mahdi: Executed 3");
 
-            _scaffoldKey.currentState.showSnackBar(SnackBar(
+            _scaffoldKey.currentState!.showSnackBar(SnackBar(
               content: Text("${result['message']}"),
               duration: Duration(seconds: 4),
             ));
@@ -851,7 +843,7 @@ class _AddNewDishState extends State<AddNewDish> {
           setState(() {
             _isLoading = false;
           });
-          _scaffoldKey.currentState.showSnackBar(SnackBar(
+          _scaffoldKey.currentState!.showSnackBar(SnackBar(
             content: Text("Something went wrong!! Please try again later."),
             duration: Duration(seconds: 4),
           ));
@@ -878,7 +870,7 @@ class _AddNewDishState extends State<AddNewDish> {
                 decoration: BoxDecoration(
                   color: Colors.amber,
                   image: DecorationImage(
-                    image: NetworkImage(element.url),
+                    image: NetworkImage(element.url!),
                     fit: BoxFit.cover,
                   ),
                   borderRadius: BorderRadius.circular(15),
@@ -934,12 +926,12 @@ class CommentItemDish extends StatelessWidget {
                 leading: ClipRRect(
                   borderRadius: BorderRadius.circular(100),
                   child: FadeInImage.assetNetwork(
-                    image: "${review.userId.avatar}",
+                    image: "${review.userId!.avatar}",
                     placeholder: "",
                   ),
                 ),
                 title: Text(
-                  "${review.userId.username}",
+                  "${review.userId!.username}",
                 ),
                 trailing: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -950,7 +942,7 @@ class CommentItemDish extends StatelessWidget {
                     SmoothStarRating(
                       allowHalfRating: false,
                       onRated: (v) {},
-                      starCount: review.rate.toInt(),
+                      starCount: review.rate!.toInt(),
                       rating: 4,
                       size: 20.0,
                       isReadOnly: true,

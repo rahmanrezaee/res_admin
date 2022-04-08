@@ -3,17 +3,17 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class TextFormFieldResturant extends StatelessWidget {
-  String hintText;
-  TextEditingController controller;
-  Function onChange;
-  Function onTap;
-  Function onSave;
-  Function valide;
-  String initValue;
-  String perfixText;
-  bool enable;
-  IconData icon;
-  TextInputType typetext;
+  String? hintText;
+  TextEditingController? controller;
+  Function(String)? onChange;
+  void Function()? onTap;
+  Function(String?)? onSave;
+  String? Function(String?)? valide;
+  String? initValue;
+  String? perfixText;
+  bool? enable;
+  IconData? icon;
+  TextInputType? typetext;
   TextFormFieldResturant(
       {this.hintText,
       this.controller,
@@ -47,7 +47,7 @@ class TextFormFieldResturant extends StatelessWidget {
         onChanged: this.onChange,
         onSaved: this.onSave,
         initialValue: this.initValue,
-        readOnly: enable,
+        readOnly: enable!,
         onTap: onTap,
         validator: this.valide,
         decoration: InputDecoration(

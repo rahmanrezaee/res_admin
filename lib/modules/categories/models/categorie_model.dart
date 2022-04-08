@@ -1,7 +1,7 @@
 class CategoryModel {
-  String id;
-  String categoryName;
-  int foodNumber;
+  String? id;
+  String ?categoryName;
+  int ?foodNumber;
   CategoryModel({
     this.id,
     this.categoryName,

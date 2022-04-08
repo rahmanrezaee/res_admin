@@ -1,37 +1,37 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import '../../../responsive_scaffold.dart';
+import '../../../data/classes/details.dart';
 import '../responsive_list.dart';
 
 class TabletView extends StatefulWidget {
   TabletView({
-    Key key,
-    @required this.slivers,
-    @required this.detailBuilder,
-    @required List<Widget> children,
-    @required this.itemNotSelected,
-    @required this.sideMenu,
+    Key? key,
+    required this.slivers,
+    required this.detailBuilder,
+    required List<Widget> children,
+    required this.itemNotSelected,
+    required this.sideMenu,
     this.flexListView = 4,
     this.flexDetailView = 8,
-    @required this.appBar,
-    @required this.backgroundColor,
-    @required this.bottomNavigationBar,
-    @required this.bottomSheet,
-    @required this.drawer,
-    @required this.drawerDragStartBehavior,
-    @required this.endDrawer,
-    @required this.floatingActionButton,
-    @required this.floatingActionButtonAnimator,
-    @required this.floatingActionButtonLocation,
-    @required this.persistentFooterButtons,
-    @required this.primary,
-    @required this.resizeToAvoidBottomInset,
-    @required this.resizeToAvoidBottomPadding,
-    @required this.scaffoldkey,
-    @required this.detailScaffoldKey,
-    @required this.nullItems,
-    @required this.emptyItems,
+    required this.appBar,
+    required this.backgroundColor,
+    required this.bottomNavigationBar,
+    required this.bottomSheet,
+    required this.drawer,
+    required this.drawerDragStartBehavior,
+    required this.endDrawer,
+    required this.floatingActionButton,
+    required this.floatingActionButtonAnimator,
+    required this.floatingActionButtonLocation,
+    required this.persistentFooterButtons,
+    required this.primary,
+    required this.resizeToAvoidBottomInset,
+    required this.resizeToAvoidBottomPadding,
+    required this.scaffoldkey,
+    required this.detailScaffoldKey,
+    required this.nullItems,
+    required this.emptyItems,
   })  : childDelagate = SliverChildListDelegate(
           children,
           addAutomaticKeepAlives: false,
@@ -41,33 +41,33 @@ class TabletView extends StatefulWidget {
         super(key: key);
 
   TabletView.builder({
-    Key key,
-    @required this.slivers,
-    @required this.detailBuilder,
-    @required int itemCount,
-    @required IndexedWidgetBuilder itemBuilder,
-    @required this.itemNotSelected,
-    @required this.sideMenu,
+    Key? key,
+    required this.slivers,
+    required this.detailBuilder,
+    required int itemCount,
+    required IndexedWidgetBuilder itemBuilder,
+    required this.itemNotSelected,
+    required this.sideMenu,
     this.flexListView = 4,
     this.flexDetailView = 8,
-    @required this.appBar,
-    @required this.backgroundColor,
-    @required this.bottomNavigationBar,
-    @required this.bottomSheet,
-    @required this.drawer,
-    @required this.drawerDragStartBehavior,
-    @required this.endDrawer,
-    @required this.floatingActionButton,
-    @required this.floatingActionButtonAnimator,
-    @required this.floatingActionButtonLocation,
-    @required this.persistentFooterButtons,
-    @required this.primary,
-    @required this.resizeToAvoidBottomInset,
-    @required this.resizeToAvoidBottomPadding,
-    @required this.scaffoldkey,
-    @required this.detailScaffoldKey,
-    @required this.nullItems,
-    @required this.emptyItems,
+    required this.appBar,
+    required this.backgroundColor,
+    required this.bottomNavigationBar,
+    required this.bottomSheet,
+    required this.drawer,
+    required this.drawerDragStartBehavior,
+    required this.endDrawer,
+    required this.floatingActionButton,
+    required this.floatingActionButtonAnimator,
+    required this.floatingActionButtonLocation,
+    required this.persistentFooterButtons,
+    required this.primary,
+    required this.resizeToAvoidBottomInset,
+    required this.resizeToAvoidBottomPadding,
+    required this.scaffoldkey,
+    required this.detailScaffoldKey,
+    required this.nullItems,
+    required this.emptyItems,
   })  : childDelagate = SliverChildBuilderDelegate(
           itemBuilder,
           childCount: itemCount,
@@ -78,32 +78,32 @@ class TabletView extends StatefulWidget {
         super(key: key);
 
   TabletView.custom({
-    Key key,
-    @required this.slivers,
-    @required this.detailBuilder,
-    @required this.childDelagate,
-    @required this.itemNotSelected,
-    @required this.sideMenu,
+    Key ?key,
+    required this.slivers,
+    required this.detailBuilder,
+    required this.childDelagate,
+    required this.itemNotSelected,
+    required this.sideMenu,
     this.flexListView = 4,
     this.flexDetailView = 8,
-    @required this.appBar,
-    @required this.backgroundColor,
-    @required this.bottomNavigationBar,
-    @required this.bottomSheet,
-    @required this.drawer,
-    @required this.drawerDragStartBehavior,
-    @required this.endDrawer,
-    @required this.floatingActionButton,
-    @required this.floatingActionButtonAnimator,
-    @required this.floatingActionButtonLocation,
-    @required this.persistentFooterButtons,
-    @required this.primary,
-    @required this.resizeToAvoidBottomInset,
-    @required this.resizeToAvoidBottomPadding,
-    @required this.scaffoldkey,
-    @required this.detailScaffoldKey,
-    @required this.nullItems,
-    @required this.emptyItems,
+    required this.appBar,
+    required this.backgroundColor,
+    required this.bottomNavigationBar,
+    required this.bottomSheet,
+    required this.drawer,
+    required this.drawerDragStartBehavior,
+    required this.endDrawer,
+    required this.floatingActionButton,
+    required this.floatingActionButtonAnimator,
+    required this.floatingActionButtonLocation,
+    required this.persistentFooterButtons,
+    required this.primary,
+    required this.resizeToAvoidBottomInset,
+    required this.resizeToAvoidBottomPadding,
+    required this.scaffoldkey,
+    required this.detailScaffoldKey,
+    required this.nullItems,
+    required this.emptyItems,
   }) : super(key: key);
 
   final List<Widget> slivers;
@@ -151,7 +151,7 @@ class TabletView extends StatefulWidget {
 }
 
 class _TabletViewState extends State<TabletView> {
-  int _index;
+  int? _index;
 
   void reset() {
     setState(() {
@@ -171,40 +171,40 @@ class _TabletViewState extends State<TabletView> {
       body: Flex(
         direction: Axis.horizontal,
         children: <Widget>[
-          widget?.sideMenu ?? Container(),
+          widget.sideMenu,
           Flexible(
             flex: widget.flexListView,
             child: Scaffold(
-              key: widget?.scaffoldkey,
-              floatingActionButton: widget?.floatingActionButton,
+              key: widget.scaffoldkey,
+              floatingActionButton: widget.floatingActionButton,
               floatingActionButtonLocation:
-                  widget?.floatingActionButtonLocation,
-              bottomNavigationBar: widget?.bottomNavigationBar,
-              bottomSheet: widget?.bottomSheet,
-              persistentFooterButtons: widget?.persistentFooterButtons,
+                  widget.floatingActionButtonLocation,
+              bottomNavigationBar: widget.bottomNavigationBar,
+              bottomSheet: widget.bottomSheet,
+              persistentFooterButtons: widget.persistentFooterButtons,
               floatingActionButtonAnimator:
-                  widget?.floatingActionButtonAnimator,
-              resizeToAvoidBottomInset: widget?.resizeToAvoidBottomInset,
+                  widget.floatingActionButtonAnimator,
+              resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
               // resizeToAvoidBottomPadding: widget?.resizeToAvoidBottomPadding,
-              primary: widget?.primary,
+              primary: widget.primary,
               // extendBody: extendBody,
-              backgroundColor: widget?.backgroundColor,
-              drawer: widget?.drawer,
-              endDrawer: widget?.endDrawer,
-              appBar: widget?.appBar,
+              backgroundColor: widget.backgroundColor,
+              drawer: widget.drawer,
+              endDrawer: widget.endDrawer,
+              appBar: widget.appBar,
               body: CustomScrollView(
                 slivers: <Widget>[]
-                  ..addAll(widget.slivers ?? [])
+                  ..addAll(widget.slivers )
                   ..add(Builder(
                     builder: (BuildContext context) {
                       SliverChildDelegate _childDelagate =
-                          widget?.childDelagate;
-                      if (_childDelagate?.estimatedChildCount == null &&
-                          widget?.nullItems != null)
+                          widget.childDelagate;
+                      if (_childDelagate.estimatedChildCount == null &&
+                          widget.nullItems != null)
                         return SliverFillRemaining(child: widget.nullItems);
-                      if (_childDelagate?.estimatedChildCount != null &&
+                      if (_childDelagate.estimatedChildCount != null &&
                           _childDelagate.estimatedChildCount == 0 &&
-                          widget?.emptyItems != null)
+                          widget.emptyItems != null)
                         return SliverFillRemaining(child: widget.emptyItems);
                       return SliverList(
                           delegate: SliverChildBuilderDelegate(
@@ -224,7 +224,7 @@ class _TabletViewState extends State<TabletView> {
                                       ? Theme.of(context)
                                           .chipTheme
                                           .disabledColor
-                                      : widget?.backgroundColor,
+                                      : widget.backgroundColor,
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 8.0),
                                   child: _childDelagate.build(context, index),
@@ -233,7 +233,7 @@ class _TabletViewState extends State<TabletView> {
                             ),
                           );
                         },
-                        childCount: _childDelagate?.estimatedChildCount ?? 0,
+                        childCount: _childDelagate.estimatedChildCount ?? 0,
                         addAutomaticKeepAlives: false,
                         addRepaintBoundaries: false,
                         addSemanticIndexes: false,
@@ -246,12 +246,9 @@ class _TabletViewState extends State<TabletView> {
           Flexible(
             flex: widget.flexDetailView,
             child: new _DetailView(
-              detailScaffoldKey: widget?.detailScaffoldKey,
-              details: _index == null ||
-                      _index > widget.childDelagate.estimatedChildCount - 1
-                  ? null
-                  : widget.detailBuilder(context, _index, true),
-              itemNotSelected: widget?.itemNotSelected,
+              detailScaffoldKey: widget.detailScaffoldKey,
+              details:  widget.detailBuilder(context, _index!, true),
+              itemNotSelected: widget.itemNotSelected,
             ),
           ),
         ],
@@ -262,10 +259,10 @@ class _TabletViewState extends State<TabletView> {
 
 class _DetailView extends StatelessWidget {
   const _DetailView({
-    Key key,
-    @required DetailsScreen details,
-    @required this.itemNotSelected,
-    @required this.detailScaffoldKey,
+    Key ?key,
+    required DetailsScreen details,
+    required this.itemNotSelected,
+    required this.detailScaffoldKey,
   })  : _details = details,
         super(key: key);
 
@@ -276,15 +273,12 @@ class _DetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (_details == null) {
-      return itemNotSelected ??
-          Center(
-            child: Text("No Item Selected"),
-          );
+      return itemNotSelected;
     }
     return Scaffold(
       key: detailScaffoldKey,
-      appBar: _details?.appBar,
-      body: _details?.body,
+      appBar: _details.appBar,
+      body: _details.body,
     );
   }
 }

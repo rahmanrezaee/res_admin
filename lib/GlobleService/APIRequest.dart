@@ -9,9 +9,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 class APIRequest {
   Dio dio = new Dio();
 
-  Future get({
-    @required String myUrl,
-    token,
+  Future ? get({
+    required String myUrl,
+    String ?token,
   }) {
     try {
       if (token == null) {
@@ -47,9 +47,9 @@ class APIRequest {
   }
 
   Future post({
-    @required String myUrl,
-    @required myBody,
-    Map<String, dynamic> myHeaders,
+    required String myUrl,
+    required myBody,
+    Map<String, dynamic> ? myHeaders,
   }) {
     if (myHeaders != null) {
       dio.options.headers = myHeaders;
@@ -76,9 +76,9 @@ class APIRequest {
   }
 
   Future put({
-    @required String myUrl,
-    @required dynamic myBody,
-    @required Map<String, dynamic> myHeaders,
+    required String myUrl,
+    required dynamic myBody,
+    required Map<String, dynamic> myHeaders,
   }) {
     dio.options.headers = myHeaders;
     Future<Response> res = dio.put(myUrl, data: myBody);
@@ -99,9 +99,9 @@ class APIRequest {
   }
 
   Future delete({
-    @required String myUrl,
-    @required dynamic myBody,
-    @required Map<String, dynamic> myHeaders,
+    required String myUrl,
+    required dynamic myBody,
+    required Map<String, dynamic> myHeaders,
   }) {
     dio.options.headers = myHeaders;
     Future<Response> res = dio.delete(myUrl, data: myBody);

@@ -13,8 +13,8 @@ class DashboardProvider with ChangeNotifier {
 
   DashboardProvider(this.auth);
   get getDashData => _dashboardData;
-  bool openForOrder;
-  bool autoAcceptOrder;
+  bool? openForOrder;
+  bool? autoAcceptOrder;
 
   setOpenForOrder(bool value) {
     this.openForOrder = value;

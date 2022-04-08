@@ -1,15 +1,15 @@
 import 'dart:io';
 
+import 'package:image_picker/image_picker.dart';
 import 'package:restaurant/constants/UrlConstants.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 
-Future<Map> uploadFile(File imageFile, String category, String token) async {
+Future<Map?> uploadFile(File imageFile, String category, String token) async {
   final StringBuffer url = new StringBuffer(baseUrl + "/upload/single");
   Dio dio = new Dio();
 
@@ -53,7 +53,7 @@ Future<Map> uploadFile(File imageFile, String category, String token) async {
   }
 }
 
-Future<Map> uploadFileAsset(Asset asset, String category, String token) async {
+Future<Map?> uploadFileAsset(Asset asset, String category, String token) async {
   final StringBuffer url = new StringBuffer(baseUrl + "/upload");
   Dio dio = new Dio();
 
@@ -133,7 +133,7 @@ openImagePickerModal(context) {
                       ],
                     ),
                     onPressed: () async {
-                      File file = await getImage(context, ImageSource.camera);
+                      File? file = await getImage(context, ImageSource.camera);
                       Navigator.pop(context, file);
                     },
                   ),
@@ -147,7 +147,7 @@ openImagePickerModal(context) {
                       ],
                     ),
                     onPressed: () async {
-                      File file = await getImage(context, ImageSource.gallery);
+                      File? file = await getImage(context, ImageSource.gallery);
                       Navigator.pop(context, file);
                     },
                   ),
@@ -159,7 +159,7 @@ openImagePickerModal(context) {
       });
 }
 
-Future<File> getImage(context, ImageSource source) async {
+Future<File?> getImage(context, ImageSource source) async {
   File imageFile = await ImagePicker.pickImage(
     source: source,
     imageQuality: 85,
@@ -184,8 +184,8 @@ Future<File> getImage(context, ImageSource source) async {
 //   _isUploadingImage = false;
 // });
 
-Future<File> _cropImage(context, _imageFile) async {
-  File croppedFile = await ImageCropper.cropImage(
+Future<File?> _cropImage(context, _imageFile) async {
+  File ? croppedFile = await ImageCropper().cropImage(
       sourcePath: _imageFile.path,
       aspectRatioPresets: Platform.isAndroid
           ? [

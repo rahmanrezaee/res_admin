@@ -34,17 +34,16 @@ class _LoginPageState extends State<LoginPage> {
 
   TextEditingController _passwordController = new TextEditingController();
 
-  AuthProvider authProvider;
-  StreamSubscription _sub;
+  AuthProvider? authProvider;
+  StreamSubscription? _sub;
 
-  Function get autovalidat => null;
   String _latestLink = 'Unknown';
-  Uri _latestUri;
+  Uri ?_latestUri;
 
   /// An implementation using a [String] link
   initPlatformStateForStringUniLinks() async {
     // Attach a listener to the links stream
-    _sub = getLinksStream().listen((String link) {
+    _sub = getLinksStream().listen((String? link) {
       if (!mounted) return;
       _latestLink = link ?? 'Unknown';
       _latestUri = null;
@@ -66,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     // Get the latest link
-    String initialLink;
+    String ? initialLink;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       initialLink = await getInitialLink();
@@ -89,8 +88,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void dispose() {
-    if (_sub != null) _sub.cancel();
-    if (_sub != null) _sub.cancel();
+    if (_sub != null) _sub!.cancel();
+    if (_sub != null) _sub!.cancel();
 
     super.dispose();
   }
@@ -106,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
     print('get Fcm Token');
 
     FirebaseMessaging.instance.getToken().then((valu) {
-      this.fcmToken = valu;
+      this.fcmToken = valu!;
       log("firebase token $fcmToken");
     });
   }
@@ -134,7 +133,7 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(height: 50),
                       Text(
                         "Login",
-                        style: Theme.of(context).textTheme.headline5.copyWith(
+                        style: Theme.of(context).textTheme.headline5!.copyWith(
                             fontWeight: FontWeight.bold, color: Colors.black),
                       ),
                       SizedBox(height: 20),
@@ -149,7 +148,7 @@ class _LoginPageState extends State<LoginPage> {
                                 style: Theme.of(context).textTheme.headline4),
                             SizedBox(height: 15),
                             _loginFieldBuilder(
-                              autovalidat,
+                           
                               "Email Address",
                               emailValidator,
                               TextInputType.emailAddress,
@@ -165,7 +164,7 @@ class _LoginPageState extends State<LoginPage> {
                                 obscureText: obscureText,
                                 controller: _passwordController,
                                 validator: (v) {
-                                  return passwordValidator(v);
+                                  return passwordValidator(v!);
                                 },
                                 decoration: InputDecoration(
                                   hintText: "Password",
@@ -233,7 +232,7 @@ class _LoginPageState extends State<LoginPage> {
                                     "Forgot Password?",
                                     style: Theme.of(context)
                                         .textTheme
-                                        .subtitle2
+                                        .subtitle2!
                                         .copyWith(
                                             decoration:
                                                 TextDecoration.underline),
@@ -280,7 +279,7 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(height: 20),
                       error == null
                           ? Container()
-                          : Text(error,
+                          : Text(error!,
                               style: TextStyle(color: AppColors.redText)),
                       SizedBox(height: 10),
                     ]),
@@ -293,15 +292,15 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   bool loading = false;
-  String error;
+  String ?error;
   login() {
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState!.validate()) {
       setState(() {
         loading = true;
       });
       String email = _emailController.text;
       String password = _passwordController.text;
-      authProvider.login(email, password, this.fcmToken).then((res) {
+      authProvider!.login(email, password, this.fcmToken).then((res) {
         setState(() {
           loading = false;
         });
@@ -322,7 +321,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-_loginFieldBuilder(Function autovalidat, String hintText, Function validator,
+_loginFieldBuilder( String hintText, Function validator,
     textInputType, TextEditingController controller, bool secure) {
   return TextFormField(
     controller: controller,

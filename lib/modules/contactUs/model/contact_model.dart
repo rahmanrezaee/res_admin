@@ -1,9 +1,9 @@
 class ContactModel {
-  String username;
-  String email;
-  String restaurant;
-  String subject;
-  String message;
+  String ?username;
+  String ?email;
+  String? restaurant;
+  String? subject;
+  String? message;
   ContactModel({
     username,
     email,

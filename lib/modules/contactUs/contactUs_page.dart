@@ -38,14 +38,14 @@ class ContactUsPage extends StatelessWidget {
                   builder: (context, snapshot) {
                     return Center(child: CircularProgressIndicator());
                   })
-              : contactProvider.getContacts.isEmpty
+              : contactProvider.getContacts!.isEmpty
                   ? Center(child: Text("No Contact us "))
                   : ListView.builder(
-                      itemCount: contactProvider.getContacts.length,
+                      itemCount: contactProvider.getContacts!.length,
                       itemBuilder: (context, i) {
                         return _contactItemBuilder(
                           context,
-                          contactProvider.getContacts[i],
+                          contactProvider.getContacts![i],
                         );
                       },
                     );
